@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f0f4fa; min-height: 100vh; }
-
+ 
   /* LOGIN */
   #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#0d2137 0%,#1A3A5C 60%,#2C5F8A 100%); }
   .login-box { background:#fff; border-radius:14px; padding:40px 44px; width:360px; box-shadow:0 8px 32px rgba(0,0,0,0.22); text-align:center; }
@@ -20,7 +20,7 @@
   .login-btn { width:100%; padding:11px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:15px; font-weight:700; cursor:pointer; margin-top:4px; font-family:Arial,sans-serif; }
   .login-btn:hover { opacity:0.88; }
   .login-error { color:#c0392b; font-size:12px; margin-top:8px; min-height:18px; }
-
+ 
   /* APP */
   #app { display:none; }
   .topbar { background:#1A3A5C; color:#fff; padding:10px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
@@ -28,6 +28,7 @@
   .topbar-title span { color:#E87722; }
   .topbar-user { font-size:12px; color:#aac4e0; }
   .badge-master { background:#E87722; color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; }
+  .badge-accountant { background:#6c3483; color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; }
   .topbar-btn { font-size:12px; background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.25); border-radius:6px; padding:5px 12px; cursor:pointer; font-family:Arial,sans-serif; }
   .topbar-btn:hover { background:rgba(255,255,255,0.2); }
   .topbar-btn.pin-btn { background:rgba(232,119,34,0.25); border-color:rgba(232,119,34,0.5); }
@@ -35,15 +36,16 @@
   .sync-status { font-size:11px; color:#aac4e0; }
   .sync-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#2e7d32; margin-right:4px; }
   .sync-dot.offline { background:#f39c12; }
-
+ 
   .tabs { display:flex; background:#fff; border-bottom:2px solid #dde3ee; padding:0 24px; overflow-x:auto; }
   .tab { padding:11px 20px; font-size:13px; font-weight:600; color:#888; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:color 0.15s; white-space:nowrap; }
   .tab.active { color:#1A3A5C; border-bottom-color:#E87722; }
   .tab:hover { color:#1A3A5C; }
-
+  .tab.acct-tab.active { border-bottom-color:#6c3483; color:#6c3483; }
+ 
   .page { display:none; padding:24px 16px; }
   .page.active { display:block; }
-
+ 
   /* MODALS */
   .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; }
   .modal-bg.open { display:flex; }
@@ -51,11 +53,14 @@
   .modal h2 { font-size:17px; font-weight:800; color:#1A3A5C; margin-bottom:6px; }
   .modal p { font-size:12px; color:#888; margin-bottom:20px; }
   .modal label { font-size:11px; font-weight:700; color:#555; letter-spacing:0.04em; display:block; margin-bottom:5px; }
-  .modal input, .modal select { width:100%; padding:10px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; margin-bottom:14px; outline:none; font-family:Arial,sans-serif; }
-  .modal input:focus, .modal select:focus { border-color:#1A3A5C; }
+  .modal input, .modal select, .modal textarea { width:100%; padding:10px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; margin-bottom:14px; outline:none; font-family:Arial,sans-serif; }
+  .modal textarea { min-height:80px; resize:vertical; }
+  .modal input:focus, .modal select:focus, .modal textarea:focus { border-color:#1A3A5C; }
   .modal-btns { display:flex; gap:10px; margin-top:6px; }
   .btn-approve { flex:1; padding:10px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:14px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-approve:hover { opacity:0.88; }
+  .btn-approve.green { background:#2e7d32; }
+  .btn-approve.red { background:#c0392b; }
   .btn-cancel { flex:1; padding:10px; background:#fff; color:#555; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-cancel:hover { background:#f5f7fb; }
   .modal-error { color:#c0392b; font-size:12px; margin-top:-8px; margin-bottom:10px; min-height:16px; }
@@ -67,7 +72,7 @@
   .btn-pdf { padding:8px 18px; background:#E87722; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-pdf:hover { opacity:0.88; }
   .preview-body { padding:24px; overflow-y:auto; max-height:80vh; background:#f0f4fa; }
-
+ 
   /* CONTROLS */
   .controls { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #dde3ee; border-radius:10px; padding:14px 20px; margin-bottom:20px; max-width:860px; margin-left:auto; margin-right:auto; flex-wrap:wrap; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
   .inv-badge { display:flex; align-items:center; gap:10px; background:#f0f4fa; border:1px solid #cdd5e0; border-radius:8px; padding:8px 16px; }
@@ -78,7 +83,7 @@
   .btn-print:hover { opacity:0.88; }
   .btn-secondary { font-size:13px; color:#555; background:none; border:1px solid #cdd5e0; border-radius:8px; padding:8px 14px; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-secondary:hover { background:#f0f4fa; }
-
+ 
   /* INVOICE */
   .invoice { background:#fff; color:#111; border:1px solid #dde3ee; border-radius:10px; padding:30px 36px; font-family:Arial,sans-serif; font-size:11px; max-width:860px; margin:0 auto; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
   .inv-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
@@ -117,14 +122,13 @@
   .auth-input:focus { background:#fffbf5; border-bottom-color:#E87722; }
   .auth-input::placeholder { color:#aaa; font-style:italic; }
   .inv-footer { font-size:9.5px; color:#999; text-align:center; margin-top:16px; padding-top:10px; border-top:2px solid #E87722; font-style:italic; }
-
-  /* HISTORY */
+ 
+  /* HISTORY & LOG */
   .page-header { display:flex; align-items:center; gap:12px; max-width:980px; margin:0 auto 16px; flex-wrap:wrap; }
   .page-header h2 { font-size:18px; font-weight:800; color:#1A3A5C; flex:1; }
   .btn-export { padding:8px 18px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-export:hover { opacity:0.88; }
   .btn-danger { padding:8px 14px; background:#fff; color:#c0392b; border:1px solid #e0b0b0; border-radius:7px; font-size:13px; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-danger:hover { background:#fff0f0; }
   .log-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; max-width:980px; margin:0 auto 20px; }
   .stat-card { background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #dde3ee; }
   .stat-card .s-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; }
@@ -132,7 +136,7 @@
   .table-wrap { max-width:980px; margin:0 auto; overflow-x:auto; }
   table.log-table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.07); }
   table.log-table thead th { background:#1A3A5C; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.05em; padding:9px 12px; text-align:left; }
-  table.log-table tbody td { padding:9px 12px; font-size:12px; border-bottom:0.5px solid #eee; }
+  table.log-table tbody td { padding:9px 12px; font-size:12px; border-bottom:0.5px solid #eee; vertical-align:middle; }
   table.log-table tbody tr:last-child td { border-bottom:none; }
   table.log-table tbody tr:hover td { background:#f5f8fc; }
   .badge-role { font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; }
@@ -142,28 +146,56 @@
   .empty-state { text-align:center; color:#aaa; font-size:13px; padding:40px 0; }
   .btn-view { font-size:11px; padding:4px 10px; background:#1A3A5C; color:#fff; border:none; border-radius:5px; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-view:hover { opacity:0.82; }
-
-  /* MONTHLY REPORT */
+ 
+  /* ACCT STATUS BADGES */
+  .status-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; }
+  .status-pending  { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
+  .status-approved { background:#d4edda; color:#155724; border:1px solid #28a745; }
+  .status-denied   { background:#f8d7da; color:#721c24; border:1px solid #dc3545; }
+  .btn-acct-approve { font-size:11px; padding:4px 10px; background:#2e7d32; color:#fff; border:none; border-radius:5px; cursor:pointer; font-family:Arial,sans-serif; margin-right:4px; }
+  .btn-acct-deny   { font-size:11px; padding:4px 10px; background:#c0392b; color:#fff; border:none; border-radius:5px; cursor:pointer; font-family:Arial,sans-serif; }
+  .btn-acct-approve:hover { opacity:0.85; }
+  .btn-acct-deny:hover { opacity:0.85; }
+  .acct-note-preview { font-size:10px; color:#666; font-style:italic; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ 
+  /* ACCOUNTANT PAGE */
+  .acct-header-banner { background:linear-gradient(135deg,#4a1468,#6c3483); color:#fff; border-radius:10px; padding:20px 24px; max-width:980px; margin:0 auto 20px; display:flex; align-items:center; gap:16px; }
+  .acct-header-banner .ah-icon { font-size:32px; }
+  .acct-header-banner h2 { font-size:18px; font-weight:800; }
+  .acct-header-banner p { font-size:12px; opacity:0.85; margin-top:2px; }
+  .acct-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; max-width:980px; margin:0 auto 20px; }
+  .acct-stat { background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #dde3ee; }
+  .acct-stat .as-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; }
+  .acct-stat .as-val { font-size:26px; font-weight:800; margin-top:2px; }
+  .acct-stat .as-val.pending  { color:#856404; }
+  .acct-stat .as-val.approved { color:#155724; }
+  .acct-stat .as-val.denied   { color:#721c24; }
+  .acct-stat .as-val.total    { color:#1A3A5C; }
+  .acct-filters { display:flex; gap:10px; max-width:980px; margin:0 auto 14px; flex-wrap:wrap; align-items:center; }
+  .acct-filters select, .acct-filters input { padding:7px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:13px; outline:none; font-family:Arial,sans-serif; }
+  .acct-filters select:focus, .acct-filters input:focus { border-color:#6c3483; }
+  .acct-filters label { font-size:12px; font-weight:700; color:#555; }
+ 
+  /* MONTHLY */
   .month-filter { display:flex; align-items:center; gap:12px; max-width:980px; margin:0 auto 20px; flex-wrap:wrap; }
   .month-filter label { font-size:13px; font-weight:700; color:#1A3A5C; }
   .month-filter select { padding:8px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:13px; outline:none; font-family:Arial,sans-serif; }
-  .month-filter select:focus { border-color:#1A3A5C; }
   .monthly-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:980px; margin:0 auto 24px; }
-  .month-stat { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:16px 20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .month-stat { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:16px 20px; }
   .month-stat .ms-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; margin-bottom:4px; }
   .month-stat .ms-val { font-size:28px; font-weight:800; color:#1A3A5C; }
   .month-stat .ms-sub { font-size:11px; color:#888; margin-top:2px; }
   .mgr-breakdown { max-width:980px; margin:0 auto; }
   .mgr-breakdown h3 { font-size:15px; font-weight:800; color:#1A3A5C; margin-bottom:12px; }
   .mgr-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
-  .mgr-card { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:16px 18px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .mgr-card { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:16px 18px; }
   .mgr-card .mc-name { font-size:13px; font-weight:700; color:#1A3A5C; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee; }
   .mgr-card .mc-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
   .mgr-card .mc-label { color:#888; }
   .mgr-card .mc-val { font-weight:700; color:#111; }
   .mgr-card .mc-total { font-size:18px; font-weight:800; color:#2e7d32; margin-top:8px; }
   .month-bar { height:8px; background:#e8f5e9; border-radius:4px; margin-top:8px; overflow:hidden; }
-  .month-bar-fill { height:100%; background:#2e7d32; border-radius:4px; transition:width 0.4s; }
+  .month-bar-fill { height:100%; background:#2e7d32; border-radius:4px; }
   .all-months-table { max-width:980px; margin:0 auto; }
   .all-months-table h3 { font-size:15px; font-weight:800; color:#1A3A5C; margin-bottom:12px; }
   table.months-tbl { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.07); margin-bottom:24px; }
@@ -172,7 +204,7 @@
   table.months-tbl tbody tr:last-child td { border-bottom:none; }
   table.months-tbl tbody tr:hover td { background:#f5f8fc; }
   table.months-tbl tbody tr.active-month td { background:#f0f8ff; font-weight:700; }
-
+ 
   /* ADMIN */
   .admin-wrap { max-width:700px; margin:0 auto; }
   .admin-section { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:24px 28px; margin-bottom:20px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
@@ -181,11 +213,8 @@
   .reset-warning strong { display:block; margin-bottom:4px; font-size:13px; }
   .reset-btns { display:flex; gap:10px; flex-wrap:wrap; }
   .btn-reset-counter { padding:10px 20px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-reset-counter:hover { opacity:0.88; }
   .btn-reset-log { padding:10px 20px; background:#fff; color:#c0392b; border:1.5px solid #c0392b; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-reset-log:hover { background:#fff0f0; }
   .btn-reset-both { padding:10px 20px; background:#c0392b; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-reset-both:hover { opacity:0.88; }
   .user-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:0.5px solid #f0f0f0; flex-wrap:wrap; }
   .user-row:last-child { border-bottom:none; }
   .user-name { flex:1; font-size:13px; font-weight:600; color:#222; min-width:120px; }
@@ -193,25 +222,24 @@
   .role-master { background:#E87722; color:#fff; }
   .role-manager { background:#e3ecf7; color:#1A3A5C; }
   .role-standard { background:#f0f0f0; color:#666; }
+  .role-accountant { background:#e8d5f5; color:#6c3483; }
   .btn-sm { font-size:12px; padding:5px 12px; border-radius:6px; cursor:pointer; border:1px solid #cdd5e0; background:#fff; color:#555; font-family:Arial,sans-serif; }
   .btn-sm:hover { background:#f0f4fa; }
   .btn-sm.danger { color:#c0392b; border-color:#e0b0b0; }
   .btn-sm.danger:hover { background:#fff0f0; }
   .add-user-form { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; align-items:flex-end; }
   .add-user-form input, .add-user-form select { padding:8px 10px; border:1px solid #cdd5e0; border-radius:7px; font-size:13px; outline:none; font-family:Arial,sans-serif; }
-  .add-user-form input:focus, .add-user-form select:focus { border-color:#1A3A5C; }
   .btn-add { padding:8px 18px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-add:hover { opacity:0.88; }
   .admin-error { color:#c0392b; font-size:12px; margin-top:8px; min-height:16px; }
   .admin-success { color:#2e7d32; font-size:12px; margin-top:8px; font-weight:700; min-height:16px; }
   .dealer-form { display:flex; flex-direction:column; gap:10px; }
   .dealer-form input { padding:9px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; outline:none; font-family:Arial,sans-serif; }
-  .dealer-form input:focus { border-color:#1A3A5C; }
   .counter-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
   .counter-val { font-size:28px; font-weight:800; color:#1A3A5C; }
   .counter-form { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .counter-form input { padding:8px 10px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; outline:none; width:120px; font-family:Arial,sans-serif; }
-
+ 
   /* SNAPSHOT */
   .snap-invoice { background:#fff; padding:28px 32px; font-family:Arial,sans-serif; font-size:11px; max-width:800px; margin:0 auto; border:1px solid #dde3ee; border-radius:8px; }
   .snap-invoice .inv-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
@@ -236,10 +264,13 @@
   .snap-auth-val { font-size:12px; font-weight:700; color:#1A3A5C; border-bottom:2px solid #1A3A5C; background:#EEF2F7; padding:3px 6px; min-height:24px; }
   .snap-auth-line { border-bottom:2px solid #1A3A5C; min-height:24px; background:#EEF2F7; }
   .snap-footer { font-size:9px; color:#999; text-align:center; margin-top:14px; padding-top:8px; border-top:2px solid #E87722; font-style:italic; }
-
+  .acct-stamp { border:2px solid; border-radius:8px; padding:8px 14px; margin-top:14px; display:inline-block; font-weight:800; font-size:13px; letter-spacing:0.06em; transform:rotate(-2deg); }
+  .acct-stamp.approved { border-color:#2e7d32; color:#2e7d32; background:#f0fff4; }
+  .acct-stamp.denied   { border-color:#c0392b; color:#c0392b; background:#fff5f5; }
+ 
   @media print {
     body { background:white; }
-    #login-screen,.topbar,.tabs,.controls,#log-page,#monthly-page,#admin-page,.modal-bg { display:none !important; }
+    #login-screen,.topbar,.tabs,.controls,#log-page,#monthly-page,#admin-page,#accountant-page,.modal-bg { display:none !important; }
     #invoice-page { display:block !important; padding:0; }
     .invoice { border:none; padding:16px; box-shadow:none; max-width:100%; border-radius:0; }
     .field-input,.cell-input,.auth-input,.notes-input,.total-input { background:transparent !important; }
@@ -247,7 +278,7 @@
 </style>
 </head>
 <body>
-
+ 
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
@@ -261,27 +292,29 @@
     <div class="login-error" id="login-error"></div>
   </div>
 </div>
-
+ 
 <!-- APP -->
 <div id="app">
   <div class="topbar">
     <div class="topbar-title">GILL <span>AUTO</span> GROUP &nbsp;–&nbsp; Gas Invoice</div>
     <div class="topbar-user" id="topbar-user"></div>
     <span class="badge-master" id="master-badge" style="display:none;">MASTER</span>
+    <span class="badge-accountant" id="acct-badge" style="display:none;">ACCOUNTANT</span>
     <span class="sync-status"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">Connecting...</span></span>
     <button class="topbar-btn pin-btn" onclick="openPinModal()">🔑 Change PIN</button>
     <button class="topbar-btn master-btn" id="admin-topbtn" onclick="showTab('admin')" style="display:none;">⚙️ Admin</button>
     <button class="topbar-btn" onclick="doLogout()">Sign Out</button>
   </div>
   <div class="tabs">
-    <div class="tab active" onclick="showTab('invoice')">📄 Invoice</div>
+    <div class="tab active" id="tab-invoice" onclick="showTab('invoice')" style="display:none;">📄 Invoice</div>
     <div class="tab" id="tab-log" onclick="showTab('log')" style="display:none;">📋 History</div>
     <div class="tab" id="tab-monthly" onclick="showTab('monthly')" style="display:none;">📅 Monthly</div>
+    <div class="tab acct-tab" id="tab-accountant" onclick="showTab('accountant')" style="display:none;">🧾 Accountant Review</div>
     <div class="tab" id="tab-admin" onclick="showTab('admin')" style="display:none;">⚙️ Admin</div>
   </div>
-
+ 
   <!-- INVOICE PAGE -->
-  <div class="page active" id="invoice-page">
+  <div class="page" id="invoice-page">
     <div class="controls">
       <div class="inv-badge">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A3A5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -344,84 +377,88 @@
       <div class="inv-footer" id="disp-footer">Please attach original gas receipt to this form. Retain copy for dealership records. &nbsp;|&nbsp; Gill Auto Group &nbsp;|&nbsp; (559) 674-5661</div>
     </div>
   </div>
-
+ 
   <!-- HISTORY PAGE -->
   <div class="page" id="log-page">
-    <div class="page-header">
-      <h2>Invoice History</h2>
-      <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
-    </div>
+    <div class="page-header"><h2>Invoice History</h2><button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button></div>
     <div class="log-stats" id="log-stats"></div>
     <div class="table-wrap">
       <table class="log-table">
-        <thead><tr><th>Invoice #</th><th>Date</th><th>Time</th><th>Approved By</th><th>Role</th><th>Approved $</th><th>Stock #</th><th>Driver</th><th>View</th></tr></thead>
+        <thead><tr><th>Invoice #</th><th>Date</th><th>Approved By</th><th>Approved $</th><th>Stock #</th><th>Driver</th><th>Acct Status</th><th>View</th></tr></thead>
         <tbody id="log-body"></tbody>
       </table>
     </div>
   </div>
-
+ 
   <!-- MONTHLY PAGE -->
   <div class="page" id="monthly-page">
-    <div class="page-header">
-      <h2>📅 Monthly Report</h2>
-      <button class="btn-export" onclick="exportMonthlyCSV()">⬇ Export CSV</button>
-    </div>
-    <div class="month-filter">
-      <label>View Month:</label>
-      <select id="month-select" onchange="renderMonthly()"></select>
-    </div>
+    <div class="page-header"><h2>📅 Monthly Report</h2><button class="btn-export" onclick="exportMonthlyCSV()">⬇ Export CSV</button></div>
+    <div class="month-filter"><label>View Month:</label><select id="month-select" onchange="renderMonthly()"></select></div>
     <div class="monthly-grid" id="monthly-grid"></div>
-    <div class="mgr-breakdown">
-      <h3>By Manager</h3>
-      <div class="mgr-cards" id="mgr-cards"></div>
+    <div class="mgr-breakdown"><h3>By Manager</h3><div class="mgr-cards" id="mgr-cards"></div></div>
+    <div class="all-months-table"><h3>All Months Summary</h3>
+      <table class="months-tbl"><thead><tr><th>Month</th><th>Invoices</th><th>Total Approved</th><th>Avg/Invoice</th><th>Top Approver</th></tr></thead><tbody id="all-months-body"></tbody></table>
     </div>
-    <div class="all-months-table">
-      <h3>All Months Summary</h3>
-      <table class="months-tbl">
-        <thead><tr><th>Month</th><th>Invoices</th><th>Total Approved</th><th>Avg per Invoice</th><th>Top Approver</th></tr></thead>
-        <tbody id="all-months-body"></tbody>
+  </div>
+ 
+  <!-- ACCOUNTANT PAGE -->
+  <div class="page" id="accountant-page">
+    <div class="acct-header-banner">
+      <div class="ah-icon">🧾</div>
+      <div><h2>Accountant Review — Gill Auto Group</h2><p>Review, approve, or deny gas invoices. Add notes for any issues.</p></div>
+    </div>
+    <div class="acct-stats" id="acct-stats"></div>
+    <div class="page-header" style="margin-top:0;">
+      <h2 style="font-size:15px;">Invoices</h2>
+      <button class="btn-export" onclick="exportAcctCSV()">⬇ Export Report</button>
+    </div>
+    <div class="acct-filters">
+      <label>Status:</label>
+      <select id="acct-filter-status" onchange="renderAccountant()">
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="denied">Denied</option>
+      </select>
+      <label>Month:</label>
+      <select id="acct-filter-month" onchange="renderAccountant()"><option value="all">All Months</option></select>
+      <input type="text" id="acct-search" placeholder="Search stock #, driver, manager..." style="flex:1;min-width:200px;" oninput="renderAccountant()"/>
+    </div>
+    <div class="table-wrap">
+      <table class="log-table">
+        <thead><tr><th>Invoice #</th><th>Date</th><th>Manager</th><th>Amount</th><th>Stock #</th><th>Driver</th><th>Status</th><th>Accountant Notes</th><th>Actions</th></tr></thead>
+        <tbody id="acct-body"></tbody>
       </table>
     </div>
   </div>
-
+ 
   <!-- ADMIN PAGE -->
   <div class="page" id="admin-page">
     <div class="admin-wrap">
       <div class="admin-section">
         <h3>🏢 Dealership Info</h3>
-        <div class="dealer-form">
-          <input type="text" id="admin-dname" placeholder="Dealership Name"/>
-          <input type="text" id="admin-daddr" placeholder="Address"/>
-          <input type="text" id="admin-dphone" placeholder="Phone"/>
-        </div>
+        <div class="dealer-form"><input type="text" id="admin-dname" placeholder="Dealership Name"/><input type="text" id="admin-daddr" placeholder="Address"/><input type="text" id="admin-dphone" placeholder="Phone"/></div>
         <div style="margin-top:12px;"><button class="btn-add" onclick="saveDealerAdmin()">Save Dealership Info</button></div>
         <div class="admin-success" id="dealer-success"></div>
       </div>
-
-      <!-- MASTER-ONLY RESET SECTION -->
       <div class="admin-section">
         <h3>🔄 Reset Controls <span style="font-size:11px;background:#E87722;color:#fff;padding:2px 8px;border-radius:4px;margin-left:8px;">MASTER ONLY</span></h3>
-        <div class="reset-warning"><strong>⚠️ These actions cannot be undone.</strong>Resetting the counter will restart invoice numbering from GAS-00001. Clearing the log will permanently delete all invoice records from the cloud.</div>
+        <div class="reset-warning"><strong>⚠️ These actions cannot be undone.</strong>Resetting the counter restarts from GAS-00001. Clearing the log permanently deletes all records.</div>
         <div class="reset-btns">
-          <button class="btn-reset-counter" onclick="resetCounter()">↺ Reset Invoice Counter to GAS-00001</button>
-          <button class="btn-reset-log" onclick="clearLog()">🗑 Clear Entire Invoice Log</button>
+          <button class="btn-reset-counter" onclick="resetCounter()">↺ Reset Invoice Counter</button>
+          <button class="btn-reset-log" onclick="clearLog()">🗑 Clear Invoice Log</button>
           <button class="btn-reset-both" onclick="resetBoth()">⚠️ Reset Both</button>
         </div>
         <div class="admin-success" id="reset-success"></div>
       </div>
-
       <div class="admin-section">
         <h3>🔢 Set Invoice Counter</h3>
         <div class="counter-row">
           <div><div class="field-label">CURRENT</div><div class="counter-val" id="admin-counter-val">—</div></div>
-          <div class="counter-form">
-            <input type="number" id="admin-counter-input" placeholder="Set to..." min="1"/>
-            <button class="btn-add" onclick="setCounterAdmin()">Set</button>
-          </div>
+          <div class="counter-form"><input type="number" id="admin-counter-input" placeholder="Set to..." min="1"/><button class="btn-add" onclick="setCounterAdmin()">Set</button></div>
         </div>
         <div class="admin-success" id="counter-success"></div>
       </div>
-
       <div class="admin-section">
         <h3>👥 User Management</h3>
         <div id="user-list"></div>
@@ -430,13 +467,12 @@
         <div class="add-user-form">
           <input type="text" id="new-uname" placeholder="Full Name" style="flex:2;min-width:140px;"/>
           <input type="password" id="new-upin" placeholder="PIN (4-6 digits)" maxlength="6" style="flex:1;min-width:110px;"/>
-          <select id="new-urole" style="flex:1;min-width:110px;"><option value="standard">Standard</option><option value="manager">Manager</option></select>
+          <select id="new-urole" style="flex:1;min-width:120px;"><option value="standard">Standard</option><option value="manager">Manager</option><option value="accountant">Accountant</option></select>
           <button class="btn-add" onclick="addUser()">Add</button>
         </div>
         <div class="admin-error" id="user-error"></div>
         <div class="admin-success" id="user-success"></div>
       </div>
-
       <div class="admin-section">
         <h3>🔑 Change Any User's PIN</h3>
         <div class="add-user-form">
@@ -450,12 +486,12 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- MODALS -->
 <div class="modal-bg" id="modal-approval">
   <div class="modal">
     <h2>✅ Approve Gas Invoice</h2>
-    <p>Confirm the approved dollar amount. This prints on the invoice and saves to the cloud.</p>
+    <p>Confirm the approved dollar amount.</p>
     <label>APPROVED AMOUNT ($)</label>
     <input type="number" id="modal-amount" placeholder="e.g. 75.00" min="0.01" step="0.01"/>
     <div class="modal-error" id="modal-error"></div>
@@ -465,7 +501,7 @@
     </div>
   </div>
 </div>
-
+ 
 <div class="modal-bg" id="modal-pin">
   <div class="modal">
     <h2>🔑 Change Your PIN</h2>
@@ -481,7 +517,7 @@
     </div>
   </div>
 </div>
-
+ 
 <div class="modal-bg" id="modal-editpin">
   <div class="modal">
     <h2>🔑 Change PIN for <span id="editpin-username"></span></h2>
@@ -495,7 +531,25 @@
     </div>
   </div>
 </div>
-
+ 
+<!-- ACCOUNTANT REVIEW MODAL -->
+<div class="modal-bg" id="modal-acct-review">
+  <div class="modal">
+    <h2 id="acct-review-title">Review Invoice</h2>
+    <p>Add any notes then approve or deny this invoice.</p>
+    <label>ACCOUNTANT NOTES (optional)</label>
+    <textarea id="acct-review-notes" placeholder="Enter any notes, concerns, or reasons for denial..."></textarea>
+    <div class="modal-success" id="acct-review-success"></div>
+    <div class="modal-error" id="acct-review-error"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModals()">Cancel</button>
+      <button class="btn-approve red" onclick="submitAcctReview('denied')">✗ Deny</button>
+      <button class="btn-approve green" onclick="submitAcctReview('approved')">✓ Approve</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- PREVIEW MODAL -->
 <div class="modal-bg" id="modal-preview">
   <div class="modal preview-modal">
     <div class="preview-topbar">
@@ -506,11 +560,11 @@
     <div class="preview-body" id="preview-body"></div>
   </div>
 </div>
-
+ 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, addDoc, collection, query, orderBy, onSnapshot, deleteDoc, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, orderBy, onSnapshot, deleteDoc, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+ 
   const firebaseConfig = {
     apiKey: "AIzaSyAhDx0zL9cgQ602vyAbGOiJgv-BWKIwvoM",
     authDomain: "gill-auto-gas.firebaseapp.com",
@@ -519,42 +573,41 @@
     messagingSenderId: "688930827700",
     appId: "1:688930827700:web:3cbb8b4bca925d910696e1"
   };
-
+ 
   const fbApp = initializeApp(firebaseConfig);
   const db = getFirestore(fbApp);
-
+ 
   const DEFAULT_USERS = [
-    { name:"Eric Loera",  pin:"1478", role:"master"   },
-    { name:"Fasial Aziz", pin:"9876", role:"manager"  },
-    { name:"Ruby Wilson", pin:"4561", role:"manager"  },
-    { name:"Robert Haro", pin:"1234", role:"standard" }
+    { name:"Eric Loera",   pin:"1478", role:"master"     },
+    { name:"Fasial Aziz",  pin:"9876", role:"manager"    },
+    { name:"Ruby Wilson",  pin:"4561", role:"manager"    },
+    { name:"Robert Haro",  pin:"1234", role:"standard"   },
+    { name:"Maria Macias", pin:"1234", role:"accountant" }
   ];
   const DEFAULT_DEALER = { name:"Gill Auto Group", addr:"1100 S Madera Ave, Madera, CA 93637", phone:"(559) 674-5661" };
-
-  let currentUser = null, allUsers = [], dealerInfo = {...DEFAULT_DEALER}, invoiceCounter = 1;
-  let editPinTarget = null, previewInvoice = null, logUnsubscribe = null, allInvoices = [];
-
-  function setSyncStatus(ok) {
-    document.getElementById('sync-dot').className = 'sync-dot' + (ok?'':' offline');
-    document.getElementById('sync-text').textContent = ok ? 'Synced' : 'Offline';
-  }
-
-  async function fsGetUsers()   { try { const s=await getDoc(doc(db,'config','users')); if(s.exists()&&s.data().list) return s.data().list; } catch(e){} return JSON.parse(JSON.stringify(DEFAULT_USERS)); }
-  async function fsSaveUsers(u) { await setDoc(doc(db,'config','users'),{list:u}); }
-  async function fsGetDealer()  { try { const s=await getDoc(doc(db,'config','dealer')); if(s.exists()) return s.data(); } catch(e){} return {...DEFAULT_DEALER}; }
-  async function fsSaveDealer(d){ await setDoc(doc(db,'config','dealer'),d); }
-  async function fsGetCounter() { try { const s=await getDoc(doc(db,'config','counter')); if(s.exists()) return s.data().value||1; } catch(e){} return 1; }
-  async function fsSetCounter(n){ await setDoc(doc(db,'config','counter'),{value:n}); }
-
-  async function init() {
-    try { allUsers=await fsGetUsers(); dealerInfo=await fsGetDealer(); invoiceCounter=await fsGetCounter(); setSyncStatus(true); if(!allUsers.length){allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));await fsSaveUsers(allUsers);} } catch(e){setSyncStatus(false);allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));}
+ 
+  let currentUser=null, allUsers=[], dealerInfo={...DEFAULT_DEALER}, invoiceCounter=1;
+  let editPinTarget=null, previewInvoice=null, logUnsubscribe=null, allInvoices=[];
+  let acctReviewTarget=null;
+ 
+  function setSyncStatus(ok){ document.getElementById('sync-dot').className='sync-dot'+(ok?'':' offline'); document.getElementById('sync-text').textContent=ok?'Synced':'Offline'; }
+ 
+  async function fsGetUsers(){try{const s=await getDoc(doc(db,'config','users'));if(s.exists()&&s.data().list)return s.data().list;}catch(e){}return JSON.parse(JSON.stringify(DEFAULT_USERS));}
+  async function fsSaveUsers(u){await setDoc(doc(db,'config','users'),{list:u});}
+  async function fsGetDealer(){try{const s=await getDoc(doc(db,'config','dealer'));if(s.exists())return s.data();}catch(e){}return{...DEFAULT_DEALER};}
+  async function fsSaveDealer(d){await setDoc(doc(db,'config','dealer'),d);}
+  async function fsGetCounter(){try{const s=await getDoc(doc(db,'config','counter'));if(s.exists())return s.data().value||1;}catch(e){}return 1;}
+  async function fsSetCounter(n){await setDoc(doc(db,'config','counter'),{value:n});}
+ 
+  async function init(){
+    try{allUsers=await fsGetUsers();dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();setSyncStatus(true);if(!allUsers.length){allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));await fsSaveUsers(allUsers);}}catch(e){setSyncStatus(false);allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));}
   }
   init();
-
+ 
   /* LOGIN */
   document.getElementById('login-pin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
   document.getElementById('login-name').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-  window.doLogin = async function() {
+  window.doLogin=async function(){
     const name=document.getElementById('login-name').value.trim().toLowerCase();
     const pin=document.getElementById('login-pin').value.trim();
     allUsers=await fsGetUsers();
@@ -563,35 +616,46 @@
     currentUser=user;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('topbar-user').textContent='Signed in as '+user.name+(user.role==='master'?' (Master)':user.role==='manager'?' (Manager)':'');
+    document.getElementById('topbar-user').textContent='Signed in as '+user.name+(user.role==='master'?' (Master)':user.role==='manager'?' (Manager)':user.role==='accountant'?' (Accountant)':'');
     document.getElementById('master-badge').style.display=user.role==='master'?'inline-block':'none';
-    const isMgr = user.role!=='standard';
+    document.getElementById('acct-badge').style.display=user.role==='accountant'?'inline-block':'none';
+    const isMgr=user.role==='master'||user.role==='manager';
+    const isAcct=user.role==='accountant';
+    const isMaster=user.role==='master';
+    // Tab visibility
+    document.getElementById('tab-invoice').style.display=!isAcct?'inline-block':'none';
     document.getElementById('tab-log').style.display=isMgr?'inline-block':'none';
     document.getElementById('tab-monthly').style.display=isMgr?'inline-block':'none';
-    document.getElementById('tab-admin').style.display=user.role==='master'?'inline-block':'none';
-    document.getElementById('admin-topbtn').style.display=user.role==='master'?'inline-block':'none';
+    document.getElementById('tab-accountant').style.display=(isAcct||isMaster)?'inline-block':'none';
+    document.getElementById('tab-admin').style.display=isMaster?'inline-block':'none';
+    document.getElementById('admin-topbtn').style.display=isMaster?'inline-block':'none';
     dealerInfo=await fsGetDealer(); invoiceCounter=await fsGetCounter();
-    updateDealerDisplay(); refreshInvoice(); setSyncStatus(true);
+    updateDealerDisplay(); setSyncStatus(true);
+    // Default tab
+    if(isAcct) showTab('accountant');
+    else { showTab('invoice'); document.getElementById('invoice-page').classList.add('active'); }
   };
-  window.doLogout=function(){currentUser=null;if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('login-name').value='';document.getElementById('login-pin').value='';document.getElementById('login-error').textContent='';showTab('invoice');};
-
+ 
+  window.doLogout=function(){currentUser=null;if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('login-name').value='';document.getElementById('login-pin').value='';document.getElementById('login-error').textContent='';};
+ 
   /* TABS */
   window.showTab=function(t){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
     document.getElementById(t+'-page').classList.add('active');
     document.querySelectorAll('.tab').forEach(tab=>{if(tab.getAttribute('onclick')==="showTab('"+t+"')")tab.classList.add('active');});
-    if(t==='log') renderLog();
-    if(t==='monthly') renderMonthly();
-    if(t==='admin') renderAdmin();
+    if(t==='log')renderLog();
+    if(t==='monthly')renderMonthly();
+    if(t==='accountant')renderAccountant();
+    if(t==='admin')renderAdmin();
   };
-
+ 
   function updateDealerDisplay(){
     document.getElementById('disp-dealer-name').textContent=dealerInfo.name;
     document.getElementById('disp-dealer-addr').innerHTML=dealerInfo.addr+' &nbsp;|&nbsp; '+dealerInfo.phone;
     document.getElementById('disp-footer').innerHTML='Please attach original gas receipt to this form. Retain copy for dealership records. &nbsp;|&nbsp; '+dealerInfo.name+' &nbsp;|&nbsp; '+dealerInfo.phone;
   }
-
+ 
   function formatNum(n){return 'GAS-'+String(n).padStart(5,'0');}
   function refreshInvoice(){
     document.getElementById('next-num').textContent=formatNum(invoiceCounter);
@@ -604,11 +668,10 @@
     document.getElementById('inv-approved-amt').textContent='—';
   }
   window.clearForm=function(){document.querySelectorAll('.field-input,.cell-input,.auth-input').forEach(i=>i.value='');document.getElementById('f-notes').value='';document.getElementById('f-total').value='';refreshInvoice();};
-
   function getFuelRows(){const rows=[];document.querySelectorAll('#fuel-rows tr').forEach(tr=>{const c=tr.querySelectorAll('input');if(c.length>=6)rows.push({station:c[0].value,fuelType:c[1].value,gallons:c[2].value,pricePerGal:c[3].value,total:c[4].value,receiptNum:c[5].value});});return rows;}
-
+ 
   window.closeModals=function(){document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open'));};
-
+ 
   window.openApprovalModal=function(){
     document.getElementById('modal-amount').value=document.getElementById('f-total').value||'';
     document.getElementById('modal-error').textContent='';
@@ -616,7 +679,7 @@
     setTimeout(()=>document.getElementById('modal-amount').focus(),100);
   };
   document.getElementById('modal-amount').addEventListener('keydown',e=>{if(e.key==='Enter')confirmApproval();});
-
+ 
   window.confirmApproval=async function(){
     const raw=document.getElementById('modal-amount').value.trim();
     const amt=parseFloat(raw);
@@ -634,7 +697,8 @@
       lot:document.getElementById('f-lot').value||'',mileage:document.getElementById('f-mileage').value||'',
       vin:document.getElementById('f-vin').value||'',color:document.getElementById('f-color').value||'',
       notes:document.getElementById('f-notes').value||'',fuelRows:getFuelRows(),dealer:{...dealerInfo},
-      monthKey,monthLabel,createdAt:now.toISOString()};
+      monthKey,monthLabel,createdAt:now.toISOString(),
+      acctStatus:'pending',acctNotes:'',acctReviewedBy:'',acctReviewedAt:''};
     document.getElementById('inv-approved-amt').textContent=fmtAmt;
     document.getElementById('inv-num-display').textContent=invNum;
     document.getElementById('inv-date').textContent=dateStr;
@@ -648,13 +712,12 @@
       refreshInvoice();
     },150);
   };
-
+ 
   /* PIN */
   window.openPinModal=function(){['pin-current','pin-new','pin-confirm'].forEach(id=>document.getElementById(id).value='');document.getElementById('pin-error').textContent='';document.getElementById('pin-success').textContent='';document.getElementById('modal-pin').classList.add('open');setTimeout(()=>document.getElementById('pin-current').focus(),100);};
   window.confirmPinChange=async function(){
     const current=document.getElementById('pin-current').value.trim(),newPin=document.getElementById('pin-new').value.trim(),conf=document.getElementById('pin-confirm').value.trim();
-    const errEl=document.getElementById('pin-error'),okEl=document.getElementById('pin-success');
-    errEl.textContent='';okEl.textContent='';
+    const errEl=document.getElementById('pin-error'),okEl=document.getElementById('pin-success');errEl.textContent='';okEl.textContent='';
     if(current!==currentUser.pin){errEl.textContent='Current PIN is incorrect.';return;}
     if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='New PIN must be 4–6 digits.';return;}
     if(newPin!==conf){errEl.textContent='PINs do not match.';return;}
@@ -662,117 +725,141 @@
     allUsers=await fsGetUsers();allUsers=allUsers.map(u=>u.name===currentUser.name?{...u,pin:newPin}:u);
     await fsSaveUsers(allUsers);currentUser.pin=newPin;okEl.textContent='✓ PIN updated!';setTimeout(closeModals,1400);
   };
-
+ 
   /* LOG */
   async function renderLog(){
     if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}
     const tbody=document.getElementById('log-body');
-    tbody.innerHTML='<tr><td colspan="9" class="empty-state">Loading...</td></tr>';
+    tbody.innerHTML='<tr><td colspan="8" class="empty-state">Loading...</td></tr>';
     try{
       const q=query(collection(db,'invoices'),orderBy('createdAt','desc'));
       logUnsubscribe=onSnapshot(q,snap=>{
         allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));
         tbody.innerHTML='';
-        if(!allInvoices.length){tbody.innerHTML='<tr><td colspan="9" class="empty-state">No invoices yet.</td></tr>';renderStats([]);return;}
+        if(!allInvoices.length){tbody.innerHTML='<tr><td colspan="8" class="empty-state">No invoices yet.</td></tr>';renderStats([]);return;}
         allInvoices.forEach(r=>{
-          const roleCls=r.role==='master'?'badge-master-tag':'badge-mgr';
-          const roleLabel=r.role==='master'?'MASTER':r.role==='manager'?'Manager':'Standard';
+          const st=r.acctStatus||'pending';
+          const stBadge=`<span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span>`;
           const tr=document.createElement('tr');
-          tr.innerHTML=`<td><strong>${r.invNum}</strong></td><td>${r.date}</td><td>${r.time}</td><td>${r.manager}</td><td><span class="badge-role ${roleCls}">${roleLabel}</span></td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${r.driver||'—'}</td><td><button class="btn-view" onclick="openPreview('${r.id}')">👁 View</button></td>`;
+          tr.innerHTML=`<td><strong>${r.invNum}</strong></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${r.driver||'—'}</td><td>${stBadge}</td><td><button class="btn-view" onclick="openPreview('${r.id}')">👁 View</button></td>`;
           tbody.appendChild(tr);
         });
         renderStats(allInvoices);
       });
       setSyncStatus(true);
-    }catch(e){setSyncStatus(false);tbody.innerHTML='<tr><td colspan="9" class="empty-state">Could not load.</td></tr>';}
+    }catch(e){setSyncStatus(false);tbody.innerHTML='<tr><td colspan="8" class="empty-state">Could not load.</td></tr>';}
   }
-
+ 
   function renderStats(invoices){
     const total=invoices.reduce((s,r)=>s+parseFloat((r.amount||'$0').replace('$','')),0);
-    const byMgr={};invoices.forEach(r=>{byMgr[r.manager]=(byMgr[r.manager]||0)+parseFloat((r.amount||'$0').replace('$',''));});
-    let topMgr='—',topAmt=0;Object.keys(byMgr).forEach(k=>{if(byMgr[k]>topAmt){topAmt=byMgr[k];topMgr=k;}});
+    const pending=invoices.filter(r=>!r.acctStatus||r.acctStatus==='pending').length;
+    const approved=invoices.filter(r=>r.acctStatus==='approved').length;
+    const denied=invoices.filter(r=>r.acctStatus==='denied').length;
     document.getElementById('log-stats').innerHTML=
       `<div class="stat-card"><div class="s-label">TOTAL INVOICES</div><div class="s-val">${invoices.length}</div></div>
-       <div class="stat-card"><div class="s-label">TOTAL APPROVED</div><div class="s-val">$${total.toFixed(2)}</div></div>
-       <div class="stat-card"><div class="s-label">TOP APPROVER</div><div class="s-val" style="font-size:15px;margin-top:6px;">${topMgr}</div></div>
-       <div class="stat-card"><div class="s-label">AVG PER INVOICE</div><div class="s-val">${invoices.length?'$'+(total/invoices.length).toFixed(2):'—'}</div></div>`;
+       <div class="stat-card"><div class="s-label">TOTAL APPROVED $</div><div class="s-val">$${total.toFixed(2)}</div></div>
+       <div class="stat-card"><div class="s-label">ACCT PENDING</div><div class="s-val" style="color:#856404;">${pending}</div></div>
+       <div class="stat-card"><div class="s-label">ACCT APPROVED</div><div class="s-val" style="color:#155724;">${approved}</div></div>
+       <div class="stat-card"><div class="s-label">ACCT DENIED</div><div class="s-val" style="color:#721c24;">${denied}</div></div>`;
   }
-
-  /* MONTHLY */
-  window.renderMonthly = async function() {
+ 
+  /* ACCOUNTANT PAGE */
+  window.renderAccountant=async function(){
     if(!allInvoices.length){
       const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
       allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));
     }
-    // Build month map
-    const monthMap={};
-    allInvoices.forEach(r=>{
-      const mk=r.monthKey||r.createdAt?.substring(0,7)||'unknown';
-      const ml=r.monthLabel||mk;
-      if(!monthMap[mk])monthMap[mk]={key:mk,label:ml,invoices:[],total:0,managers:{}};
-      const amt=parseFloat((r.amount||'$0').replace('$',''));
-      monthMap[mk].invoices.push(r);
-      monthMap[mk].total+=amt;
-      if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};
-      monthMap[mk].managers[r.manager].count++;
-      monthMap[mk].managers[r.manager].total+=amt;
+    const filterStatus=document.getElementById('acct-filter-status').value;
+    const filterMonth=document.getElementById('acct-filter-month').value;
+    const search=document.getElementById('acct-search').value.toLowerCase();
+ 
+    // populate month filter
+    const months={};allInvoices.forEach(r=>{if(r.monthKey&&r.monthLabel)months[r.monthKey]=r.monthLabel;});
+    const sel=document.getElementById('acct-filter-month');
+    const curVal=sel.value;
+    sel.innerHTML='<option value="all">All Months</option>';
+    Object.entries(months).sort((a,b)=>b[0].localeCompare(a[0])).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;sel.appendChild(o);});
+    if(curVal)sel.value=curVal;
+ 
+    let filtered=allInvoices.filter(r=>{
+      const st=r.acctStatus||'pending';
+      if(filterStatus!=='all'&&st!==filterStatus)return false;
+      if(filterMonth!=='all'&&(r.monthKey||'')!==filterMonth)return false;
+      if(search&&!((r.stock||'').toLowerCase().includes(search)||(r.driver||'').toLowerCase().includes(search)||(r.manager||'').toLowerCase().includes(search)||(r.invNum||'').toLowerCase().includes(search)))return false;
+      return true;
     });
-
-    const months=Object.values(monthMap).sort((a,b)=>b.key.localeCompare(a.key));
-
-    // Populate month selector
-    const sel=document.getElementById('month-select');
-    const prevVal=sel.value;
-    sel.innerHTML='';
-    if(!months.length){sel.innerHTML='<option>No data yet</option>';document.getElementById('monthly-grid').innerHTML='<div class="empty-state">No invoices recorded yet.</div>';document.getElementById('mgr-cards').innerHTML='';document.getElementById('all-months-body').innerHTML='';return;}
-    months.forEach(m=>{const o=document.createElement('option');o.value=m.key;o.textContent=m.label;sel.appendChild(o);});
-    if(prevVal&&months.find(m=>m.key===prevVal))sel.value=prevVal;
-
-    const selMonth=monthMap[sel.value]||months[0];
-
-    // Monthly summary cards
-    const mgrCount=Object.keys(selMonth.managers).length;
-    const topMgr=Object.entries(selMonth.managers).sort((a,b)=>b[1].total-a[1].total)[0];
-    document.getElementById('monthly-grid').innerHTML=
-      `<div class="month-stat"><div class="ms-label">INVOICES THIS MONTH</div><div class="ms-val">${selMonth.invoices.length}</div><div class="ms-sub">${selMonth.label}</div></div>
-       <div class="month-stat"><div class="ms-label">TOTAL APPROVED</div><div class="ms-val">$${selMonth.total.toFixed(2)}</div><div class="ms-sub">for ${selMonth.label}</div></div>
-       <div class="month-stat"><div class="ms-label">AVG PER INVOICE</div><div class="ms-val">${selMonth.invoices.length?'$'+(selMonth.total/selMonth.invoices.length).toFixed(2):'—'}</div></div>
-       <div class="month-stat"><div class="ms-label">TOP APPROVER</div><div class="ms-val" style="font-size:16px;margin-top:4px;">${topMgr?topMgr[0]:'—'}</div><div class="ms-sub">${topMgr?'$'+topMgr[1].total.toFixed(2):''}</div></div>`;
-
-    // Manager breakdown cards
-    const maxTotal=Math.max(...Object.values(selMonth.managers).map(m=>m.total),1);
-    let mgrHtml='';
-    Object.entries(selMonth.managers).sort((a,b)=>b[1].total-a[1].total).forEach(([name,data])=>{
-      const pct=Math.round((data.total/maxTotal)*100);
-      mgrHtml+=`<div class="mgr-card">
-        <div class="mc-name">${name}</div>
-        <div class="mc-row"><span class="mc-label">Invoices</span><span class="mc-val">${data.count}</span></div>
-        <div class="mc-row"><span class="mc-label">Avg Amount</span><span class="mc-val">$${(data.total/data.count).toFixed(2)}</span></div>
-        <div class="mc-total">$${data.total.toFixed(2)}</div>
-        <div class="month-bar"><div class="month-bar-fill" style="width:${pct}%"></div></div>
-      </div>`;
+ 
+    // Stats
+    const total=allInvoices.reduce((s,r)=>s+parseFloat((r.amount||'$0').replace('$','')),0);
+    const pending=allInvoices.filter(r=>!r.acctStatus||r.acctStatus==='pending').length;
+    const approved=allInvoices.filter(r=>r.acctStatus==='approved').length;
+    const denied=allInvoices.filter(r=>r.acctStatus==='denied').length;
+    document.getElementById('acct-stats').innerHTML=
+      `<div class="acct-stat"><div class="as-label">TOTAL INVOICES</div><div class="as-val total">${allInvoices.length}</div></div>
+       <div class="acct-stat"><div class="as-label">TOTAL AMOUNT</div><div class="as-val total">$${total.toFixed(2)}</div></div>
+       <div class="acct-stat"><div class="as-label">PENDING REVIEW</div><div class="as-val pending">${pending}</div></div>
+       <div class="acct-stat"><div class="as-label">APPROVED</div><div class="as-val approved">${approved}</div></div>
+       <div class="acct-stat"><div class="as-label">DENIED</div><div class="as-val denied">${denied}</div></div>`;
+ 
+    const tbody=document.getElementById('acct-body');
+    tbody.innerHTML='';
+    if(!filtered.length){tbody.innerHTML='<tr><td colspan="9" class="empty-state">No invoices match.</td></tr>';return;}
+    filtered.forEach(r=>{
+      const st=r.acctStatus||'pending';
+      const stBadge=`<span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span>`;
+      const notePreview=r.acctNotes?`<div class="acct-note-preview" title="${r.acctNotes}">${r.acctNotes}</div>`:'<span style="color:#bbb;font-size:11px;">—</span>';
+      const reviewedBy=r.acctReviewedBy?`<div style="font-size:10px;color:#888;margin-top:3px;">by ${r.acctReviewedBy}</div>`:'';
+      let actions='';
+      if(st==='pending'){
+        actions=`<button class="btn-acct-approve" onclick="openAcctReview('${r.id}','approve')">✓ Approve</button><button class="btn-acct-deny" onclick="openAcctReview('${r.id}','deny')">✗ Deny</button>`;
+      } else {
+        actions=`<button class="btn-view" onclick="openAcctReview('${r.id}','${st==='approved'?'deny':'approve'}')">↩ Change</button>`;
+      }
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td><strong>${r.invNum}</strong><br><button class="btn-view" style="margin-top:4px;" onclick="openPreview('${r.id}')">👁 View</button></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${r.driver||'—'}</td><td>${stBadge}${reviewedBy}</td><td>${notePreview}</td><td>${actions}</td>`;
+      tbody.appendChild(tr);
     });
-    document.getElementById('mgr-cards').innerHTML=mgrHtml||'<div class="empty-state">No data for this month.</div>';
-
-    // All months summary table
-    const now=new Date();
-    const curKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-    let tblHtml='';
-    months.forEach(m=>{
-      const top=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total)[0];
-      const isCur=m.key===curKey;
-      tblHtml+=`<tr${isCur?' class="active-month"':''}><td>${m.label}${isCur?' <span style="font-size:10px;background:#1A3A5C;color:#fff;padding:1px 6px;border-radius:3px;margin-left:4px;">Current</span>':''}</td><td>${m.invoices.length}</td><td class="amt-cell">$${m.total.toFixed(2)}</td><td>$${(m.total/m.invoices.length).toFixed(2)}</td><td>${top?top[0]:'—'}</td></tr>`;
-    });
-    document.getElementById('all-months-body').innerHTML=tblHtml;
   };
-
+ 
+  window.openAcctReview=function(id, action){
+    const inv=allInvoices.find(i=>i.id===id);
+    if(!inv)return;
+    acctReviewTarget={id,action};
+    document.getElementById('acct-review-title').textContent=(action==='approve'?'✓ Approve':'✗ Deny')+' Invoice '+inv.invNum;
+    document.getElementById('acct-review-notes').value=inv.acctNotes||'';
+    document.getElementById('acct-review-success').textContent='';
+    document.getElementById('acct-review-error').textContent='';
+    document.getElementById('modal-acct-review').classList.add('open');
+    setTimeout(()=>document.getElementById('acct-review-notes').focus(),100);
+  };
+ 
+  window.submitAcctReview=async function(decision){
+    if(!acctReviewTarget)return;
+    const notes=document.getElementById('acct-review-notes').value.trim();
+    const now=new Date();
+    try{
+      await updateDoc(doc(db,'invoices',acctReviewTarget.id),{
+        acctStatus:decision, acctNotes:notes,
+        acctReviewedBy:currentUser.name,
+        acctReviewedAt:now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})
+      });
+      document.getElementById('acct-review-success').textContent='✓ Invoice '+(decision==='approved'?'approved':'denied')+' successfully!';
+      // refresh local
+      const idx=allInvoices.findIndex(i=>i.id===acctReviewTarget.id);
+      if(idx>-1){allInvoices[idx].acctStatus=decision;allInvoices[idx].acctNotes=notes;allInvoices[idx].acctReviewedBy=currentUser.name;}
+      setSyncStatus(true);
+      setTimeout(()=>{closeModals();renderAccountant();},1200);
+    }catch(e){document.getElementById('acct-review-error').textContent='Error saving. Please try again.';setSyncStatus(false);}
+  };
+ 
   /* PREVIEW */
   window.openPreview=async function(id){
-    const snap=await getDoc(doc(db,'invoices',id));
-    if(!snap.exists())return;
+    const snap=await getDoc(doc(db,'invoices',id));if(!snap.exists())return;
     const r=snap.data();previewInvoice=r;
     document.getElementById('preview-title').textContent='Invoice '+r.invNum;
     const fuelHtml=(r.fuelRows||[]).map(row=>`<tr><td>${row.station||''}</td><td>${row.fuelType||''}</td><td style="text-align:center;">${row.gallons||''}</td><td style="text-align:center;">${row.pricePerGal?'$'+row.pricePerGal:''}</td><td style="text-align:center;">${row.total?'$'+row.total:''}</td><td>${row.receiptNum||''}</td></tr>`).join('');
+    const st=r.acctStatus||'pending';
+    const stampHtml=st!=='pending'?`<div style="margin-top:16px;"><span class="acct-stamp ${st}">${st==='approved'?'✓ ACCOUNTANT APPROVED':'✗ ACCOUNTANT DENIED'}${r.acctReviewedBy?' — '+r.acctReviewedBy:''}</span>${r.acctNotes?`<div style="font-size:11px;color:#555;margin-top:8px;font-style:italic;">Note: ${r.acctNotes}</div>`:''}</div>`:'';
     document.getElementById('preview-body').innerHTML=`
       <div class="snap-invoice" id="snap-content">
         <div class="inv-header"><div class="inv-title"><h1>GAS RECEIPT INVOICE</h1><div class="dealer-name">${r.dealer?.name||'Gill Auto Group'}</div><div class="dealer-addr">${r.dealer?.addr||''} &nbsp;|&nbsp; ${r.dealer?.phone||''}</div></div>
@@ -789,144 +876,104 @@
         <div class="snap-section">AUTHORIZATION</div>
         <div class="snap-auth"><div class="snap-auth-field"><div class="snap-auth-label">APPROVING MANAGER</div><div class="snap-auth-val">${r.manager}</div></div><div class="snap-auth-field"><div class="snap-auth-label">MANAGER SIGNATURE</div><div class="snap-auth-line"></div></div><div class="snap-auth-field" style="flex:0.6;"><div class="snap-auth-label">DATE APPROVED</div><div class="snap-auth-val">${r.date}</div></div></div>
         <div class="snap-auth" style="padding-top:8px;"><div class="snap-auth-field"><div class="snap-auth-label">EMPLOYEE SIGNATURE</div><div class="snap-auth-line"></div></div><div class="snap-auth-field"><div class="snap-auth-label">VIN (LAST 6)</div><div class="snap-auth-val">${r.vin||''}</div></div><div class="snap-auth-field" style="flex:0.6;"><div class="snap-auth-label">COLOR</div><div class="snap-auth-val">${r.color||''}</div></div></div>
+        ${stampHtml}
         <div class="snap-footer">Please attach original gas receipt. Retain copy for dealership records. &nbsp;|&nbsp; ${r.dealer?.name||'Gill Auto Group'} &nbsp;|&nbsp; ${r.dealer?.phone||''}</div>
       </div>`;
     document.getElementById('modal-preview').classList.add('open');
   };
-
+ 
   window.printPreview=function(){
     const content=document.getElementById('snap-content').outerHTML;
     const win=window.open('','_blank');
-    win.document.write(`<!DOCTYPE html><html><head><title>${previewInvoice?.invNum||'Invoice'}</title><style>body{font-family:Arial,sans-serif;padding:20px;font-size:11px;}.snap-invoice{max-width:780px;margin:0 auto;}.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}h1{font-size:21px;font-weight:800;color:#1A3A5C;letter-spacing:0.06em;}.dealer-name{font-size:13px;font-weight:700;color:#E87722;margin-top:2px;}.dealer-addr{font-size:10px;color:#888;margin-top:1px;}.snap-meta td{padding:3px 7px;font-size:11px;}.snap-meta td:first-child{color:#666;font-weight:700;text-align:right;}.snap-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:120px;border-radius:3px;}.snap-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}.snap-field{border-bottom:1.5px solid #1A3A5C;min-height:18px;padding:2px;font-size:12px;margin-bottom:6px;}.snap-section{background:#1A3A5C;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:0.08em;padding:5px 9px;margin:14px 0 0;}.snap-table{width:100%;border-collapse:collapse;}.snap-table thead th{background:#2C5F8A;color:#fff;font-size:9.5px;font-weight:700;padding:5px 6px;text-align:center;border:1px solid #1A3A5C;}.snap-table tbody td{border:0.5px solid #ccc;padding:5px 6px;font-size:10.5px;}.snap-table tbody tr:nth-child(even) td{background:#F5F7FB;}.snap-total td{background:#1A3A5C!important;color:#fff;font-weight:700;font-size:11.5px;}.snap-notes{border:0.5px solid #ccc;min-height:44px;background:#FAFBFD;padding:6px 8px;font-size:11px;}.snap-auth{display:flex;gap:16px;padding-top:10px;}.snap-auth-field{flex:1;}.snap-auth-label{font-size:9.5px;color:#1A3A5C;font-weight:700;margin-bottom:2px;}.snap-auth-val{font-size:12px;font-weight:700;color:#1A3A5C;border-bottom:2px solid #1A3A5C;background:#EEF2F7;padding:3px 6px;min-height:24px;}.snap-auth-line{border-bottom:2px solid #1A3A5C;min-height:24px;background:#EEF2F7;}.snap-footer{font-size:9px;color:#999;text-align:center;margin-top:14px;padding-top:8px;border-top:2px solid #E87722;font-style:italic;}</style></head><body>${content}</body></html>`);
+    win.document.write(`<!DOCTYPE html><html><head><title>${previewInvoice?.invNum||'Invoice'}</title><style>body{font-family:Arial,sans-serif;padding:20px;font-size:11px;}.snap-invoice{max-width:780px;margin:0 auto;}.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}h1{font-size:21px;font-weight:800;color:#1A3A5C;letter-spacing:0.06em;}.dealer-name{font-size:13px;font-weight:700;color:#E87722;margin-top:2px;}.dealer-addr{font-size:10px;color:#888;margin-top:1px;}.snap-meta td{padding:3px 7px;font-size:11px;}.snap-meta td:first-child{color:#666;font-weight:700;text-align:right;}.snap-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:120px;border-radius:3px;}.snap-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}.snap-field{border-bottom:1.5px solid #1A3A5C;min-height:18px;padding:2px;font-size:12px;margin-bottom:6px;}.snap-section{background:#1A3A5C;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:0.08em;padding:5px 9px;margin:14px 0 0;}.snap-table{width:100%;border-collapse:collapse;}.snap-table thead th{background:#2C5F8A;color:#fff;font-size:9.5px;font-weight:700;padding:5px 6px;text-align:center;border:1px solid #1A3A5C;}.snap-table tbody td{border:0.5px solid #ccc;padding:5px 6px;font-size:10.5px;}.snap-table tbody tr:nth-child(even) td{background:#F5F7FB;}.snap-total td{background:#1A3A5C!important;color:#fff;font-weight:700;font-size:11.5px;}.snap-notes{border:0.5px solid #ccc;min-height:44px;background:#FAFBFD;padding:6px 8px;font-size:11px;}.snap-auth{display:flex;gap:16px;padding-top:10px;}.snap-auth-field{flex:1;}.snap-auth-label{font-size:9.5px;color:#1A3A5C;font-weight:700;margin-bottom:2px;}.snap-auth-val{font-size:12px;font-weight:700;color:#1A3A5C;border-bottom:2px solid #1A3A5C;background:#EEF2F7;padding:3px 6px;min-height:24px;}.snap-auth-line{border-bottom:2px solid #1A3A5C;min-height:24px;background:#EEF2F7;}.snap-footer{font-size:9px;color:#999;text-align:center;margin-top:14px;padding-top:8px;border-top:2px solid #E87722;font-style:italic;}.acct-stamp{border:2px solid;border-radius:8px;padding:8px 14px;margin-top:14px;display:inline-block;font-weight:800;font-size:13px;letter-spacing:0.06em;transform:rotate(-2deg);}.acct-stamp.approved{border-color:#2e7d32;color:#2e7d32;background:#f0fff4;}.acct-stamp.denied{border-color:#c0392b;color:#c0392b;background:#fff5f5;}</style></head><body>${content}</body></html>`);
     win.document.close();setTimeout(()=>win.print(),400);
   };
-
-  /* EXPORT */
+ 
+  /* MONTHLY */
+  window.renderMonthly=async function(){
+    if(!allInvoices.length){const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));}
+    const monthMap={};
+    allInvoices.forEach(r=>{const mk=r.monthKey||r.createdAt?.substring(0,7)||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={key:mk,label:ml,invoices:[],total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].invoices.push(r);monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
+    const months=Object.values(monthMap).sort((a,b)=>b.key.localeCompare(a.key));
+    const sel=document.getElementById('month-select');const prevVal=sel.value;sel.innerHTML='';
+    if(!months.length){sel.innerHTML='<option>No data yet</option>';document.getElementById('monthly-grid').innerHTML='<div class="empty-state">No invoices yet.</div>';document.getElementById('mgr-cards').innerHTML='';document.getElementById('all-months-body').innerHTML='';return;}
+    months.forEach(m=>{const o=document.createElement('option');o.value=m.key;o.textContent=m.label;sel.appendChild(o);});
+    if(prevVal&&months.find(m=>m.key===prevVal))sel.value=prevVal;
+    const selMonth=monthMap[sel.value]||months[0];
+    const topMgr=Object.entries(selMonth.managers).sort((a,b)=>b[1].total-a[1].total)[0];
+    document.getElementById('monthly-grid').innerHTML=
+      `<div class="month-stat"><div class="ms-label">INVOICES</div><div class="ms-val">${selMonth.invoices.length}</div><div class="ms-sub">${selMonth.label}</div></div>
+       <div class="month-stat"><div class="ms-label">TOTAL APPROVED</div><div class="ms-val">$${selMonth.total.toFixed(2)}</div></div>
+       <div class="month-stat"><div class="ms-label">AVG PER INVOICE</div><div class="ms-val">${selMonth.invoices.length?'$'+(selMonth.total/selMonth.invoices.length).toFixed(2):'—'}</div></div>
+       <div class="month-stat"><div class="ms-label">TOP APPROVER</div><div class="ms-val" style="font-size:16px;margin-top:4px;">${topMgr?topMgr[0]:'—'}</div><div class="ms-sub">${topMgr?'$'+topMgr[1].total.toFixed(2):''}</div></div>`;
+    const maxTotal=Math.max(...Object.values(selMonth.managers).map(m=>m.total),1);
+    let mgrHtml='';Object.entries(selMonth.managers).sort((a,b)=>b[1].total-a[1].total).forEach(([name,data])=>{const pct=Math.round((data.total/maxTotal)*100);mgrHtml+=`<div class="mgr-card"><div class="mc-name">${name}</div><div class="mc-row"><span class="mc-label">Invoices</span><span class="mc-val">${data.count}</span></div><div class="mc-row"><span class="mc-label">Avg</span><span class="mc-val">$${(data.total/data.count).toFixed(2)}</span></div><div class="mc-total">$${data.total.toFixed(2)}</div><div class="month-bar"><div class="month-bar-fill" style="width:${pct}%"></div></div></div>`;});
+    document.getElementById('mgr-cards').innerHTML=mgrHtml||'<div class="empty-state">No data.</div>';
+    const now=new Date();const curKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    let tblHtml='';months.forEach(m=>{const top=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total)[0];const isCur=m.key===curKey;tblHtml+=`<tr${isCur?' class="active-month"':''}><td>${m.label}${isCur?' <span style="font-size:10px;background:#1A3A5C;color:#fff;padding:1px 6px;border-radius:3px;margin-left:4px;">Current</span>':''}</td><td>${m.invoices.length}</td><td class="amt-cell">$${m.total.toFixed(2)}</td><td>$${(m.total/m.invoices.length).toFixed(2)}</td><td>${top?top[0]:'—'}</td></tr>`;});
+    document.getElementById('all-months-body').innerHTML=tblHtml;
+  };
+ 
+  /* EXPORTS */
   window.exportCSV=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
-    const rows=[['Invoice #','Month','Date','Time','Approved By','Role','Approved Amount','Stock #','Driver','Vehicle']];
-    snap.docs.forEach(d=>{const r=d.data();rows.push([r.invNum,r.monthLabel||'',r.date,r.time,r.manager,r.role||'',r.amount,r.stock||'',r.driver||'',r.vehicle||'']);});
+    const rows=[['Invoice #','Month','Date','Approved By','Amount','Stock #','Driver','Vehicle','Acct Status','Acct Notes','Reviewed By']];
+    snap.docs.forEach(d=>{const r=d.data();rows.push([r.invNum,r.monthLabel||'',r.date,r.manager,r.amount,r.stock||'',r.driver||'',r.vehicle||'',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||'']);});
     const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_gas_log.csv';a.click();
   };
-
+ 
+  window.exportAcctCSV=async function(){
+    const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
+    const rows=[['Invoice #','Date','Manager','Amount','Stock #','Driver','Vehicle','Acct Status','Acct Notes','Reviewed By','Review Date']];
+    snap.docs.forEach(d=>{const r=d.data();rows.push([r.invNum,r.date,r.manager,r.amount,r.stock||'',r.driver||'',r.vehicle||'',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||'',r.acctReviewedAt||'']);});
+    const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
+    const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_accountant_report.csv';a.click();
+  };
+ 
   window.exportMonthlyCSV=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
-    const monthMap={};
-    snap.docs.forEach(d=>{const r=d.data();const mk=r.monthKey||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={label:ml,count:0,total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].count++;monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
+    const monthMap={};snap.docs.forEach(d=>{const r=d.data();const mk=r.monthKey||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={label:ml,count:0,total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].count++;monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
     const rows=[['Month','Total Invoices','Total Approved','Avg Per Invoice','Manager','Manager Invoices','Manager Total']];
-    Object.values(monthMap).sort((a,b)=>b.label.localeCompare(a.label)).forEach(m=>{
-      const mgrs=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total);
-      mgrs.forEach(([name,data],i)=>{rows.push([i===0?m.label:'',i===0?m.count:'',i===0?'$'+m.total.toFixed(2):'',i===0?'$'+(m.total/m.count).toFixed(2):'',name,data.count,'$'+data.total.toFixed(2)]);});
-    });
+    Object.values(monthMap).sort((a,b)=>b.label.localeCompare(a.label)).forEach(m=>{const mgrs=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total);mgrs.forEach(([name,data],i)=>{rows.push([i===0?m.label:'',i===0?m.count:'',i===0?'$'+m.total.toFixed(2):'',i===0?'$'+(m.total/m.count).toFixed(2):'',name,data.count,'$'+data.total.toFixed(2)]);});});
     const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_monthly_report.csv';a.click();
   };
-
-  /* MASTER RESET (admin only) */
-  window.resetCounter=async function(){
-    if(!confirm('Reset invoice counter to GAS-00001? This cannot be undone.'))return;
-    await fsSetCounter(1);invoiceCounter=1;refreshInvoice();
-    document.getElementById('admin-counter-val').textContent=formatNum(1);
-    document.getElementById('reset-success').textContent='✓ Counter reset to GAS-00001';
-    setTimeout(()=>document.getElementById('reset-success').textContent='',2500);
-  };
-  window.clearLog=async function(){
-    if(!confirm('DELETE ALL invoice records permanently? This cannot be undone.'))return;
-    const snap=await getDocs(collection(db,'invoices'));
-    const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();
-    allInvoices=[];
-    document.getElementById('reset-success').textContent='✓ All invoice records cleared.';
-    setTimeout(()=>document.getElementById('reset-success').textContent='',2500);
-  };
-  window.resetBoth=async function(){
-    if(!confirm('Reset counter AND delete all invoice records? This CANNOT be undone.'))return;
-    await fsSetCounter(1);invoiceCounter=1;refreshInvoice();
-    const snap=await getDocs(collection(db,'invoices'));
-    const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();
-    allInvoices=[];
-    document.getElementById('admin-counter-val').textContent=formatNum(1);
-    document.getElementById('reset-success').textContent='✓ Counter reset and log cleared.';
-    setTimeout(()=>document.getElementById('reset-success').textContent='',2500);
-  };
-
+ 
+  /* MASTER RESETS */
+  window.resetCounter=async function(){if(!confirm('Reset invoice counter to GAS-00001?'))return;await fsSetCounter(1);invoiceCounter=1;refreshInvoice();document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Counter reset.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
+  window.clearLog=async function(){if(!confirm('DELETE ALL invoice records permanently?'))return;const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('reset-success').textContent='✓ Log cleared.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
+  window.resetBoth=async function(){if(!confirm('Reset counter AND delete all records?'))return;await fsSetCounter(1);invoiceCounter=1;refreshInvoice();const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Counter reset and log cleared.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
+ 
   /* ADMIN */
   async function renderAdmin(){
     dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();allUsers=await fsGetUsers();
-    document.getElementById('admin-dname').value=dealerInfo.name;
-    document.getElementById('admin-daddr').value=dealerInfo.addr;
-    document.getElementById('admin-dphone').value=dealerInfo.phone;
+    document.getElementById('admin-dname').value=dealerInfo.name;document.getElementById('admin-daddr').value=dealerInfo.addr;document.getElementById('admin-dphone').value=dealerInfo.phone;
     document.getElementById('admin-counter-val').textContent=formatNum(invoiceCounter);
     renderUserList();renderPinDropdown();
     ['dealer-success','counter-success','user-error','user-success','adminpin-error','adminpin-success','reset-success'].forEach(id=>document.getElementById(id).textContent='');
   }
-
-  window.saveDealerAdmin=async function(){
-    const d={name:document.getElementById('admin-dname').value.trim(),addr:document.getElementById('admin-daddr').value.trim(),phone:document.getElementById('admin-dphone').value.trim()};
-    if(!d.name)return;await fsSaveDealer(d);dealerInfo=d;updateDealerDisplay();
-    document.getElementById('dealer-success').textContent='✓ Saved!';setTimeout(()=>document.getElementById('dealer-success').textContent='',2000);
-  };
-
-  window.setCounterAdmin=async function(){
-    const v=parseInt(document.getElementById('admin-counter-input').value);if(!v||v<1)return;
-    await fsSetCounter(v);invoiceCounter=v;refreshInvoice();document.getElementById('admin-counter-val').textContent=formatNum(v);
-    document.getElementById('counter-success').textContent='✓ Counter set to '+formatNum(v);setTimeout(()=>document.getElementById('counter-success').textContent='',2000);
-  };
-
+  window.saveDealerAdmin=async function(){const d={name:document.getElementById('admin-dname').value.trim(),addr:document.getElementById('admin-daddr').value.trim(),phone:document.getElementById('admin-dphone').value.trim()};if(!d.name)return;await fsSaveDealer(d);dealerInfo=d;updateDealerDisplay();document.getElementById('dealer-success').textContent='✓ Saved!';setTimeout(()=>document.getElementById('dealer-success').textContent='',2000);};
+  window.setCounterAdmin=async function(){const v=parseInt(document.getElementById('admin-counter-input').value);if(!v||v<1)return;await fsSetCounter(v);invoiceCounter=v;refreshInvoice();document.getElementById('admin-counter-val').textContent=formatNum(v);document.getElementById('counter-success').textContent='✓ Counter set to '+formatNum(v);setTimeout(()=>document.getElementById('counter-success').textContent='',2000);};
+ 
   function renderUserList(){
     let html='';
     allUsers.forEach((u,i)=>{
-      const roleCls=u.role==='master'?'role-master':u.role==='manager'?'role-manager':'role-standard';
-      const roleLabel=u.role==='master'?'MASTER':u.role.charAt(0).toUpperCase()+u.role.slice(1);
+      const roleCls=u.role==='master'?'role-master':u.role==='accountant'?'role-accountant':u.role==='manager'?'role-manager':'role-standard';
+      const roleLabel=u.role==='master'?'MASTER':u.role==='accountant'?'Accountant':u.role.charAt(0).toUpperCase()+u.role.slice(1);
       const isSelf=currentUser&&u.name===currentUser.name;
       html+=`<div class="user-row"><div class="user-name">${u.name}${isSelf?' <span style="font-size:10px;color:#E87722;">(you)</span>':''}</div><span class="user-role ${roleCls}">${roleLabel}</span>`;
-      if(!isSelf){
-        html+=`<button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>`;
-        if(u.role!=='master'){const nr=u.role==='manager'?'standard':'manager';html+=`<button class="btn-sm" onclick="toggleRole(${i})">Make ${nr.charAt(0).toUpperCase()+nr.slice(1)}</button><button class="btn-sm danger" onclick="removeUser(${i})">Remove</button>`;}
-      }
+      if(!isSelf){html+=`<button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>`;if(u.role!=='master'){html+=`<button class="btn-sm danger" onclick="removeUser(${i})">Remove</button>`;}}
       html+='</div>';
     });
     document.getElementById('user-list').innerHTML=html;
   }
-
-  function renderPinDropdown(){
-    const sel=document.getElementById('pin-target-user');sel.innerHTML='';
-    allUsers.forEach(u=>{if(u.name!==currentUser.name){const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o);}});
-  }
-
-  window.addUser=async function(){
-    const name=document.getElementById('new-uname').value.trim(),pin=document.getElementById('new-upin').value.trim(),role=document.getElementById('new-urole').value;
-    const errEl=document.getElementById('user-error'),okEl=document.getElementById('user-success');errEl.textContent='';okEl.textContent='';
-    if(!name){errEl.textContent='Name required.';return;}
-    if(!/^\d{4,6}$/.test(pin)){errEl.textContent='PIN must be 4–6 digits.';return;}
-    if(allUsers.find(u=>u.name.toLowerCase()===name.toLowerCase())){errEl.textContent='User already exists.';return;}
-    allUsers.push({name,pin,role});await fsSaveUsers(allUsers);
-    document.getElementById('new-uname').value='';document.getElementById('new-upin').value='';
-    okEl.textContent='✓ '+name+' added!';renderUserList();renderPinDropdown();setTimeout(()=>okEl.textContent='',2000);
-  };
+  function renderPinDropdown(){const sel=document.getElementById('pin-target-user');sel.innerHTML='';allUsers.forEach(u=>{if(u.name!==currentUser.name){const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o);}});}
+  window.addUser=async function(){const name=document.getElementById('new-uname').value.trim(),pin=document.getElementById('new-upin').value.trim(),role=document.getElementById('new-urole').value;const errEl=document.getElementById('user-error'),okEl=document.getElementById('user-success');errEl.textContent='';okEl.textContent='';if(!name){errEl.textContent='Name required.';return;}if(!/^\d{4,6}$/.test(pin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(allUsers.find(u=>u.name.toLowerCase()===name.toLowerCase())){errEl.textContent='User already exists.';return;}allUsers.push({name,pin,role});await fsSaveUsers(allUsers);document.getElementById('new-uname').value='';document.getElementById('new-upin').value='';okEl.textContent='✓ '+name+' added!';renderUserList();renderPinDropdown();setTimeout(()=>okEl.textContent='',2000);};
   window.removeUser=async function(idx){if(!confirm('Remove '+allUsers[idx].name+'?'))return;allUsers.splice(idx,1);await fsSaveUsers(allUsers);renderUserList();renderPinDropdown();};
-  window.toggleRole=async function(idx){allUsers[idx].role=allUsers[idx].role==='manager'?'standard':'manager';await fsSaveUsers(allUsers);renderUserList();};
-
-  window.openEditPinModal=function(idx){
-    editPinTarget=idx;document.getElementById('editpin-username').textContent=allUsers[idx].name;
-    document.getElementById('editpin-new').value='';document.getElementById('editpin-confirm').value='';
-    document.getElementById('editpin-error').textContent='';document.getElementById('editpin-success').textContent='';
-    document.getElementById('modal-editpin').classList.add('open');setTimeout(()=>document.getElementById('editpin-new').focus(),100);
-  };
-  window.confirmEditPin=async function(){
-    const newPin=document.getElementById('editpin-new').value.trim(),conf=document.getElementById('editpin-confirm').value.trim();
-    const errEl=document.getElementById('editpin-error'),okEl=document.getElementById('editpin-success');errEl.textContent='';okEl.textContent='';
-    if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}
-    if(newPin!==conf){errEl.textContent='PINs do not match.';return;}
-    allUsers[editPinTarget].pin=newPin;await fsSaveUsers(allUsers);okEl.textContent='✓ PIN updated!';setTimeout(closeModals,1400);
-  };
-  window.adminChangePin=async function(){
-    const targetName=document.getElementById('pin-target-user').value,newPin=document.getElementById('admin-new-pin').value.trim();
-    const errEl=document.getElementById('adminpin-error'),okEl=document.getElementById('adminpin-success');errEl.textContent='';okEl.textContent='';
-    if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}
-    allUsers=allUsers.map(u=>u.name===targetName?{...u,pin:newPin}:u);await fsSaveUsers(allUsers);
-    document.getElementById('admin-new-pin').value='';okEl.textContent='✓ PIN updated for '+targetName;setTimeout(()=>okEl.textContent='',2000);
-  };
+  window.openEditPinModal=function(idx){editPinTarget=idx;document.getElementById('editpin-username').textContent=allUsers[idx].name;document.getElementById('editpin-new').value='';document.getElementById('editpin-confirm').value='';document.getElementById('editpin-error').textContent='';document.getElementById('editpin-success').textContent='';document.getElementById('modal-editpin').classList.add('open');setTimeout(()=>document.getElementById('editpin-new').focus(),100);};
+  window.confirmEditPin=async function(){const newPin=document.getElementById('editpin-new').value.trim(),conf=document.getElementById('editpin-confirm').value.trim();const errEl=document.getElementById('editpin-error'),okEl=document.getElementById('editpin-success');errEl.textContent='';okEl.textContent='';if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(newPin!==conf){errEl.textContent='PINs do not match.';return;}allUsers[editPinTarget].pin=newPin;await fsSaveUsers(allUsers);okEl.textContent='✓ PIN updated!';setTimeout(closeModals,1400);};
+  window.adminChangePin=async function(){const targetName=document.getElementById('pin-target-user').value,newPin=document.getElementById('admin-new-pin').value.trim();const errEl=document.getElementById('adminpin-error'),okEl=document.getElementById('adminpin-success');errEl.textContent='';okEl.textContent='';if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}allUsers=allUsers.map(u=>u.name===targetName?{...u,pin:newPin}:u);await fsSaveUsers(allUsers);document.getElementById('admin-new-pin').value='';okEl.textContent='✓ PIN updated for '+targetName;setTimeout(()=>okEl.textContent='',2000);};
 </script>
 </body>
 </html>
