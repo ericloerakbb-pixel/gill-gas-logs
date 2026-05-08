@@ -744,7 +744,7 @@
   async function renderDashboard(){
     const now=new Date();
     const hr=now.getHours();
-    document.getElementById('dash-greeting').textContent=(hr<12?'Good morning':'hr<17?'Good afternoon':'Good evening')+', '+currentUser.name+'!';
+    document.getElementById('dash-greeting').textContent=(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+', '+currentUser.name+'!';
     document.getElementById('dash-date').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const todayStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     const mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
@@ -944,4 +944,4 @@
        <div class="month-stat"><div class="ms-label">AVG/INVOICE</div><div class="ms-val" style="font-size:18px;">${sm.invoices.length?'$'+(sm.total/sm.invoices.length).toFixed(0):'—'}</div></div>
        <div class="month-stat"><div class="ms-label">TOP APPROVER</div><div class="ms-val" style="font-size:14px;margin-top:4px;">${topMgr?topMgr[0]:'—'}</div><div class="ms-sub">${topMgr?'$'+topMgr[1].total.toFixed(2):''}</div></div>`;
     const maxT=Math.max(...Object.values(sm.managers).map(m=>m.total),1);
-    document.getElementById('mgr-cards').innerHTML=Object.entries(sm.managers).sort((a,b)=>b[1].total-a[1].total).map(([name,data])=>{con
+    document.getElementById('mgr-cards').innerHTML=Object.entries(sm.managers).sort((a,b)=>b[1].total-a[1].total).map(([name,data])=>{cons
