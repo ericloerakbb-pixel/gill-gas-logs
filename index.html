@@ -962,12 +962,34 @@
       const roleCls=u.role==='master'?'role-master':u.role==='accountant'?'role-accountant':u.role==='manager'?'role-manager':'role-standard';
       const roleLabel=u.role==='master'?'MASTER':u.role==='accountant'?'Accountant':u.role.charAt(0).toUpperCase()+u.role.slice(1);
       const isSelf=currentUser&&u.name===currentUser.name;
-      html+=`<div class="user-row"><div class="user-name">${u.name}${isSelf?' <span style="font-size:10px;color:#E87722;">(you)</span>':''}</div><span class="user-role ${roleCls}">${roleLabel}</span>`;
-      if(!isSelf){html+=`<button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>`;if(u.role!=='master'){html+=`<button class="btn-sm danger" onclick="removeUser(${i})">Remove</button>`;}}
+      html+=`<div class="user-row">
+        <div class="user-name">${u.name}${isSelf?' <span style="font-size:10px;color:#E87722;">(you)</span>':''}</div>
+        <span class="user-role ${roleCls}">${roleLabel}</span>`;
+      if(!isSelf && u.role!=='master'){
+        html+=`
+        <select class="btn-sm" onchange="changeRole(${i}, this.value)" style="padding:4px 8px;cursor:pointer;">
+          <option value="standard"  ${u.role==='standard' ?'selected':''}>Standard</option>
+          <option value="manager"   ${u.role==='manager'  ?'selected':''}>Manager</option>
+          <option value="accountant"${u.role==='accountant'?'selected':''}>Accountant</option>
+        </select>
+        <button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>
+        <button class="btn-sm danger" onclick="removeUser(${i})">Remove</button>`;
+      } else if(!isSelf && u.role==='master'){
+        html+=`<button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>`;
+      }
       html+='</div>';
     });
     document.getElementById('user-list').innerHTML=html;
   }
+ 
+  window.changeRole=async function(idx, newRole){
+    allUsers[idx].role=newRole;
+    await fsSaveUsers(allUsers);
+    renderUserList();
+    renderPinDropdown();
+    document.getElementById('user-success').textContent='✓ Role updated for '+allUsers[idx].name;
+    setTimeout(()=>document.getElementById('user-success').textContent='',2000);
+  };
   function renderPinDropdown(){const sel=document.getElementById('pin-target-user');sel.innerHTML='';allUsers.forEach(u=>{if(u.name!==currentUser.name){const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o);}});}
   window.addUser=async function(){const name=document.getElementById('new-uname').value.trim(),pin=document.getElementById('new-upin').value.trim(),role=document.getElementById('new-urole').value;const errEl=document.getElementById('user-error'),okEl=document.getElementById('user-success');errEl.textContent='';okEl.textContent='';if(!name){errEl.textContent='Name required.';return;}if(!/^\d{4,6}$/.test(pin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(allUsers.find(u=>u.name.toLowerCase()===name.toLowerCase())){errEl.textContent='User already exists.';return;}allUsers.push({name,pin,role});await fsSaveUsers(allUsers);document.getElementById('new-uname').value='';document.getElementById('new-upin').value='';okEl.textContent='✓ '+name+' added!';renderUserList();renderPinDropdown();setTimeout(()=>okEl.textContent='',2000);};
   window.removeUser=async function(idx){if(!confirm('Remove '+allUsers[idx].name+'?'))return;allUsers.splice(idx,1);await fsSaveUsers(allUsers);renderUserList();renderPinDropdown();};
