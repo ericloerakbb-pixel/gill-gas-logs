@@ -2,278 +2,301 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gill Auto Group – Gas Receipt Invoice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Gill Auto Group – Gas Invoice</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #f0f4fa; min-height: 100vh; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{font-size:16px;}
+  body{font-family:Arial,sans-serif;background:#f0f4fa;min-height:100vh;}
  
   /* LOGIN */
-  #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#0d2137 0%,#1A3A5C 60%,#2C5F8A 100%); }
-  .login-box { background:#fff; border-radius:14px; padding:40px 44px; width:360px; box-shadow:0 8px 32px rgba(0,0,0,0.22); text-align:center; }
-  .login-logo { font-size:22px; font-weight:800; color:#1A3A5C; letter-spacing:0.04em; }
-  .login-logo span { color:#E87722; }
-  .login-sub { font-size:11px; color:#999; margin-top:3px; margin-bottom:28px; letter-spacing:0.06em; }
-  .login-box label { font-size:11px; font-weight:700; color:#555; letter-spacing:0.05em; display:block; text-align:left; margin-bottom:5px; }
-  .login-box input { width:100%; padding:10px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; margin-bottom:14px; outline:none; transition:border 0.15s; }
-  .login-box input:focus { border-color:#1A3A5C; }
-  .login-btn { width:100%; padding:11px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:15px; font-weight:700; cursor:pointer; margin-top:4px; font-family:Arial,sans-serif; }
-  .login-btn:hover { opacity:0.88; }
-  .login-error { color:#c0392b; font-size:12px; margin-top:8px; min-height:18px; }
+  #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0d2137 0%,#1A3A5C 60%,#2C5F8A 100%);padding:16px;}
+  .login-box{background:#fff;border-radius:14px;padding:36px 32px;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.22);text-align:center;}
+  .login-logo{font-size:22px;font-weight:800;color:#1A3A5C;letter-spacing:0.04em;}
+  .login-logo span{color:#E87722;}
+  .login-sub{font-size:11px;color:#999;margin-top:3px;margin-bottom:24px;letter-spacing:0.06em;}
+  .login-box label{font-size:12px;font-weight:700;color:#555;display:block;text-align:left;margin-bottom:6px;}
+  .login-box input{width:100%;padding:12px;border:1px solid #cdd5e0;border-radius:8px;font-size:16px;margin-bottom:14px;outline:none;}
+  .login-box input:focus{border-color:#1A3A5C;}
+  .login-btn{width:100%;padding:13px;background:#1A3A5C;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .login-btn:hover{opacity:0.88;}
+  .login-error{color:#c0392b;font-size:12px;margin-top:8px;min-height:18px;}
  
-  /* APP */
-  #app { display:none; }
-  .topbar { background:#1A3A5C; color:#fff; padding:10px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  .topbar-title { font-size:15px; font-weight:700; letter-spacing:0.04em; flex:1; }
-  .topbar-title span { color:#E87722; }
-  .topbar-user { font-size:12px; color:#aac4e0; }
-  .badge-master { background:#E87722; color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; }
-  .badge-accountant { background:#6c3483; color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; }
-  .topbar-btn { font-size:12px; background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.25); border-radius:6px; padding:5px 12px; cursor:pointer; font-family:Arial,sans-serif; }
-  .topbar-btn:hover { background:rgba(255,255,255,0.2); }
-  .topbar-btn.pin-btn { background:rgba(232,119,34,0.25); border-color:rgba(232,119,34,0.5); }
-  .topbar-btn.master-btn { background:rgba(232,119,34,0.4); border-color:#E87722; font-weight:700; }
-  .sync-status { font-size:11px; color:#aac4e0; }
-  .sync-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#2e7d32; margin-right:4px; }
-  .sync-dot.offline { background:#f39c12; }
+  /* APP SHELL */
+  #app{display:none;}
+  .topbar{background:#1A3A5C;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .topbar-title{font-size:14px;font-weight:700;letter-spacing:0.04em;flex:1;min-width:0;}
+  .topbar-title span{color:#E87722;}
+  .topbar-user{font-size:11px;color:#aac4e0;display:none;}
+  @media(min-width:600px){.topbar-user{display:inline;}}
+  .badge-master{background:#E87722;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;}
+  .badge-accountant{background:#6c3483;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;}
+  .topbar-btn{font-size:11px;background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:5px 10px;cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;}
+  .topbar-btn.pin-btn{background:rgba(232,119,34,0.25);border-color:rgba(232,119,34,0.5);}
+  .topbar-btn.master-btn{background:rgba(232,119,34,0.4);border-color:#E87722;font-weight:700;}
+  .sync-status{font-size:10px;color:#aac4e0;white-space:nowrap;}
+  .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#2e7d32;margin-right:3px;}
+  .sync-dot.offline{background:#f39c12;}
  
-  .tabs { display:flex; background:#fff; border-bottom:2px solid #dde3ee; padding:0 24px; overflow-x:auto; }
-  .tab { padding:11px 20px; font-size:13px; font-weight:600; color:#888; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:color 0.15s; white-space:nowrap; }
-  .tab.active { color:#1A3A5C; border-bottom-color:#E87722; }
-  .tab:hover { color:#1A3A5C; }
-  .tab.acct-tab.active { border-bottom-color:#6c3483; color:#6c3483; }
+  /* BUDGET BANNER */
+  .budget-banner{display:none;padding:10px 16px;font-size:13px;font-weight:700;text-align:center;}
+  .budget-banner.warning{background:#fff3cd;color:#856404;display:block;}
+  .budget-banner.danger{background:#f8d7da;color:#721c24;display:block;}
  
-  .page { display:none; padding:24px 16px; }
-  .page.active { display:block; }
+  /* TABS */
+  .tabs{display:flex;background:#fff;border-bottom:2px solid #dde3ee;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tab{padding:10px 14px;font-size:12px;font-weight:600;color:#888;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+  .tab.active{color:#1A3A5C;border-bottom-color:#E87722;}
+  .tab.acct-tab.active{border-bottom-color:#6c3483;color:#6c3483;}
+ 
+  .page{display:none;padding:16px 12px;}
+  .page.active{display:block;}
  
   /* MODALS */
-  .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; }
-  .modal-bg.open { display:flex; }
-  .modal { background:#fff; border-radius:12px; padding:32px 36px; width:440px; box-shadow:0 8px 32px rgba(0,0,0,0.2); max-height:92vh; overflow-y:auto; }
-  .modal h2 { font-size:17px; font-weight:800; color:#1A3A5C; margin-bottom:6px; }
-  .modal p { font-size:12px; color:#888; margin-bottom:20px; }
-  .modal label { font-size:11px; font-weight:700; color:#555; letter-spacing:0.04em; display:block; margin-bottom:5px; }
-  .modal input, .modal select, .modal textarea { width:100%; padding:10px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; margin-bottom:14px; outline:none; font-family:Arial,sans-serif; }
-  .modal textarea { min-height:80px; resize:vertical; }
-  .modal input:focus, .modal select:focus, .modal textarea:focus { border-color:#1A3A5C; }
-  .modal-btns { display:flex; gap:10px; margin-top:6px; }
-  .btn-approve { flex:1; padding:10px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:14px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-approve:hover { opacity:0.88; }
-  .btn-approve.green { background:#2e7d32; }
-  .btn-approve.red { background:#c0392b; }
-  .btn-cancel { flex:1; padding:10px; background:#fff; color:#555; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-cancel:hover { background:#f5f7fb; }
-  .modal-error { color:#c0392b; font-size:12px; margin-top:-8px; margin-bottom:10px; min-height:16px; }
-  .modal-success { color:#2e7d32; font-size:13px; font-weight:700; margin-top:-8px; margin-bottom:10px; min-height:16px; }
-  .divider { border:none; border-top:1px solid #eee; margin:16px 0; }
-  .preview-modal { width:90%; max-width:860px; padding:0; overflow:hidden; }
-  .preview-topbar { background:#1A3A5C; color:#fff; padding:14px 20px; display:flex; align-items:center; gap:12px; }
-  .preview-topbar h2 { color:#fff; flex:1; font-size:15px; }
-  .btn-pdf { padding:8px 18px; background:#E87722; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-pdf:hover { opacity:0.88; }
-  .preview-body { padding:24px; overflow-y:auto; max-height:80vh; background:#f0f4fa; }
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:flex-end;justify-content:center;}
+  @media(min-width:600px){.modal-bg{align-items:center;}}
+  .modal-bg.open{display:flex;}
+  .modal{background:#fff;border-radius:14px 14px 0 0;padding:24px 20px;width:100%;max-width:480px;box-shadow:0 -4px 24px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto;}
+  @media(min-width:600px){.modal{border-radius:12px;padding:28px 32px;}}
+  .modal h2{font-size:16px;font-weight:800;color:#1A3A5C;margin-bottom:6px;}
+  .modal p{font-size:12px;color:#888;margin-bottom:16px;}
+  .modal label{font-size:11px;font-weight:700;color:#555;letter-spacing:0.04em;display:block;margin-bottom:5px;}
+  .modal input,.modal select,.modal textarea{width:100%;padding:12px;border:1px solid #cdd5e0;border-radius:8px;font-size:16px;margin-bottom:12px;outline:none;font-family:Arial,sans-serif;-webkit-appearance:none;}
+  .modal textarea{min-height:80px;resize:vertical;}
+  .modal input:focus,.modal select:focus,.modal textarea:focus{border-color:#1A3A5C;}
+  .modal-btns{display:flex;gap:10px;margin-top:6px;}
+  .btn-approve{flex:1;padding:12px;background:#1A3A5C;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .btn-approve:hover{opacity:0.88;}
+  .btn-approve.green{background:#2e7d32;}
+  .btn-approve.red{background:#c0392b;}
+  .btn-cancel{flex:1;padding:12px;background:#fff;color:#555;border:1px solid #cdd5e0;border-radius:8px;font-size:15px;cursor:pointer;font-family:Arial,sans-serif;}
+  .modal-error{color:#c0392b;font-size:12px;margin-top:-6px;margin-bottom:10px;min-height:16px;}
+  .modal-success{color:#2e7d32;font-size:13px;font-weight:700;margin-top:-6px;margin-bottom:10px;min-height:16px;}
+  .divider{border:none;border-top:1px solid #eee;margin:14px 0;}
+  .preview-modal{width:96%;max-width:860px;border-radius:12px;padding:0;overflow:hidden;align-self:center;}
+  .preview-topbar{background:#1A3A5C;color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .preview-topbar h2{color:#fff;flex:1;font-size:14px;}
+  .btn-pdf{padding:8px 14px;background:#E87722;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .preview-body{padding:16px;overflow-y:auto;max-height:75vh;background:#f0f4fa;}
  
-  /* CONTROLS */
-  .controls { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #dde3ee; border-radius:10px; padding:14px 20px; margin-bottom:20px; max-width:860px; margin-left:auto; margin-right:auto; flex-wrap:wrap; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-  .inv-badge { display:flex; align-items:center; gap:10px; background:#f0f4fa; border:1px solid #cdd5e0; border-radius:8px; padding:8px 16px; }
-  .inv-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; }
-  .inv-num { font-size:22px; font-weight:800; color:#1A3A5C; letter-spacing:0.04em; }
-  .hint { font-size:12px; color:#888; }
-  .btn-print { margin-left:auto; display:flex; align-items:center; gap:7px; background:#1A3A5C; color:#fff; border:none; padding:10px 22px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-print:hover { opacity:0.88; }
-  .btn-secondary { font-size:13px; color:#555; background:none; border:1px solid #cdd5e0; border-radius:8px; padding:8px 14px; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-secondary:hover { background:#f0f4fa; }
+  /* DASHBOARD */
+  .dash-welcome{background:linear-gradient(135deg,#1A3A5C,#2C5F8A);color:#fff;border-radius:12px;padding:18px 20px;margin-bottom:16px;}
+  .dash-welcome h2{font-size:18px;font-weight:800;}
+  .dash-welcome p{font-size:12px;opacity:0.8;margin-top:4px;}
+  .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  @media(min-width:600px){.dash-grid{grid-template-columns:repeat(4,1fr);}}
+  .dash-card{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #dde3ee;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+  .dash-card .dc-label{font-size:10px;color:#888;font-weight:700;letter-spacing:0.04em;}
+  .dash-card .dc-val{font-size:22px;font-weight:800;color:#1A3A5C;margin-top:3px;}
+  .dash-card .dc-sub{font-size:10px;color:#888;margin-top:2px;}
+  .budget-card{background:#fff;border-radius:10px;padding:16px;border:1px solid #dde3ee;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+  .budget-card h3{font-size:13px;font-weight:800;color:#1A3A5C;margin-bottom:10px;}
+  .budget-bar-wrap{background:#f0f4fa;border-radius:8px;height:16px;overflow:hidden;margin-bottom:6px;}
+  .budget-bar-fill{height:100%;border-radius:8px;transition:width 0.4s;}
+  .budget-bar-fill.ok{background:#2e7d32;}
+  .budget-bar-fill.warn{background:#f39c12;}
+  .budget-bar-fill.over{background:#c0392b;}
+  .budget-row{display:flex;justify-content:space-between;font-size:12px;color:#555;}
+  .budget-row span:last-child{font-weight:700;}
+  .today-section{background:#fff;border-radius:10px;border:1px solid #dde3ee;overflow:hidden;margin-bottom:16px;}
+  .today-header{background:#1A3A5C;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;}
+  .today-empty{padding:20px;text-align:center;color:#aaa;font-size:13px;}
+  .today-item{padding:12px 14px;border-bottom:0.5px solid #eee;display:flex;align-items:center;gap:10px;}
+  .today-item:last-child{border-bottom:none;}
+  .today-inv{font-size:12px;font-weight:700;color:#1A3A5C;min-width:80px;}
+  .today-info{flex:1;font-size:12px;color:#444;}
+  .today-info .ti-sub{font-size:11px;color:#888;margin-top:1px;}
+  .today-amt{font-size:13px;font-weight:800;color:#2e7d32;}
+  .today-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
  
-  /* INVOICE */
-  .invoice { background:#fff; color:#111; border:1px solid #dde3ee; border-radius:10px; padding:30px 36px; font-family:Arial,sans-serif; font-size:11px; max-width:860px; margin:0 auto; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-  .inv-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
-  .inv-title h1 { font-size:23px; font-weight:800; color:#1A3A5C; letter-spacing:0.06em; }
-  .inv-title .dealer-name { font-size:14px; font-weight:700; color:#E87722; margin-top:2px; }
-  .inv-title .dealer-addr { font-size:10px; color:#888; margin-top:1px; }
-  .inv-meta table { font-size:11px; }
-  .inv-meta td { padding:3px 7px; }
-  .inv-meta td:first-child { color:#666; font-weight:700; text-align:right; }
-  .inv-meta td.val { background:#F0F4FA; border:1px solid #cdd5e0; min-width:130px; border-radius:3px; }
-  .inv-meta td.approved-amt { background:#e8f5e9; border:1px solid #a5d6a7; color:#2e7d32; font-weight:800; }
-  .field-label { font-size:9.5px; color:#777; font-weight:700; margin-bottom:2px; letter-spacing:0.04em; }
-  .field-input { width:100%; border:none; border-bottom:1.5px solid #1A3A5C; background:transparent; font-size:12px; font-family:Arial,sans-serif; padding:2px 2px 3px; outline:none; color:#111; margin-bottom:6px; display:block; }
-  .field-input:focus { border-bottom-color:#E87722; background:#fffbf5; }
-  .field-input::placeholder { color:#bbb; font-style:italic; }
-  .section-header { background:#1A3A5C; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.08em; padding:6px 10px; margin:16px 0 0; }
-  table.data-table { width:100%; border-collapse:collapse; }
-  table.data-table thead tr th { background:#2C5F8A; color:#fff; font-size:9.5px; font-weight:700; letter-spacing:0.05em; padding:6px 7px; text-align:center; border:1px solid #1A3A5C; }
-  table.data-table tbody tr td { border:0.5px solid #ccc; padding:2px 4px; font-size:10.5px; }
-  table.data-table tbody tr:nth-child(even) td { background:#F5F7FB; }
-  .cell-input { width:100%; border:none; background:transparent; font-size:11px; font-family:Arial,sans-serif; padding:4px 3px; outline:none; color:#111; }
-  .cell-input:focus { background:#fffbf5; }
-  .cell-input::placeholder { color:#bbb; font-style:italic; font-size:10px; }
-  .total-row td { background:#1A3A5C !important; color:#fff; font-weight:700; font-size:12px; }
-  .total-input { width:80%; border:none; background:transparent; font-size:12px; font-family:Arial,sans-serif; font-weight:700; color:#fff; outline:none; padding:4px 2px; }
-  .total-input::placeholder { color:rgba(255,255,255,0.5); font-style:italic; }
-  .notes-input { width:100%; border:0.5px solid #ccc; background:#FAFBFD; font-size:11px; font-family:Arial,sans-serif; padding:7px 9px; outline:none; min-height:52px; resize:vertical; color:#111; }
-  .notes-input:focus { background:#fffbf5; }
-  .notes-input::placeholder { color:#bbb; font-style:italic; }
-  .auth-section { display:flex; gap:18px; padding-top:10px; }
-  .auth-field { flex:1; }
-  .auth-field .field-label { color:#1A3A5C; }
-  .auth-field .sig-line { border-bottom:2px solid #1A3A5C; min-height:26px; background:#EEF2F7; }
-  .auth-field .prefilled { font-size:13px; font-weight:700; color:#1A3A5C; padding:4px 6px; border-bottom:2px solid #1A3A5C; background:#EEF2F7; min-height:26px; }
-  .auth-input { width:100%; border:none; border-bottom:2px solid #1A3A5C; background:#EEF2F7; font-size:12px; font-family:Arial,sans-serif; padding:4px 6px; outline:none; color:#111; min-height:26px; }
-  .auth-input:focus { background:#fffbf5; border-bottom-color:#E87722; }
-  .auth-input::placeholder { color:#aaa; font-style:italic; }
-  .inv-footer { font-size:9.5px; color:#999; text-align:center; margin-top:16px; padding-top:10px; border-top:2px solid #E87722; font-style:italic; }
+  /* INVOICE FORM */
+  .controls{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dde3ee;border-radius:10px;padding:12px 14px;margin-bottom:14px;flex-wrap:wrap;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+  .inv-badge{display:flex;align-items:center;gap:8px;background:#f0f4fa;border:1px solid #cdd5e0;border-radius:8px;padding:6px 12px;}
+  .inv-label{font-size:10px;color:#888;font-weight:700;letter-spacing:0.04em;}
+  .inv-num{font-size:18px;font-weight:800;color:#1A3A5C;}
+  .hint{font-size:11px;color:#888;display:none;}
+  @media(min-width:600px){.hint{display:block;}}
+  .btn-print{margin-left:auto;display:flex;align-items:center;gap:6px;background:#1A3A5C;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .btn-secondary{font-size:12px;color:#555;background:none;border:1px solid #cdd5e0;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:Arial,sans-serif;}
  
-  /* HISTORY & LOG */
-  .page-header { display:flex; align-items:center; gap:12px; max-width:980px; margin:0 auto 16px; flex-wrap:wrap; }
-  .page-header h2 { font-size:18px; font-weight:800; color:#1A3A5C; flex:1; }
-  .btn-export { padding:8px 18px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-export:hover { opacity:0.88; }
-  .btn-danger { padding:8px 14px; background:#fff; color:#c0392b; border:1px solid #e0b0b0; border-radius:7px; font-size:13px; cursor:pointer; font-family:Arial,sans-serif; }
-  .log-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; max-width:980px; margin:0 auto 20px; }
-  .stat-card { background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #dde3ee; }
-  .stat-card .s-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; }
-  .stat-card .s-val { font-size:26px; font-weight:800; color:#1A3A5C; margin-top:2px; }
-  .table-wrap { max-width:980px; margin:0 auto; overflow-x:auto; }
-  table.log-table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.07); }
-  table.log-table thead th { background:#1A3A5C; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.05em; padding:9px 12px; text-align:left; }
-  table.log-table tbody td { padding:9px 12px; font-size:12px; border-bottom:0.5px solid #eee; vertical-align:middle; }
-  table.log-table tbody tr:last-child td { border-bottom:none; }
-  table.log-table tbody tr:hover td { background:#f5f8fc; }
-  .badge-role { font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; }
-  .badge-mgr { background:#e3ecf7; color:#1A3A5C; }
-  .badge-master-tag { background:#E87722; color:#fff; }
-  .amt-cell { font-weight:700; color:#2e7d32; }
-  .empty-state { text-align:center; color:#aaa; font-size:13px; padding:40px 0; }
-  .btn-view { font-size:11px; padding:4px 10px; background:#1A3A5C; color:#fff; border:none; border-radius:5px; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-view:hover { opacity:0.82; }
+  .invoice{background:#fff;border:1px solid #dde3ee;border-radius:10px;padding:16px;font-family:Arial,sans-serif;font-size:11px;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+  @media(min-width:600px){.invoice{padding:28px 32px;}}
+  .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .inv-title h1{font-size:18px;font-weight:800;color:#1A3A5C;letter-spacing:0.04em;}
+  @media(min-width:600px){.inv-title h1{font-size:22px;}}
+  .inv-title .dealer-name{font-size:13px;font-weight:700;color:#E87722;margin-top:2px;}
+  .inv-title .dealer-addr{font-size:10px;color:#888;margin-top:1px;}
+  .inv-meta table{font-size:11px;}
+  .inv-meta td{padding:2px 6px;}
+  .inv-meta td:first-child{color:#666;font-weight:700;text-align:right;font-size:10px;}
+  .inv-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:110px;border-radius:3px;}
+  .inv-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}
+  .field-label{font-size:9.5px;color:#777;font-weight:700;margin-bottom:2px;letter-spacing:0.04em;}
+  .field-input,.field-select{width:100%;border:none;border-bottom:1.5px solid #1A3A5C;background:transparent;font-size:14px;font-family:Arial,sans-serif;padding:4px 2px;outline:none;color:#111;margin-bottom:8px;display:block;-webkit-appearance:none;}
+  .field-input:focus,.field-select:focus{border-bottom-color:#E87722;background:#fffbf5;}
+  .field-input::placeholder{color:#bbb;font-style:italic;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+  @media(min-width:600px){.form-row{grid-template-columns:1fr 1fr 1fr;}}
+  .section-header{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:6px 10px;margin:12px 0 0;}
+  .fuel-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table.data-table{width:100%;border-collapse:collapse;min-width:480px;}
+  table.data-table thead tr th{background:#2C5F8A;color:#fff;font-size:9px;font-weight:700;padding:5px 6px;text-align:center;border:1px solid #1A3A5C;}
+  table.data-table tbody tr td{border:0.5px solid #ccc;padding:2px 3px;font-size:10.5px;}
+  table.data-table tbody tr:nth-child(even) td{background:#F5F7FB;}
+  .cell-input,.cell-select{width:100%;border:none;background:transparent;font-size:12px;font-family:Arial,sans-serif;padding:5px 3px;outline:none;color:#111;-webkit-appearance:none;}
+  .cell-input::placeholder{color:#bbb;font-style:italic;font-size:10px;}
+  .total-row td{background:#1A3A5C !important;color:#fff;font-weight:700;font-size:12px;}
+  .total-input{width:80%;border:none;background:transparent;font-size:12px;font-family:Arial,sans-serif;font-weight:700;color:#fff;outline:none;padding:4px 2px;}
+  .total-input::placeholder{color:rgba(255,255,255,0.5);}
+  .notes-input{width:100%;border:0.5px solid #ccc;background:#FAFBFD;font-size:13px;font-family:Arial,sans-serif;padding:8px;outline:none;min-height:60px;resize:vertical;color:#111;}
+  .auth-section{display:flex;gap:10px;padding-top:10px;flex-wrap:wrap;}
+  .auth-field{flex:1;min-width:140px;}
+  .auth-field .field-label{color:#1A3A5C;}
+  .auth-field .sig-line{border-bottom:2px solid #1A3A5C;min-height:28px;background:#EEF2F7;}
+  .auth-field .prefilled{font-size:13px;font-weight:700;color:#1A3A5C;padding:4px 6px;border-bottom:2px solid #1A3A5C;background:#EEF2F7;min-height:28px;}
+  .auth-input{width:100%;border:none;border-bottom:2px solid #1A3A5C;background:#EEF2F7;font-size:13px;font-family:Arial,sans-serif;padding:5px 6px;outline:none;color:#111;min-height:28px;}
+  .inv-footer{font-size:9px;color:#999;text-align:center;margin-top:14px;padding-top:8px;border-top:2px solid #E87722;font-style:italic;}
  
-  /* ACCT STATUS BADGES */
-  .status-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; }
-  .status-pending  { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
-  .status-approved { background:#d4edda; color:#155724; border:1px solid #28a745; }
-  .status-denied   { background:#f8d7da; color:#721c24; border:1px solid #dc3545; }
-  .btn-acct-approve { font-size:11px; padding:4px 10px; background:#2e7d32; color:#fff; border:none; border-radius:5px; cursor:pointer; font-family:Arial,sans-serif; margin-right:4px; }
-  .btn-acct-deny   { font-size:11px; padding:4px 10px; background:#c0392b; color:#fff; border:none; border-radius:5px; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-acct-approve:hover { opacity:0.85; }
-  .btn-acct-deny:hover { opacity:0.85; }
-  .acct-note-preview { font-size:10px; color:#666; font-style:italic; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  /* HISTORY */
+  .page-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .page-header h2{font-size:16px;font-weight:800;color:#1A3A5C;flex:1;}
+  .btn-export{padding:8px 14px;background:#1A3A5C;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .btn-export.purple{background:#6c3483;}
+  .log-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  @media(min-width:600px){.log-stats{grid-template-columns:repeat(5,1fr);}}
+  .stat-card{background:#fff;border-radius:8px;padding:12px 14px;border:1px solid #dde3ee;}
+  .stat-card .s-label{font-size:10px;color:#888;font-weight:700;letter-spacing:0.04em;}
+  .stat-card .s-val{font-size:22px;font-weight:800;color:#1A3A5C;margin-top:2px;}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table.log-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07);min-width:500px;}
+  table.log-table thead th{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:8px 10px;text-align:left;}
+  table.log-table tbody td{padding:8px 10px;font-size:12px;border-bottom:0.5px solid #eee;vertical-align:middle;}
+  table.log-table tbody tr:last-child td{border-bottom:none;}
+  .badge-role{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+  .badge-mgr{background:#e3ecf7;color:#1A3A5C;}
+  .badge-master-tag{background:#E87722;color:#fff;}
+  .amt-cell{font-weight:700;color:#2e7d32;}
+  .empty-state{text-align:center;color:#aaa;font-size:13px;padding:30px 0;}
+  .btn-view{font-size:11px;padding:4px 9px;background:#1A3A5C;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Arial,sans-serif;}
+  .status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+  .status-pending{background:#fff3cd;color:#856404;border:1px solid #ffc107;}
+  .status-approved{background:#d4edda;color:#155724;border:1px solid #28a745;}
+  .status-denied{background:#f8d7da;color:#721c24;border:1px solid #dc3545;}
  
-  /* ACCOUNTANT PAGE */
-  .acct-header-banner { background:linear-gradient(135deg,#4a1468,#6c3483); color:#fff; border-radius:10px; padding:20px 24px; max-width:980px; margin:0 auto 20px; display:flex; align-items:center; gap:16px; }
-  .acct-header-banner .ah-icon { font-size:32px; }
-  .acct-header-banner h2 { font-size:18px; font-weight:800; }
-  .acct-header-banner p { font-size:12px; opacity:0.85; margin-top:2px; }
-  .acct-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; max-width:980px; margin:0 auto 20px; }
-  .acct-stat { background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #dde3ee; }
-  .acct-stat .as-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; }
-  .acct-stat .as-val { font-size:26px; font-weight:800; margin-top:2px; }
-  .acct-stat .as-val.pending  { color:#856404; }
-  .acct-stat .as-val.approved { color:#155724; }
-  .acct-stat .as-val.denied   { color:#721c24; }
-  .acct-stat .as-val.total    { color:#1A3A5C; }
-  .acct-filters { display:flex; gap:10px; max-width:980px; margin:0 auto 14px; flex-wrap:wrap; align-items:center; }
-  .acct-filters select, .acct-filters input { padding:7px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:13px; outline:none; font-family:Arial,sans-serif; }
-  .acct-filters select:focus, .acct-filters input:focus { border-color:#6c3483; }
-  .acct-filters label { font-size:12px; font-weight:700; color:#555; }
+  /* ACCOUNTANT */
+  .acct-header-banner{background:linear-gradient(135deg,#4a1468,#6c3483);color:#fff;border-radius:10px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+  .acct-header-banner .ah-icon{font-size:28px;}
+  .acct-header-banner h2{font-size:16px;font-weight:800;}
+  .acct-header-banner p{font-size:11px;opacity:0.85;margin-top:2px;}
+  .acct-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  @media(min-width:600px){.acct-stats{grid-template-columns:repeat(5,1fr);}}
+  .acct-stat{background:#fff;border-radius:8px;padding:12px 14px;border:1px solid #dde3ee;}
+  .acct-stat .as-label{font-size:10px;color:#888;font-weight:700;letter-spacing:0.04em;}
+  .acct-stat .as-val{font-size:22px;font-weight:800;margin-top:2px;}
+  .acct-stat .as-val.pending{color:#856404;}
+  .acct-stat .as-val.approved{color:#155724;}
+  .acct-stat .as-val.denied{color:#721c24;}
+  .acct-stat .as-val.total{color:#1A3A5C;}
+  .acct-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+  .acct-filters select,.acct-filters input{padding:8px 10px;border:1px solid #cdd5e0;border-radius:7px;font-size:13px;outline:none;font-family:Arial,sans-serif;-webkit-appearance:none;background:#fff;}
+  .btn-acct-approve{font-size:11px;padding:5px 10px;background:#2e7d32;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Arial,sans-serif;margin-right:4px;}
+  .btn-acct-deny{font-size:11px;padding:5px 10px;background:#c0392b;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Arial,sans-serif;}
+  .acct-note-preview{font-size:10px;color:#666;font-style:italic;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
  
   /* MONTHLY */
-  .month-filter { display:flex; align-items:center; gap:12px; max-width:980px; margin:0 auto 20px; flex-wrap:wrap; }
-  .month-filter label { font-size:13px; font-weight:700; color:#1A3A5C; }
-  .month-filter select { padding:8px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:13px; outline:none; font-family:Arial,sans-serif; }
-  .monthly-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:980px; margin:0 auto 24px; }
-  .month-stat { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:16px 20px; }
-  .month-stat .ms-label { font-size:11px; color:#888; font-weight:700; letter-spacing:0.04em; margin-bottom:4px; }
-  .month-stat .ms-val { font-size:28px; font-weight:800; color:#1A3A5C; }
-  .month-stat .ms-sub { font-size:11px; color:#888; margin-top:2px; }
-  .mgr-breakdown { max-width:980px; margin:0 auto; }
-  .mgr-breakdown h3 { font-size:15px; font-weight:800; color:#1A3A5C; margin-bottom:12px; }
-  .mgr-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
-  .mgr-card { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:16px 18px; }
-  .mgr-card .mc-name { font-size:13px; font-weight:700; color:#1A3A5C; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee; }
-  .mgr-card .mc-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
-  .mgr-card .mc-label { color:#888; }
-  .mgr-card .mc-val { font-weight:700; color:#111; }
-  .mgr-card .mc-total { font-size:18px; font-weight:800; color:#2e7d32; margin-top:8px; }
-  .month-bar { height:8px; background:#e8f5e9; border-radius:4px; margin-top:8px; overflow:hidden; }
-  .month-bar-fill { height:100%; background:#2e7d32; border-radius:4px; }
-  .all-months-table { max-width:980px; margin:0 auto; }
-  .all-months-table h3 { font-size:15px; font-weight:800; color:#1A3A5C; margin-bottom:12px; }
-  table.months-tbl { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.07); margin-bottom:24px; }
-  table.months-tbl thead th { background:#1A3A5C; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.05em; padding:9px 12px; text-align:left; }
-  table.months-tbl tbody td { padding:9px 12px; font-size:12px; border-bottom:0.5px solid #eee; }
-  table.months-tbl tbody tr:last-child td { border-bottom:none; }
-  table.months-tbl tbody tr:hover td { background:#f5f8fc; }
-  table.months-tbl tbody tr.active-month td { background:#f0f8ff; font-weight:700; }
+  .month-filter{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .month-filter label{font-size:13px;font-weight:700;color:#1A3A5C;}
+  .month-filter select{padding:8px 10px;border:1px solid #cdd5e0;border-radius:7px;font-size:13px;outline:none;font-family:Arial,sans-serif;-webkit-appearance:none;background:#fff;}
+  .monthly-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  @media(min-width:600px){.monthly-grid{grid-template-columns:repeat(4,1fr);}}
+  .month-stat{background:#fff;border-radius:10px;border:1px solid #dde3ee;padding:14px 16px;}
+  .month-stat .ms-label{font-size:10px;color:#888;font-weight:700;margin-bottom:4px;}
+  .month-stat .ms-val{font-size:22px;font-weight:800;color:#1A3A5C;}
+  .month-stat .ms-sub{font-size:10px;color:#888;margin-top:2px;}
+  .mgr-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  @media(min-width:600px){.mgr-cards{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}}
+  .mgr-card{background:#fff;border-radius:10px;border:1px solid #dde3ee;padding:14px 16px;}
+  .mgr-card .mc-name{font-size:12px;font-weight:700;color:#1A3A5C;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #eee;}
+  .mgr-card .mc-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+  .mgr-card .mc-label{color:#888;}
+  .mgr-card .mc-val{font-weight:700;}
+  .mgr-card .mc-total{font-size:16px;font-weight:800;color:#2e7d32;margin-top:8px;}
+  .month-bar{height:6px;background:#e8f5e9;border-radius:4px;margin-top:8px;overflow:hidden;}
+  .month-bar-fill{height:100%;background:#2e7d32;border-radius:4px;}
+  table.months-tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07);margin-bottom:20px;min-width:400px;}
+  table.months-tbl thead th{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;padding:8px 10px;text-align:left;}
+  table.months-tbl tbody td{padding:8px 10px;font-size:12px;border-bottom:0.5px solid #eee;}
+  table.months-tbl tbody tr.active-month td{background:#f0f8ff;font-weight:700;}
  
   /* ADMIN */
-  .admin-wrap { max-width:700px; margin:0 auto; }
-  .admin-section { background:#fff; border-radius:10px; border:1px solid #dde3ee; padding:24px 28px; margin-bottom:20px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
-  .admin-section h3 { font-size:15px; font-weight:800; color:#1A3A5C; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid #eee; }
-  .reset-warning { background:#fff8f0; border:1px solid #f5c6a0; border-radius:8px; padding:12px 16px; font-size:12px; color:#b45309; margin-bottom:16px; }
-  .reset-warning strong { display:block; margin-bottom:4px; font-size:13px; }
-  .reset-btns { display:flex; gap:10px; flex-wrap:wrap; }
-  .btn-reset-counter { padding:10px 20px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-reset-log { padding:10px 20px; background:#fff; color:#c0392b; border:1.5px solid #c0392b; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-reset-both { padding:10px 20px; background:#c0392b; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .user-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:0.5px solid #f0f0f0; flex-wrap:wrap; }
-  .user-row:last-child { border-bottom:none; }
-  .user-name { flex:1; font-size:13px; font-weight:600; color:#222; min-width:120px; }
-  .user-role { font-size:11px; padding:2px 8px; border-radius:4px; font-weight:700; }
-  .role-master { background:#E87722; color:#fff; }
-  .role-manager { background:#e3ecf7; color:#1A3A5C; }
-  .role-standard { background:#f0f0f0; color:#666; }
-  .role-accountant { background:#e8d5f5; color:#6c3483; }
-  .btn-sm { font-size:12px; padding:5px 12px; border-radius:6px; cursor:pointer; border:1px solid #cdd5e0; background:#fff; color:#555; font-family:Arial,sans-serif; }
-  .btn-sm:hover { background:#f0f4fa; }
-  .btn-sm.danger { color:#c0392b; border-color:#e0b0b0; }
-  .btn-sm.danger:hover { background:#fff0f0; }
-  .add-user-form { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; align-items:flex-end; }
-  .add-user-form input, .add-user-form select { padding:8px 10px; border:1px solid #cdd5e0; border-radius:7px; font-size:13px; outline:none; font-family:Arial,sans-serif; }
-  .btn-add { padding:8px 18px; background:#1A3A5C; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; font-family:Arial,sans-serif; }
-  .btn-add:hover { opacity:0.88; }
-  .admin-error { color:#c0392b; font-size:12px; margin-top:8px; min-height:16px; }
-  .admin-success { color:#2e7d32; font-size:12px; margin-top:8px; font-weight:700; min-height:16px; }
-  .dealer-form { display:flex; flex-direction:column; gap:10px; }
-  .dealer-form input { padding:9px 12px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; outline:none; font-family:Arial,sans-serif; }
-  .counter-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-  .counter-val { font-size:28px; font-weight:800; color:#1A3A5C; }
-  .counter-form { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .counter-form input { padding:8px 10px; border:1px solid #cdd5e0; border-radius:7px; font-size:14px; outline:none; width:120px; font-family:Arial,sans-serif; }
+  .admin-wrap{max-width:640px;margin:0 auto;}
+  .admin-section{background:#fff;border-radius:10px;border:1px solid #dde3ee;padding:18px 18px;margin-bottom:16px;}
+  .admin-section h3{font-size:14px;font-weight:800;color:#1A3A5C;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee;}
+  .reset-warning{background:#fff8f0;border:1px solid #f5c6a0;border-radius:8px;padding:10px 14px;font-size:12px;color:#b45309;margin-bottom:14px;}
+  .reset-btns{display:flex;gap:8px;flex-wrap:wrap;}
+  .btn-reset-counter{padding:9px 14px;background:#1A3A5C;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .btn-reset-log{padding:9px 14px;background:#fff;color:#c0392b;border:1.5px solid #c0392b;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .btn-reset-both{padding:9px 14px;background:#c0392b;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .user-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:0.5px solid #f0f0f0;flex-wrap:wrap;}
+  .user-row:last-child{border-bottom:none;}
+  .user-name{flex:1;font-size:13px;font-weight:600;color:#222;min-width:100px;}
+  .user-role{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:700;}
+  .role-master{background:#E87722;color:#fff;}
+  .role-manager{background:#e3ecf7;color:#1A3A5C;}
+  .role-standard{background:#f0f0f0;color:#666;}
+  .role-accountant{background:#e8d5f5;color:#6c3483;}
+  .btn-sm{font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer;border:1px solid #cdd5e0;background:#fff;color:#555;font-family:Arial,sans-serif;}
+  .btn-sm.danger{color:#c0392b;border-color:#e0b0b0;}
+  .add-user-form{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .add-user-form input,.add-user-form select{padding:9px 10px;border:1px solid #cdd5e0;border-radius:7px;font-size:14px;outline:none;font-family:Arial,sans-serif;flex:1;min-width:120px;-webkit-appearance:none;background:#fff;}
+  .btn-add{padding:9px 16px;background:#1A3A5C;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
+  .admin-error{color:#c0392b;font-size:12px;margin-top:6px;min-height:16px;}
+  .admin-success{color:#2e7d32;font-size:12px;margin-top:6px;font-weight:700;min-height:16px;}
+  .dealer-form{display:flex;flex-direction:column;gap:8px;}
+  .dealer-form input{padding:10px 12px;border:1px solid #cdd5e0;border-radius:7px;font-size:14px;outline:none;font-family:Arial,sans-serif;}
+  .counter-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .counter-val{font-size:26px;font-weight:800;color:#1A3A5C;}
+  .counter-form{display:flex;gap:8px;align-items:center;}
+  .counter-form input{padding:8px 10px;border:1px solid #cdd5e0;border-radius:7px;font-size:14px;outline:none;width:110px;font-family:Arial,sans-serif;}
+  .budget-setting{display:flex;gap:8px;align-items:center;margin-top:8px;}
+  .budget-setting input{padding:9px 12px;border:1px solid #cdd5e0;border-radius:7px;font-size:14px;outline:none;width:140px;font-family:Arial,sans-serif;}
  
   /* SNAPSHOT */
-  .snap-invoice { background:#fff; padding:28px 32px; font-family:Arial,sans-serif; font-size:11px; max-width:800px; margin:0 auto; border:1px solid #dde3ee; border-radius:8px; }
-  .snap-invoice .inv-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
-  .snap-invoice h1 { font-size:21px; font-weight:800; color:#1A3A5C; letter-spacing:0.06em; }
-  .snap-invoice .dealer-name { font-size:13px; font-weight:700; color:#E87722; margin-top:2px; }
-  .snap-invoice .dealer-addr { font-size:10px; color:#888; margin-top:1px; }
-  .snap-meta td { padding:3px 7px; font-size:11px; }
-  .snap-meta td:first-child { color:#666; font-weight:700; text-align:right; }
-  .snap-meta td.val { background:#F0F4FA; border:1px solid #cdd5e0; min-width:120px; border-radius:3px; }
-  .snap-meta td.approved-amt { background:#e8f5e9; border:1px solid #a5d6a7; color:#2e7d32; font-weight:800; }
-  .snap-field { border-bottom:1.5px solid #1A3A5C; min-height:18px; padding:2px; font-size:12px; margin-bottom:6px; }
-  .snap-section { background:#1A3A5C; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.08em; padding:5px 9px; margin:14px 0 0; }
-  .snap-table { width:100%; border-collapse:collapse; }
-  .snap-table thead th { background:#2C5F8A; color:#fff; font-size:9.5px; font-weight:700; padding:5px 6px; text-align:center; border:1px solid #1A3A5C; }
-  .snap-table tbody td { border:0.5px solid #ccc; padding:5px 6px; font-size:10.5px; }
-  .snap-table tbody tr:nth-child(even) td { background:#F5F7FB; }
-  .snap-total td { background:#1A3A5C !important; color:#fff; font-weight:700; font-size:11.5px; }
-  .snap-notes { border:0.5px solid #ccc; min-height:44px; background:#FAFBFD; padding:6px 8px; font-size:11px; }
-  .snap-auth { display:flex; gap:16px; padding-top:10px; }
-  .snap-auth-field { flex:1; }
-  .snap-auth-label { font-size:9.5px; color:#1A3A5C; font-weight:700; margin-bottom:2px; }
-  .snap-auth-val { font-size:12px; font-weight:700; color:#1A3A5C; border-bottom:2px solid #1A3A5C; background:#EEF2F7; padding:3px 6px; min-height:24px; }
-  .snap-auth-line { border-bottom:2px solid #1A3A5C; min-height:24px; background:#EEF2F7; }
-  .snap-footer { font-size:9px; color:#999; text-align:center; margin-top:14px; padding-top:8px; border-top:2px solid #E87722; font-style:italic; }
-  .acct-stamp { border:2px solid; border-radius:8px; padding:8px 14px; margin-top:14px; display:inline-block; font-weight:800; font-size:13px; letter-spacing:0.06em; transform:rotate(-2deg); }
-  .acct-stamp.approved { border-color:#2e7d32; color:#2e7d32; background:#f0fff4; }
-  .acct-stamp.denied   { border-color:#c0392b; color:#c0392b; background:#fff5f5; }
+  .snap-invoice{background:#fff;padding:20px;font-family:Arial,sans-serif;font-size:11px;max-width:800px;margin:0 auto;border:1px solid #dde3ee;border-radius:8px;}
+  .snap-invoice .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+  .snap-invoice h1{font-size:18px;font-weight:800;color:#1A3A5C;letter-spacing:0.05em;}
+  .snap-invoice .dealer-name{font-size:12px;font-weight:700;color:#E87722;margin-top:2px;}
+  .snap-invoice .dealer-addr{font-size:10px;color:#888;margin-top:1px;}
+  .snap-meta td{padding:2px 6px;font-size:11px;}
+  .snap-meta td:first-child{color:#666;font-weight:700;text-align:right;}
+  .snap-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:110px;border-radius:3px;}
+  .snap-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}
+  .snap-field{border-bottom:1.5px solid #1A3A5C;min-height:16px;padding:2px;font-size:11px;margin-bottom:5px;}
+  .snap-section{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.07em;padding:5px 8px;margin:12px 0 0;}
+  .snap-table{width:100%;border-collapse:collapse;}
+  .snap-table thead th{background:#2C5F8A;color:#fff;font-size:9px;font-weight:700;padding:4px 5px;text-align:center;border:1px solid #1A3A5C;}
+  .snap-table tbody td{border:0.5px solid #ccc;padding:4px 5px;font-size:10px;}
+  .snap-table tbody tr:nth-child(even) td{background:#F5F7FB;}
+  .snap-total td{background:#1A3A5C !important;color:#fff;font-weight:700;}
+  .snap-notes{border:0.5px solid #ccc;min-height:36px;background:#FAFBFD;padding:5px 7px;font-size:10px;}
+  .snap-auth{display:flex;gap:12px;padding-top:8px;flex-wrap:wrap;}
+  .snap-auth-field{flex:1;min-width:120px;}
+  .snap-auth-label{font-size:9px;color:#1A3A5C;font-weight:700;margin-bottom:2px;}
+  .snap-auth-val{font-size:11px;font-weight:700;color:#1A3A5C;border-bottom:2px solid #1A3A5C;background:#EEF2F7;padding:3px 5px;min-height:22px;}
+  .snap-auth-line{border-bottom:2px solid #1A3A5C;min-height:22px;background:#EEF2F7;}
+  .snap-footer{font-size:9px;color:#999;text-align:center;margin-top:12px;padding-top:7px;border-top:2px solid #E87722;font-style:italic;}
+  .acct-stamp{border:2px solid;border-radius:8px;padding:6px 12px;margin-top:12px;display:inline-block;font-weight:800;font-size:12px;letter-spacing:0.05em;transform:rotate(-2deg);}
+  .acct-stamp.approved{border-color:#2e7d32;color:#2e7d32;background:#f0fff4;}
+  .acct-stamp.denied{border-color:#c0392b;color:#c0392b;background:#fff5f5;}
  
-  @media print {
-    body { background:white; }
-    #login-screen,.topbar,.tabs,.controls,#log-page,#monthly-page,#admin-page,#accountant-page,.modal-bg { display:none !important; }
-    #invoice-page { display:block !important; padding:0; }
-    .invoice { border:none; padding:16px; box-shadow:none; max-width:100%; border-radius:0; }
-    .field-input,.cell-input,.auth-input,.notes-input,.total-input { background:transparent !important; }
+  @media print{
+    body{background:white;}
+    #login-screen,.topbar,.tabs,.controls,#log-page,#monthly-page,#admin-page,#accountant-page,#dashboard-page,.modal-bg,.budget-banner{display:none !important;}
+    #invoice-page{display:block !important;padding:0;}
+    .invoice{border:none;padding:12px;box-shadow:none;max-width:100%;border-radius:0;}
+    .field-input,.field-select,.cell-input,.cell-select,.auth-input,.notes-input,.total-input{background:transparent !important;}
   }
 </style>
 </head>
@@ -285,9 +308,9 @@
     <div class="login-logo">GILL <span>AUTO</span> GROUP</div>
     <div class="login-sub">GAS INVOICE SYSTEM</div>
     <label>NAME</label>
-    <input type="text" id="login-name" placeholder="Your name" autocomplete="off"/>
+    <input type="text" id="login-name" placeholder="Your name" autocomplete="off" autocapitalize="words"/>
     <label>PIN</label>
-    <input type="password" id="login-pin" placeholder="••••" maxlength="6"/>
+    <input type="password" id="login-pin" placeholder="••••" maxlength="6" inputmode="numeric"/>
     <button class="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-error" id="login-error"></div>
   </div>
@@ -295,35 +318,50 @@
  
 <!-- APP -->
 <div id="app">
+  <div class="budget-banner" id="budget-banner"></div>
   <div class="topbar">
-    <div class="topbar-title">GILL <span>AUTO</span> GROUP &nbsp;–&nbsp; Gas Invoice</div>
+    <div class="topbar-title">GILL <span>AUTO</span> GROUP</div>
     <div class="topbar-user" id="topbar-user"></div>
     <span class="badge-master" id="master-badge" style="display:none;">MASTER</span>
-    <span class="badge-accountant" id="acct-badge" style="display:none;">ACCOUNTANT</span>
-    <span class="sync-status"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">Connecting...</span></span>
-    <button class="topbar-btn pin-btn" onclick="openPinModal()">🔑 Change PIN</button>
-    <button class="topbar-btn master-btn" id="admin-topbtn" onclick="showTab('admin')" style="display:none;">⚙️ Admin</button>
+    <span class="badge-accountant" id="acct-badge" style="display:none;">ACCT</span>
+    <span class="sync-status"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">...</span></span>
+    <button class="topbar-btn pin-btn" onclick="openPinModal()">🔑 PIN</button>
+    <button class="topbar-btn master-btn" id="admin-topbtn" onclick="showTab('admin')" style="display:none;">⚙️</button>
     <button class="topbar-btn" onclick="doLogout()">Sign Out</button>
   </div>
   <div class="tabs">
-    <div class="tab active" id="tab-invoice" onclick="showTab('invoice')" style="display:none;">📄 Invoice</div>
+    <div class="tab" id="tab-dashboard" onclick="showTab('dashboard')" style="display:none;">🏠 Today</div>
+    <div class="tab" id="tab-invoice" onclick="showTab('invoice')" style="display:none;">📄 Invoice</div>
     <div class="tab" id="tab-log" onclick="showTab('log')" style="display:none;">📋 History</div>
     <div class="tab" id="tab-monthly" onclick="showTab('monthly')" style="display:none;">📅 Monthly</div>
-    <div class="tab acct-tab" id="tab-accountant" onclick="showTab('accountant')" style="display:none;">🧾 Accountant Review</div>
+    <div class="tab acct-tab" id="tab-accountant" onclick="showTab('accountant')" style="display:none;">🧾 Review</div>
     <div class="tab" id="tab-admin" onclick="showTab('admin')" style="display:none;">⚙️ Admin</div>
+  </div>
+ 
+  <!-- DASHBOARD -->
+  <div class="page" id="dashboard-page">
+    <div class="dash-welcome">
+      <h2 id="dash-greeting">Good morning!</h2>
+      <p id="dash-date"></p>
+    </div>
+    <div class="dash-grid" id="dash-grid"></div>
+    <div class="budget-card" id="dash-budget-card"></div>
+    <div class="today-section">
+      <div class="today-header">📄 Today's Invoices</div>
+      <div id="today-list"></div>
+    </div>
   </div>
  
   <!-- INVOICE PAGE -->
   <div class="page" id="invoice-page">
     <div class="controls">
       <div class="inv-badge">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A3A5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         <div><div class="inv-label">NEXT INVOICE</div><div class="inv-num" id="next-num">GAS-00001</div></div>
       </div>
-      <div class="hint">Fill in the form then click Approve &amp; Print</div>
-      <button class="btn-secondary" onclick="clearForm()">↺ Clear Form</button>
+      <span class="hint">Fill in form then Approve &amp; Print</span>
+      <button class="btn-secondary" onclick="clearForm()">↺ Clear</button>
       <button class="btn-print" onclick="openApprovalModal()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Approve &amp; Print
       </button>
     </div>
@@ -332,121 +370,120 @@
         <div class="inv-title">
           <h1>GAS RECEIPT INVOICE</h1>
           <div class="dealer-name" id="disp-dealer-name">Gill Auto Group</div>
-          <div class="dealer-addr" id="disp-dealer-addr">1100 S Madera Ave, Madera, CA 93637 &nbsp;|&nbsp; (559) 674-5661</div>
+          <div class="dealer-addr" id="disp-dealer-addr">1100 S Madera Ave, Madera, CA 93637 | (559) 674-5661</div>
         </div>
         <div class="inv-meta">
           <table>
-            <tr><td>Invoice #</td><td class="val" id="inv-num-display" style="font-weight:800;color:#1A3A5C;font-size:14px;"></td></tr>
+            <tr><td>Invoice #</td><td class="val" id="inv-num-display" style="font-weight:800;color:#1A3A5C;font-size:13px;"></td></tr>
             <tr><td>Date</td><td class="val" id="inv-date"></td></tr>
             <tr><td>Time</td><td class="val" id="inv-time"></td></tr>
             <tr><td>Approved $</td><td class="val approved-amt" id="inv-approved-amt">—</td></tr>
           </table>
         </div>
       </div>
-      <div style="display:flex;gap:20px;margin-bottom:4px;">
-        <div style="flex:1;"><div class="field-label">STOCK #</div><input class="field-input" id="f-stock" placeholder="e.g. A12345"/>
-          <div class="field-label">EMPLOYEE / DRIVER NAME</div><input class="field-input" id="f-driver" placeholder="Full name"/></div>
-        <div style="flex:1;"><div class="field-label">YEAR / MAKE / MODEL</div><input class="field-input" id="f-vehicle" placeholder="e.g. 2022 Toyota Camry"/>
-          <div class="field-label">DEPARTMENT</div><input class="field-input" id="f-dept" placeholder="e.g. Sales, Service..."/></div>
-        <div style="flex:0.6;"><div class="field-label">LOT LOCATION</div><input class="field-input" id="f-lot" placeholder="e.g. Row B"/>
-          <div class="field-label">MILEAGE</div><input class="field-input" id="f-mileage" placeholder="e.g. 12,450"/></div>
+      <div class="form-row">
+        <div><div class="field-label">STOCK #</div><input class="field-input" id="f-stock" placeholder="e.g. A12345"/></div>
+        <div><div class="field-label">EMPLOYEE / DRIVER</div><input class="field-input" id="f-driver" placeholder="Full name"/></div>
+        <div><div class="field-label">YEAR / MAKE / MODEL</div><input class="field-input" id="f-vehicle" placeholder="e.g. 2022 Toyota Camry"/></div>
+        <div><div class="field-label">DEPARTMENT</div><input class="field-input" id="f-dept" placeholder="e.g. Sales"/></div>
+        <div><div class="field-label">LOT LOCATION</div><input class="field-input" id="f-lot" placeholder="e.g. Row B"/></div>
+        <div><div class="field-label">MILEAGE</div><input class="field-input" id="f-mileage" placeholder="e.g. 12,450" inputmode="numeric"/></div>
       </div>
       <div class="section-header">FUEL DETAILS</div>
-      <table class="data-table">
-        <thead><tr><th>GAS STATION</th><th>FUEL TYPE</th><th>GALLONS</th><th>PRICE / GAL</th><th>TOTAL AMOUNT</th><th>RECEIPT #</th></tr></thead>
-        <tbody id="fuel-rows">
-          <tr><td><input class="cell-input" placeholder="Station name"/></td><td><input class="cell-input" placeholder="Regular/Premium"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" placeholder="Receipt #"/></td></tr>
-          <tr><td><input class="cell-input" placeholder="Station name"/></td><td><input class="cell-input" placeholder="Regular/Premium"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" placeholder="Receipt #"/></td></tr>
-          <tr><td><input class="cell-input" placeholder="Station name"/></td><td><input class="cell-input" placeholder="Regular/Premium"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" type="number" placeholder="0.00" style="text-align:center;"/></td><td><input class="cell-input" placeholder="Receipt #"/></td></tr>
-        </tbody>
-        <tfoot><tr class="total-row"><td colspan="4" style="text-align:right;padding-right:12px;">TOTAL AMOUNT DUE:</td><td>$<input class="total-input" id="f-total" type="number" placeholder="0.00"/></td><td></td></tr></tfoot>
-      </table>
+      <div class="fuel-table-wrap">
+        <table class="data-table">
+          <thead><tr><th>GAS STATION</th><th>FUEL TYPE</th><th>GALLONS</th><th>PRICE/GAL</th><th>TOTAL</th><th>RECEIPT #</th></tr></thead>
+          <tbody id="fuel-rows">
+            <tr><td><input class="cell-input" placeholder="Station"/></td><td><select class="cell-select"><option value="">--</option><option>Regular</option><option>Diesel</option></select></td><td><input class="cell-input" id="gal0" type="number" placeholder="0.00" inputmode="decimal" oninput="calcRow(0)"/></td><td><input class="cell-input" id="ppg0" type="number" placeholder="0.00" inputmode="decimal" oninput="calcRow(0)"/></td><td><input class="cell-input" id="rt0" type="number" placeholder="0.00" inputmode="decimal" oninput="calcTotal()"/></td><td><input class="cell-input" placeholder="Receipt #"/></td></tr>
+            <tr><td><input class="cell-input" placeholder="Station"/></td><td><select class="cell-select"><option value="">--</option><option>Regular</option><option>Diesel</option></select></td><td><input class="cell-input" id="gal1" type="number" placeholder="0.00" inputmode="decimal" oninput="calcRow(1)"/></td><td><input class="cell-input" id="ppg1" type="number" placeholder="0.00" inputmode="decimal" oninput="calcRow(1)"/></td><td><input class="cell-input" id="rt1" type="number" placeholder="0.00" inputmode="decimal" oninput="calcTotal()"/></td><td><input class="cell-input" placeholder="Receipt #"/></td></tr>
+            <tr><td><input class="cell-input" placeholder="Station"/></td><td><select class="cell-select"><option value="">--</option><option>Regular</option><option>Diesel</option></select></td><td><input class="cell-input" id="gal2" type="number" placeholder="0.00" inputmode="decimal" oninput="calcRow(2)"/></td><td><input class="cell-input" id="ppg2" type="number" placeholder="0.00" inputmode="decimal" oninput="calcRow(2)"/></td><td><input class="cell-input" id="rt2" type="number" placeholder="0.00" inputmode="decimal" oninput="calcTotal()"/></td><td><input class="cell-input" placeholder="Receipt #"/></td></tr>
+          </tbody>
+          <tfoot><tr class="total-row"><td colspan="4" style="text-align:right;padding-right:10px;font-size:11px;">TOTAL:</td><td>$<input class="total-input" id="f-total" type="number" placeholder="0.00" inputmode="decimal"/></td><td></td></tr></tfoot>
+        </table>
+      </div>
       <div class="section-header">PURPOSE / NOTES</div>
-      <textarea class="notes-input" id="f-notes" placeholder="Enter any notes or purpose for this fueling..."></textarea>
+      <textarea class="notes-input" id="f-notes" placeholder="Notes or purpose..."></textarea>
       <div class="section-header">AUTHORIZATION</div>
       <div class="auth-section">
         <div class="auth-field"><div class="field-label">APPROVING MANAGER</div><div class="prefilled" id="inv-manager"></div></div>
         <div class="auth-field"><div class="field-label">MANAGER SIGNATURE</div><div class="sig-line"></div></div>
-        <div class="auth-field" style="flex:0.6;"><div class="field-label">DATE APPROVED</div><div class="prefilled" id="inv-mgr-date"></div></div>
+        <div class="auth-field"><div class="field-label">DATE APPROVED</div><div class="prefilled" id="inv-mgr-date"></div></div>
       </div>
       <div class="auth-section">
         <div class="auth-field"><div class="field-label">EMPLOYEE SIGNATURE</div><div class="sig-line"></div></div>
         <div class="auth-field"><div class="field-label">VIN (LAST 6)</div><input class="auth-input" id="f-vin" placeholder="Last 6 of VIN"/></div>
-        <div class="auth-field" style="flex:0.6;"><div class="field-label">COLOR</div><input class="auth-input" id="f-color" placeholder="e.g. White"/></div>
+        <div class="auth-field"><div class="field-label">COLOR</div><input class="auth-input" id="f-color" placeholder="e.g. White"/></div>
       </div>
-      <div class="inv-footer" id="disp-footer">Please attach original gas receipt to this form. Retain copy for dealership records. &nbsp;|&nbsp; Gill Auto Group &nbsp;|&nbsp; (559) 674-5661</div>
+      <div class="inv-footer" id="disp-footer">Please attach original gas receipt. Retain copy for records. | Gill Auto Group | (559) 674-5661</div>
     </div>
   </div>
  
-  <!-- HISTORY PAGE -->
+  <!-- HISTORY -->
   <div class="page" id="log-page">
-    <div class="page-header"><h2>Invoice History</h2><button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button></div>
+    <div class="page-header"><h2>Invoice History</h2><button class="btn-export" onclick="exportCSV()">⬇ CSV</button><button class="btn-export" onclick="exportLogPDF()" style="background:#c0392b;">⬇ PDF</button></div>
     <div class="log-stats" id="log-stats"></div>
     <div class="table-wrap">
       <table class="log-table">
-        <thead><tr><th>Invoice #</th><th>Date</th><th>Approved By</th><th>Approved $</th><th>Stock #</th><th>Driver</th><th>Acct Status</th><th>View</th></tr></thead>
+        <thead><tr><th>Invoice #</th><th>Date</th><th>Manager</th><th>Amount</th><th>Stock #</th><th>Acct</th><th>View</th></tr></thead>
         <tbody id="log-body"></tbody>
       </table>
     </div>
   </div>
  
-  <!-- MONTHLY PAGE -->
+  <!-- MONTHLY -->
   <div class="page" id="monthly-page">
-    <div class="page-header"><h2>📅 Monthly Report</h2><button class="btn-export" onclick="exportMonthlyCSV()">⬇ Export CSV</button></div>
-    <div class="month-filter"><label>View Month:</label><select id="month-select" onchange="renderMonthly()"></select></div>
+    <div class="page-header"><h2>📅 Monthly</h2><button class="btn-export" onclick="exportMonthlyCSV()">⬇ CSV</button><button class="btn-export" onclick="exportMonthlyPDF()" style="background:#c0392b;">⬇ PDF</button></div>
+    <div class="month-filter"><label>Month:</label><select id="month-select" onchange="renderMonthly()"></select></div>
     <div class="monthly-grid" id="monthly-grid"></div>
-    <div class="mgr-breakdown"><h3>By Manager</h3><div class="mgr-cards" id="mgr-cards"></div></div>
-    <div class="all-months-table"><h3>All Months Summary</h3>
-      <table class="months-tbl"><thead><tr><th>Month</th><th>Invoices</th><th>Total Approved</th><th>Avg/Invoice</th><th>Top Approver</th></tr></thead><tbody id="all-months-body"></tbody></table>
-    </div>
+    <div style="font-size:14px;font-weight:800;color:#1A3A5C;margin-bottom:10px;">By Manager</div>
+    <div class="mgr-cards" id="mgr-cards"></div>
+    <div style="font-size:14px;font-weight:800;color:#1A3A5C;margin-bottom:10px;">All Months</div>
+    <div class="table-wrap"><table class="months-tbl"><thead><tr><th>Month</th><th>Invoices</th><th>Total</th><th>Avg</th><th>Top Approver</th></tr></thead><tbody id="all-months-body"></tbody></table></div>
   </div>
  
-  <!-- ACCOUNTANT PAGE -->
+  <!-- ACCOUNTANT -->
   <div class="page" id="accountant-page">
-    <div class="acct-header-banner">
-      <div class="ah-icon">🧾</div>
-      <div><h2>Accountant Review — Gill Auto Group</h2><p>Review, approve, or deny gas invoices. Add notes for any issues.</p></div>
-    </div>
+    <div class="acct-header-banner"><div class="ah-icon">🧾</div><div><h2>Accountant Review</h2><p>Review, approve, or deny gas invoices.</p></div></div>
     <div class="acct-stats" id="acct-stats"></div>
-    <div class="page-header" style="margin-top:0;">
-      <h2 style="font-size:15px;">Invoices</h2>
-      <button class="btn-export" onclick="exportAcctCSV()">⬇ Export Report</button>
-    </div>
+    <div class="page-header"><h2 style="font-size:14px;">Invoices</h2><button class="btn-export purple" onclick="exportAcctCSV()">⬇ CSV</button><button class="btn-export" onclick="exportAcctPDF()" style="background:#c0392b;">⬇ PDF</button></div>
     <div class="acct-filters">
-      <label>Status:</label>
-      <select id="acct-filter-status" onchange="renderAccountant()">
-        <option value="all">All</option>
-        <option value="pending">Pending</option>
-        <option value="approved">Approved</option>
-        <option value="denied">Denied</option>
-      </select>
-      <label>Month:</label>
+      <select id="acct-filter-status" onchange="renderAccountant()"><option value="all">All Status</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="denied">Denied</option></select>
       <select id="acct-filter-month" onchange="renderAccountant()"><option value="all">All Months</option></select>
-      <input type="text" id="acct-search" placeholder="Search stock #, driver, manager..." style="flex:1;min-width:200px;" oninput="renderAccountant()"/>
+      <input type="text" id="acct-search" placeholder="Search..." oninput="renderAccountant()" style="flex:1;min-width:150px;"/>
     </div>
     <div class="table-wrap">
       <table class="log-table">
-        <thead><tr><th>Invoice #</th><th>Date</th><th>Manager</th><th>Amount</th><th>Stock #</th><th>Driver</th><th>Status</th><th>Accountant Notes</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Invoice #</th><th>Date</th><th>Manager</th><th>Amount</th><th>Stock #</th><th>Status</th><th>Notes</th><th>Actions</th></tr></thead>
         <tbody id="acct-body"></tbody>
       </table>
     </div>
   </div>
  
-  <!-- ADMIN PAGE -->
+  <!-- ADMIN -->
   <div class="page" id="admin-page">
     <div class="admin-wrap">
       <div class="admin-section">
         <h3>🏢 Dealership Info</h3>
         <div class="dealer-form"><input type="text" id="admin-dname" placeholder="Dealership Name"/><input type="text" id="admin-daddr" placeholder="Address"/><input type="text" id="admin-dphone" placeholder="Phone"/></div>
-        <div style="margin-top:12px;"><button class="btn-add" onclick="saveDealerAdmin()">Save Dealership Info</button></div>
+        <div style="margin-top:10px;"><button class="btn-add" onclick="saveDealerAdmin()">Save</button></div>
         <div class="admin-success" id="dealer-success"></div>
       </div>
       <div class="admin-section">
-        <h3>🔄 Reset Controls <span style="font-size:11px;background:#E87722;color:#fff;padding:2px 8px;border-radius:4px;margin-left:8px;">MASTER ONLY</span></h3>
-        <div class="reset-warning"><strong>⚠️ These actions cannot be undone.</strong>Resetting the counter restarts from GAS-00001. Clearing the log permanently deletes all records.</div>
+        <h3>💰 Monthly Budget</h3>
+        <p style="font-size:12px;color:#888;margin-bottom:10px;">Set the monthly gas spending limit. A warning shows at 80% and a red alert at 100%.</p>
+        <div class="budget-setting">
+          <span style="font-size:16px;color:#555;">$</span>
+          <input type="number" id="admin-budget" placeholder="e.g. 12000" inputmode="numeric"/>
+          <button class="btn-add" onclick="saveBudget()">Save</button>
+        </div>
+        <div class="admin-success" id="budget-success"></div>
+      </div>
+      <div class="admin-section">
+        <h3>🔄 Reset Controls <span style="font-size:10px;background:#E87722;color:#fff;padding:2px 7px;border-radius:4px;margin-left:6px;">MASTER ONLY</span></h3>
+        <div class="reset-warning"><strong>⚠️ Cannot be undone.</strong></div>
         <div class="reset-btns">
-          <button class="btn-reset-counter" onclick="resetCounter()">↺ Reset Invoice Counter</button>
-          <button class="btn-reset-log" onclick="clearLog()">🗑 Clear Invoice Log</button>
+          <button class="btn-reset-counter" onclick="resetCounter()">↺ Reset Counter</button>
+          <button class="btn-reset-log" onclick="clearLog()">🗑 Clear Log</button>
           <button class="btn-reset-both" onclick="resetBoth()">⚠️ Reset Both</button>
         </div>
         <div class="admin-success" id="reset-success"></div>
@@ -455,7 +492,7 @@
         <h3>🔢 Set Invoice Counter</h3>
         <div class="counter-row">
           <div><div class="field-label">CURRENT</div><div class="counter-val" id="admin-counter-val">—</div></div>
-          <div class="counter-form"><input type="number" id="admin-counter-input" placeholder="Set to..." min="1"/><button class="btn-add" onclick="setCounterAdmin()">Set</button></div>
+          <div class="counter-form"><input type="number" id="admin-counter-input" placeholder="Set to..." min="1" inputmode="numeric"/><button class="btn-add" onclick="setCounterAdmin()">Set</button></div>
         </div>
         <div class="admin-success" id="counter-success"></div>
       </div>
@@ -465,19 +502,19 @@
         <hr class="divider">
         <div style="font-size:13px;font-weight:700;color:#1A3A5C;margin-bottom:10px;">Add New User</div>
         <div class="add-user-form">
-          <input type="text" id="new-uname" placeholder="Full Name" style="flex:2;min-width:140px;"/>
-          <input type="password" id="new-upin" placeholder="PIN (4-6 digits)" maxlength="6" style="flex:1;min-width:110px;"/>
-          <select id="new-urole" style="flex:1;min-width:120px;"><option value="standard">Standard</option><option value="manager">Manager</option><option value="accountant">Accountant</option></select>
+          <input type="text" id="new-uname" placeholder="Full Name" autocapitalize="words"/>
+          <input type="password" id="new-upin" placeholder="PIN (4-6)" maxlength="6" inputmode="numeric"/>
+          <select id="new-urole"><option value="standard">Standard</option><option value="manager">Manager</option><option value="accountant">Accountant</option></select>
           <button class="btn-add" onclick="addUser()">Add</button>
         </div>
         <div class="admin-error" id="user-error"></div>
         <div class="admin-success" id="user-success"></div>
       </div>
       <div class="admin-section">
-        <h3>🔑 Change Any User's PIN</h3>
+        <h3>🔑 Change Any PIN</h3>
         <div class="add-user-form">
-          <select id="pin-target-user" style="flex:2;min-width:160px;"></select>
-          <input type="password" id="admin-new-pin" placeholder="New PIN (4-6 digits)" maxlength="6" style="flex:1;min-width:130px;"/>
+          <select id="pin-target-user" style="flex:2;"></select>
+          <input type="password" id="admin-new-pin" placeholder="New PIN" maxlength="6" inputmode="numeric"/>
           <button class="btn-add" onclick="adminChangePin()">Update</button>
         </div>
         <div class="admin-error" id="adminpin-error"></div>
@@ -491,9 +528,9 @@
 <div class="modal-bg" id="modal-approval">
   <div class="modal">
     <h2>✅ Approve Gas Invoice</h2>
-    <p>Confirm the approved dollar amount.</p>
+    <p>Confirm the approved amount.</p>
     <label>APPROVED AMOUNT ($)</label>
-    <input type="number" id="modal-amount" placeholder="e.g. 75.00" min="0.01" step="0.01"/>
+    <input type="number" id="modal-amount" placeholder="e.g. 75.00" min="0.01" step="0.01" inputmode="decimal"/>
     <div class="modal-error" id="modal-error"></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModals()">Cancel</button>
@@ -505,11 +542,10 @@
 <div class="modal-bg" id="modal-pin">
   <div class="modal">
     <h2>🔑 Change Your PIN</h2>
-    <p>Enter your current PIN then choose a new one (4–6 digits).</p>
-    <label>CURRENT PIN</label><input type="password" id="pin-current" placeholder="Current PIN" maxlength="6"/>
+    <label>CURRENT PIN</label><input type="password" id="pin-current" placeholder="Current PIN" maxlength="6" inputmode="numeric"/>
     <div class="modal-error" id="pin-error"></div>
-    <label>NEW PIN</label><input type="password" id="pin-new" placeholder="4–6 digits" maxlength="6"/>
-    <label>CONFIRM NEW PIN</label><input type="password" id="pin-confirm" placeholder="Re-enter" maxlength="6"/>
+    <label>NEW PIN</label><input type="password" id="pin-new" placeholder="4–6 digits" maxlength="6" inputmode="numeric"/>
+    <label>CONFIRM NEW PIN</label><input type="password" id="pin-confirm" placeholder="Re-enter" maxlength="6" inputmode="numeric"/>
     <div class="modal-success" id="pin-success"></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModals()">Cancel</button>
@@ -521,8 +557,8 @@
 <div class="modal-bg" id="modal-editpin">
   <div class="modal">
     <h2>🔑 Change PIN for <span id="editpin-username"></span></h2>
-    <label>NEW PIN (4–6 digits)</label><input type="password" id="editpin-new" placeholder="New PIN" maxlength="6"/>
-    <label>CONFIRM</label><input type="password" id="editpin-confirm" placeholder="Re-enter" maxlength="6"/>
+    <label>NEW PIN</label><input type="password" id="editpin-new" placeholder="New PIN" maxlength="6" inputmode="numeric"/>
+    <label>CONFIRM</label><input type="password" id="editpin-confirm" placeholder="Re-enter" maxlength="6" inputmode="numeric"/>
     <div class="modal-error" id="editpin-error"></div>
     <div class="modal-success" id="editpin-success"></div>
     <div class="modal-btns">
@@ -532,13 +568,12 @@
   </div>
 </div>
  
-<!-- ACCOUNTANT REVIEW MODAL -->
 <div class="modal-bg" id="modal-acct-review">
   <div class="modal">
     <h2 id="acct-review-title">Review Invoice</h2>
-    <p>Add any notes then approve or deny this invoice.</p>
+    <p>Add notes then approve or deny.</p>
     <label>ACCOUNTANT NOTES (optional)</label>
-    <textarea id="acct-review-notes" placeholder="Enter any notes, concerns, or reasons for denial..."></textarea>
+    <textarea id="acct-review-notes" placeholder="Notes, concerns, or reason for denial..."></textarea>
     <div class="modal-success" id="acct-review-success"></div>
     <div class="modal-error" id="acct-review-error"></div>
     <div class="modal-btns">
@@ -549,13 +584,13 @@
   </div>
 </div>
  
-<!-- PREVIEW MODAL -->
 <div class="modal-bg" id="modal-preview">
   <div class="modal preview-modal">
     <div class="preview-topbar">
       <h2 id="preview-title">Invoice Preview</h2>
-      <button class="btn-pdf" onclick="printPreview()">🖨 Print / Save as PDF</button>
-      <button class="btn-cancel" style="flex:none;padding:8px 14px;background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.3);" onclick="closeModals()">✕ Close</button>
+      <button class="btn-pdf" onclick="printPreview()">🖨 Print</button>
+      <button class="btn-pdf" onclick="exportSinglePDF()" style="background:#2e7d32;">⬇ PDF</button>
+      <button class="btn-cancel" style="flex:none;padding:7px 12px;background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.3);" onclick="closeModals()">✕</button>
     </div>
     <div class="preview-body" id="preview-body"></div>
   </div>
@@ -563,7 +598,7 @@
  
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, orderBy, onSnapshot, deleteDoc, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, orderBy, onSnapshot, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
  
   const firebaseConfig = {
     apiKey: "AIzaSyAhDx0zL9cgQ602vyAbGOiJgv-BWKIwvoM",
@@ -584,25 +619,44 @@
     { name:"Robert Haro",  pin:"1234", role:"standard"   },
     { name:"Maria Macias", pin:"1234", role:"accountant" }
   ];
-  const DEFAULT_DEALER = { name:"Gill Auto Group", addr:"1100 S Madera Ave, Madera, CA 93637", phone:"(559) 674-5661" };
+  const DEFAULT_DEALER  = { name:"Gill Auto Group", addr:"1100 S Madera Ave, Madera, CA 93637", phone:"(559) 674-5661" };
+  const DEFAULT_BUDGET  = 12000;
  
-  let currentUser=null, allUsers=[], dealerInfo={...DEFAULT_DEALER}, invoiceCounter=1;
+  let currentUser=null, allUsers=[], dealerInfo={...DEFAULT_DEALER}, invoiceCounter=1, monthlyBudget=DEFAULT_BUDGET;
   let editPinTarget=null, previewInvoice=null, logUnsubscribe=null, allInvoices=[];
   let acctReviewTarget=null;
  
   function setSyncStatus(ok){ document.getElementById('sync-dot').className='sync-dot'+(ok?'':' offline'); document.getElementById('sync-text').textContent=ok?'Synced':'Offline'; }
  
-  async function fsGetUsers(){try{const s=await getDoc(doc(db,'config','users'));if(s.exists()&&s.data().list)return s.data().list;}catch(e){}return JSON.parse(JSON.stringify(DEFAULT_USERS));}
+  async function fsGet(path,def){try{const s=await getDoc(doc(db,...path.split('/')));if(s.exists())return s.data();}catch(e){}return def;}
+  async function fsGetUsers(){const d=await fsGet('config/users',null);return(d&&d.list)?d.list:JSON.parse(JSON.stringify(DEFAULT_USERS));}
   async function fsSaveUsers(u){await setDoc(doc(db,'config','users'),{list:u});}
-  async function fsGetDealer(){try{const s=await getDoc(doc(db,'config','dealer'));if(s.exists())return s.data();}catch(e){}return{...DEFAULT_DEALER};}
+  async function fsGetDealer(){return await fsGet('config/dealer',{...DEFAULT_DEALER});}
   async function fsSaveDealer(d){await setDoc(doc(db,'config','dealer'),d);}
-  async function fsGetCounter(){try{const s=await getDoc(doc(db,'config','counter'));if(s.exists())return s.data().value||1;}catch(e){}return 1;}
+  async function fsGetCounter(){const d=await fsGet('config/counter',{value:1});return d.value||1;}
   async function fsSetCounter(n){await setDoc(doc(db,'config','counter'),{value:n});}
+  async function fsGetBudget(){const d=await fsGet('config/budget',{value:DEFAULT_BUDGET});return d.value||DEFAULT_BUDGET;}
+  async function fsSetBudget(n){await setDoc(doc(db,'config','budget'),{value:n});}
  
   async function init(){
-    try{allUsers=await fsGetUsers();dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();setSyncStatus(true);if(!allUsers.length){allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));await fsSaveUsers(allUsers);}}catch(e){setSyncStatus(false);allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));}
+    try{allUsers=await fsGetUsers();dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();monthlyBudget=await fsGetBudget();setSyncStatus(true);}
+    catch(e){setSyncStatus(false);allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));}
   }
   init();
+ 
+  /* AUTO-CALC */
+  window.calcRow=function(i){
+    const g=parseFloat(document.getElementById('gal'+i).value)||0;
+    const p=parseFloat(document.getElementById('ppg'+i).value)||0;
+    const t=g*p;
+    if(t>0)document.getElementById('rt'+i).value=t.toFixed(2);
+    calcTotal();
+  };
+  window.calcTotal=function(){
+    let sum=0;
+    for(let i=0;i<3;i++){const v=parseFloat(document.getElementById('rt'+i).value)||0;sum+=v;}
+    if(sum>0)document.getElementById('f-total').value=sum.toFixed(2);
+  };
  
   /* LOGIN */
   document.getElementById('login-pin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
@@ -614,49 +668,49 @@
     const user=allUsers.find(u=>u.name.toLowerCase()===name&&u.pin===pin);
     if(!user){document.getElementById('login-error').textContent='Name or PIN not recognized.';return;}
     currentUser=user;
+    dealerInfo=await fsGetDealer(); invoiceCounter=await fsGetCounter(); monthlyBudget=await fsGetBudget();
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('topbar-user').textContent='Signed in as '+user.name+(user.role==='master'?' (Master)':user.role==='manager'?' (Manager)':user.role==='accountant'?' (Accountant)':'');
+    document.getElementById('topbar-user').textContent=user.name;
     document.getElementById('master-badge').style.display=user.role==='master'?'inline-block':'none';
     document.getElementById('acct-badge').style.display=user.role==='accountant'?'inline-block':'none';
     const isMgr=user.role==='master'||user.role==='manager';
     const isAcct=user.role==='accountant';
     const isMaster=user.role==='master';
-    // Tab visibility
+    document.getElementById('tab-dashboard').style.display=!isAcct?'inline-block':'none';
     document.getElementById('tab-invoice').style.display=!isAcct?'inline-block':'none';
     document.getElementById('tab-log').style.display=isMgr?'inline-block':'none';
     document.getElementById('tab-monthly').style.display=isMgr?'inline-block':'none';
     document.getElementById('tab-accountant').style.display=(isAcct||isMaster)?'inline-block':'none';
     document.getElementById('tab-admin').style.display=isMaster?'inline-block':'none';
     document.getElementById('admin-topbtn').style.display=isMaster?'inline-block':'none';
-    dealerInfo=await fsGetDealer(); invoiceCounter=await fsGetCounter();
     updateDealerDisplay(); setSyncStatus(true);
-    // Default tab
-    if(isAcct) showTab('accountant');
-    else { showTab('invoice'); document.getElementById('invoice-page').classList.add('active'); }
+    if(isAcct)showTab('accountant');
+    else{showTab('dashboard');}
   };
+  window.doLogout=function(){currentUser=null;if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('login-name').value='';document.getElementById('login-pin').value='';document.getElementById('login-error').textContent='';document.getElementById('budget-banner').className='budget-banner';};
  
-  window.doLogout=function(){currentUser=null;if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('login-name').value='';document.getElementById('login-pin').value='';document.getElementById('login-error').textContent='';};
- 
-  /* TABS */
   window.showTab=function(t){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
     document.getElementById(t+'-page').classList.add('active');
     document.querySelectorAll('.tab').forEach(tab=>{if(tab.getAttribute('onclick')==="showTab('"+t+"')")tab.classList.add('active');});
+    if(t==='dashboard')renderDashboard();
     if(t==='log')renderLog();
     if(t==='monthly')renderMonthly();
     if(t==='accountant')renderAccountant();
     if(t==='admin')renderAdmin();
+    if(t==='invoice')refreshInvoice();
   };
  
   function updateDealerDisplay(){
     document.getElementById('disp-dealer-name').textContent=dealerInfo.name;
-    document.getElementById('disp-dealer-addr').innerHTML=dealerInfo.addr+' &nbsp;|&nbsp; '+dealerInfo.phone;
-    document.getElementById('disp-footer').innerHTML='Please attach original gas receipt to this form. Retain copy for dealership records. &nbsp;|&nbsp; '+dealerInfo.name+' &nbsp;|&nbsp; '+dealerInfo.phone;
+    document.getElementById('disp-dealer-addr').textContent=dealerInfo.addr+' | '+dealerInfo.phone;
+    document.getElementById('disp-footer').textContent='Please attach original gas receipt. Retain copy for records. | '+dealerInfo.name+' | '+dealerInfo.phone;
   }
  
   function formatNum(n){return 'GAS-'+String(n).padStart(5,'0');}
+ 
   function refreshInvoice(){
     document.getElementById('next-num').textContent=formatNum(invoiceCounter);
     document.getElementById('inv-num-display').textContent=formatNum(invoiceCounter);
@@ -667,8 +721,56 @@
     document.getElementById('inv-mgr-date').textContent=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     document.getElementById('inv-approved-amt').textContent='—';
   }
-  window.clearForm=function(){document.querySelectorAll('.field-input,.cell-input,.auth-input').forEach(i=>i.value='');document.getElementById('f-notes').value='';document.getElementById('f-total').value='';refreshInvoice();};
-  function getFuelRows(){const rows=[];document.querySelectorAll('#fuel-rows tr').forEach(tr=>{const c=tr.querySelectorAll('input');if(c.length>=6)rows.push({station:c[0].value,fuelType:c[1].value,gallons:c[2].value,pricePerGal:c[3].value,total:c[4].value,receiptNum:c[5].value});});return rows;}
+ 
+  window.clearForm=function(){document.querySelectorAll('.field-input,.cell-input,.auth-input').forEach(i=>i.value='');document.querySelectorAll('.cell-select').forEach(s=>s.selectedIndex=0);document.getElementById('f-notes').value='';document.getElementById('f-total').value='';refreshInvoice();};
+ 
+  function getFuelRows(){const rows=[];document.querySelectorAll('#fuel-rows tr').forEach((tr,idx)=>{const c=tr.querySelectorAll('input');const s=tr.querySelectorAll('select');if(c.length>=5)rows.push({station:c[0].value,fuelType:s[0]?s[0].value:'',gallons:c[1].value,pricePerGal:c[2].value,total:c[3].value,receiptNum:c[4].value});});return rows;}
+ 
+  /* BUDGET BANNER */
+  async function checkBudget(){
+    const now=new Date();
+    const mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    const snap=await getDocs(collection(db,'invoices'));
+    const spent=snap.docs.filter(d=>d.data().monthKey===mk).reduce((s,d)=>s+parseFloat((d.data().amount||'$0').replace('$','')),0);
+    const pct=(spent/monthlyBudget)*100;
+    const banner=document.getElementById('budget-banner');
+    if(pct>=100){banner.className='budget-banner danger';banner.textContent=`⛽ BUDGET EXCEEDED — $${spent.toFixed(2)} spent of $${monthlyBudget.toLocaleString()} limit this month`;}
+    else if(pct>=80){banner.className='budget-banner warning';banner.textContent=`⚠️ Budget Warning — $${spent.toFixed(2)} of $${monthlyBudget.toLocaleString()} used (${Math.round(pct)}%)`;}
+    else{banner.className='budget-banner';}
+    return{spent,pct};
+  }
+ 
+  /* DASHBOARD */
+  async function renderDashboard(){
+    const now=new Date();
+    const hr=now.getHours();
+    document.getElementById('dash-greeting').textContent=(hr<12?'Good morning':'hr<17?'Good afternoon':'Good evening')+', '+currentUser.name+'!';
+    document.getElementById('dash-date').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const todayStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
+    const all=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const todayInvs=all.filter(r=>r.date===todayStr);
+    const monthInvs=all.filter(r=>r.monthKey===mk);
+    const todayTotal=todayInvs.reduce((s,r)=>s+parseFloat((r.amount||'$0').replace('$','')),0);
+    const monthTotal=monthInvs.reduce((s,r)=>s+parseFloat((r.amount||'$0').replace('$','')),0);
+    const pending=all.filter(r=>!r.acctStatus||r.acctStatus==='pending').length;
+    document.getElementById('dash-grid').innerHTML=
+      `<div class="dash-card"><div class="dc-label">TODAY'S INVOICES</div><div class="dc-val">${todayInvs.length}</div><div class="dc-sub">$${todayTotal.toFixed(2)} total</div></div>
+       <div class="dash-card"><div class="dc-label">MONTH TOTAL</div><div class="dc-val">$${monthTotal.toFixed(0)}</div><div class="dc-sub">${monthInvs.length} invoices</div></div>
+       <div class="dash-card"><div class="dc-label">BUDGET REMAINING</div><div class="dc-val" style="color:${monthTotal>monthlyBudget?'#c0392b':'#2e7d32'};">$${Math.max(0,monthlyBudget-monthTotal).toFixed(0)}</div><div class="dc-sub">of $${monthlyBudget.toLocaleString()}</div></div>
+       <div class="dash-card"><div class="dc-label">PENDING REVIEW</div><div class="dc-val" style="color:#856404;">${pending}</div><div class="dc-sub">awaiting accountant</div></div>`;
+    const pct=Math.min((monthTotal/monthlyBudget)*100,100);
+    const barCls=pct>=100?'over':pct>=80?'warn':'ok';
+    document.getElementById('dash-budget-card').innerHTML=
+      `<h3>Monthly Budget — ${now.toLocaleDateString('en-US',{month:'long',year:'numeric'})}</h3>
+       <div class="budget-bar-wrap"><div class="budget-bar-fill ${barCls}" style="width:${pct}%"></div></div>
+       <div class="budget-row"><span>$${monthTotal.toFixed(2)} spent</span><span>$${monthlyBudget.toLocaleString()} limit (${Math.round(pct)}%)</span></div>`;
+    const listEl=document.getElementById('today-list');
+    if(!todayInvs.length){listEl.innerHTML='<div class="today-empty">No invoices today yet.</div>';return;}
+    listEl.innerHTML=todayInvs.map(r=>`<div class="today-item"><div class="today-inv">${r.invNum}</div><div class="today-info">${r.manager}<div class="ti-sub">${r.stock||'—'} &nbsp;|&nbsp; ${r.driver||'—'}</div></div><div><div class="today-amt">${r.amount}</div><div class="today-status status-${r.acctStatus||'pending'}">${(r.acctStatus||'pending').charAt(0).toUpperCase()+(r.acctStatus||'pending').slice(1)}</div></div></div>`).join('');
+    checkBudget();
+  }
  
   window.closeModals=function(){document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open'));};
  
@@ -683,7 +785,7 @@
   window.confirmApproval=async function(){
     const raw=document.getElementById('modal-amount').value.trim();
     const amt=parseFloat(raw);
-    if(!raw||isNaN(amt)||amt<=0){document.getElementById('modal-error').textContent='Please enter a valid dollar amount.';return;}
+    if(!raw||isNaN(amt)||amt<=0){document.getElementById('modal-error').textContent='Please enter a valid amount.';return;}
     const now=new Date();
     const dateStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     const timeStr=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
@@ -697,8 +799,7 @@
       lot:document.getElementById('f-lot').value||'',mileage:document.getElementById('f-mileage').value||'',
       vin:document.getElementById('f-vin').value||'',color:document.getElementById('f-color').value||'',
       notes:document.getElementById('f-notes').value||'',fuelRows:getFuelRows(),dealer:{...dealerInfo},
-      monthKey,monthLabel,createdAt:now.toISOString(),
-      acctStatus:'pending',acctNotes:'',acctReviewedBy:'',acctReviewedAt:''};
+      monthKey,monthLabel,createdAt:now.toISOString(),acctStatus:'pending',acctNotes:'',acctReviewedBy:'',acctReviewedAt:''};
     document.getElementById('inv-approved-amt').textContent=fmtAmt;
     document.getElementById('inv-num-display').textContent=invNum;
     document.getElementById('inv-date').textContent=dateStr;
@@ -708,12 +809,11 @@
     closeModals();
     setTimeout(async()=>{
       window.print();
-      try{await addDoc(collection(db,'invoices'),snapshot);invoiceCounter++;await fsSetCounter(invoiceCounter);setSyncStatus(true);}catch(e){setSyncStatus(false);}
+      try{await addDoc(collection(db,'invoices'),snapshot);invoiceCounter++;await fsSetCounter(invoiceCounter);setSyncStatus(true);checkBudget();}catch(e){setSyncStatus(false);}
       refreshInvoice();
     },150);
   };
  
-  /* PIN */
   window.openPinModal=function(){['pin-current','pin-new','pin-confirm'].forEach(id=>document.getElementById(id).value='');document.getElementById('pin-error').textContent='';document.getElementById('pin-success').textContent='';document.getElementById('modal-pin').classList.add('open');setTimeout(()=>document.getElementById('pin-current').focus(),100);};
   window.confirmPinChange=async function(){
     const current=document.getElementById('pin-current').value.trim(),newPin=document.getElementById('pin-new').value.trim(),conf=document.getElementById('pin-confirm').value.trim();
@@ -726,28 +826,26 @@
     await fsSaveUsers(allUsers);currentUser.pin=newPin;okEl.textContent='✓ PIN updated!';setTimeout(closeModals,1400);
   };
  
-  /* LOG */
   async function renderLog(){
     if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}
     const tbody=document.getElementById('log-body');
-    tbody.innerHTML='<tr><td colspan="8" class="empty-state">Loading...</td></tr>';
+    tbody.innerHTML='<tr><td colspan="7" class="empty-state">Loading...</td></tr>';
     try{
       const q=query(collection(db,'invoices'),orderBy('createdAt','desc'));
       logUnsubscribe=onSnapshot(q,snap=>{
         allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));
         tbody.innerHTML='';
-        if(!allInvoices.length){tbody.innerHTML='<tr><td colspan="8" class="empty-state">No invoices yet.</td></tr>';renderStats([]);return;}
+        if(!allInvoices.length){tbody.innerHTML='<tr><td colspan="7" class="empty-state">No invoices yet.</td></tr>';renderStats([]);return;}
         allInvoices.forEach(r=>{
           const st=r.acctStatus||'pending';
-          const stBadge=`<span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span>`;
           const tr=document.createElement('tr');
-          tr.innerHTML=`<td><strong>${r.invNum}</strong></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${r.driver||'—'}</td><td>${stBadge}</td><td><button class="btn-view" onclick="openPreview('${r.id}')">👁 View</button></td>`;
+          tr.innerHTML=`<td><strong>${r.invNum}</strong></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td><span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span></td><td><button class="btn-view" onclick="openPreview('${r.id}')">👁</button></td>`;
           tbody.appendChild(tr);
         });
         renderStats(allInvoices);
       });
       setSyncStatus(true);
-    }catch(e){setSyncStatus(false);tbody.innerHTML='<tr><td colspan="8" class="empty-state">Could not load.</td></tr>';}
+    }catch(e){setSyncStatus(false);tbody.innerHTML='<tr><td colspan="7" class="empty-state">Could not load.</td></tr>';}
   }
  
   function renderStats(invoices){
@@ -756,31 +854,23 @@
     const approved=invoices.filter(r=>r.acctStatus==='approved').length;
     const denied=invoices.filter(r=>r.acctStatus==='denied').length;
     document.getElementById('log-stats').innerHTML=
-      `<div class="stat-card"><div class="s-label">TOTAL INVOICES</div><div class="s-val">${invoices.length}</div></div>
-       <div class="stat-card"><div class="s-label">TOTAL APPROVED $</div><div class="s-val">$${total.toFixed(2)}</div></div>
-       <div class="stat-card"><div class="s-label">ACCT PENDING</div><div class="s-val" style="color:#856404;">${pending}</div></div>
-       <div class="stat-card"><div class="s-label">ACCT APPROVED</div><div class="s-val" style="color:#155724;">${approved}</div></div>
-       <div class="stat-card"><div class="s-label">ACCT DENIED</div><div class="s-val" style="color:#721c24;">${denied}</div></div>`;
+      `<div class="stat-card"><div class="s-label">INVOICES</div><div class="s-val">${invoices.length}</div></div>
+       <div class="stat-card"><div class="s-label">TOTAL $</div><div class="s-val" style="font-size:18px;">$${total.toFixed(0)}</div></div>
+       <div class="stat-card"><div class="s-label">PENDING</div><div class="s-val" style="color:#856404;">${pending}</div></div>
+       <div class="stat-card"><div class="s-label">APPROVED</div><div class="s-val" style="color:#155724;">${approved}</div></div>
+       <div class="stat-card"><div class="s-label">DENIED</div><div class="s-val" style="color:#721c24;">${denied}</div></div>`;
   }
  
-  /* ACCOUNTANT PAGE */
   window.renderAccountant=async function(){
-    if(!allInvoices.length){
-      const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
-      allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));
-    }
+    if(!allInvoices.length){const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));}
     const filterStatus=document.getElementById('acct-filter-status').value;
     const filterMonth=document.getElementById('acct-filter-month').value;
     const search=document.getElementById('acct-search').value.toLowerCase();
- 
-    // populate month filter
     const months={};allInvoices.forEach(r=>{if(r.monthKey&&r.monthLabel)months[r.monthKey]=r.monthLabel;});
-    const sel=document.getElementById('acct-filter-month');
-    const curVal=sel.value;
+    const sel=document.getElementById('acct-filter-month');const curVal=sel.value;
     sel.innerHTML='<option value="all">All Months</option>';
     Object.entries(months).sort((a,b)=>b[0].localeCompare(a[0])).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;sel.appendChild(o);});
     if(curVal)sel.value=curVal;
- 
     let filtered=allInvoices.filter(r=>{
       const st=r.acctStatus||'pending';
       if(filterStatus!=='all'&&st!==filterStatus)return false;
@@ -788,49 +878,40 @@
       if(search&&!((r.stock||'').toLowerCase().includes(search)||(r.driver||'').toLowerCase().includes(search)||(r.manager||'').toLowerCase().includes(search)||(r.invNum||'').toLowerCase().includes(search)))return false;
       return true;
     });
- 
-    // Stats
     const total=allInvoices.reduce((s,r)=>s+parseFloat((r.amount||'$0').replace('$','')),0);
     const pending=allInvoices.filter(r=>!r.acctStatus||r.acctStatus==='pending').length;
     const approved=allInvoices.filter(r=>r.acctStatus==='approved').length;
     const denied=allInvoices.filter(r=>r.acctStatus==='denied').length;
     document.getElementById('acct-stats').innerHTML=
-      `<div class="acct-stat"><div class="as-label">TOTAL INVOICES</div><div class="as-val total">${allInvoices.length}</div></div>
-       <div class="acct-stat"><div class="as-label">TOTAL AMOUNT</div><div class="as-val total">$${total.toFixed(2)}</div></div>
-       <div class="acct-stat"><div class="as-label">PENDING REVIEW</div><div class="as-val pending">${pending}</div></div>
+      `<div class="acct-stat"><div class="as-label">TOTAL</div><div class="as-val total">${allInvoices.length}</div></div>
+       <div class="acct-stat"><div class="as-label">AMOUNT</div><div class="as-val total" style="font-size:18px;">$${total.toFixed(0)}</div></div>
+       <div class="acct-stat"><div class="as-label">PENDING</div><div class="as-val pending">${pending}</div></div>
        <div class="acct-stat"><div class="as-label">APPROVED</div><div class="as-val approved">${approved}</div></div>
        <div class="acct-stat"><div class="as-label">DENIED</div><div class="as-val denied">${denied}</div></div>`;
- 
-    const tbody=document.getElementById('acct-body');
-    tbody.innerHTML='';
-    if(!filtered.length){tbody.innerHTML='<tr><td colspan="9" class="empty-state">No invoices match.</td></tr>';return;}
+    const tbody=document.getElementById('acct-body');tbody.innerHTML='';
+    if(!filtered.length){tbody.innerHTML='<tr><td colspan="8" class="empty-state">No invoices match.</td></tr>';return;}
     filtered.forEach(r=>{
       const st=r.acctStatus||'pending';
       const stBadge=`<span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span>`;
-      const notePreview=r.acctNotes?`<div class="acct-note-preview" title="${r.acctNotes}">${r.acctNotes}</div>`:'<span style="color:#bbb;font-size:11px;">—</span>';
-      const reviewedBy=r.acctReviewedBy?`<div style="font-size:10px;color:#888;margin-top:3px;">by ${r.acctReviewedBy}</div>`:'';
-      let actions='';
-      if(st==='pending'){
-        actions=`<button class="btn-acct-approve" onclick="openAcctReview('${r.id}','approve')">✓ Approve</button><button class="btn-acct-deny" onclick="openAcctReview('${r.id}','deny')">✗ Deny</button>`;
-      } else {
-        actions=`<button class="btn-view" onclick="openAcctReview('${r.id}','${st==='approved'?'deny':'approve'}')">↩ Change</button>`;
-      }
+      const notePreview=r.acctNotes?`<div class="acct-note-preview" title="${r.acctNotes}">${r.acctNotes}</div>`:'—';
+      const reviewedBy=r.acctReviewedBy?`<div style="font-size:10px;color:#888;">by ${r.acctReviewedBy}</div>`:'';
+      let actions=st==='pending'
+        ?`<button class="btn-acct-approve" onclick="openAcctReview('${r.id}','approve')">✓</button><button class="btn-acct-deny" onclick="openAcctReview('${r.id}','deny')">✗</button>`
+        :`<button class="btn-view" onclick="openAcctReview('${r.id}','${st==='approved'?'deny':'approve'}')">↩</button>`;
       const tr=document.createElement('tr');
-      tr.innerHTML=`<td><strong>${r.invNum}</strong><br><button class="btn-view" style="margin-top:4px;" onclick="openPreview('${r.id}')">👁 View</button></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${r.driver||'—'}</td><td>${stBadge}${reviewedBy}</td><td>${notePreview}</td><td>${actions}</td>`;
+      tr.innerHTML=`<td><strong>${r.invNum}</strong><br><button class="btn-view" style="margin-top:3px;" onclick="openPreview('${r.id}')">👁</button></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${stBadge}${reviewedBy}</td><td>${notePreview}</td><td>${actions}</td>`;
       tbody.appendChild(tr);
     });
   };
  
-  window.openAcctReview=function(id, action){
-    const inv=allInvoices.find(i=>i.id===id);
-    if(!inv)return;
+  window.openAcctReview=function(id,action){
+    const inv=allInvoices.find(i=>i.id===id);if(!inv)return;
     acctReviewTarget={id,action};
-    document.getElementById('acct-review-title').textContent=(action==='approve'?'✓ Approve':'✗ Deny')+' Invoice '+inv.invNum;
+    document.getElementById('acct-review-title').textContent=(action==='approve'?'✓ Approve':'✗ Deny')+' '+inv.invNum;
     document.getElementById('acct-review-notes').value=inv.acctNotes||'';
     document.getElementById('acct-review-success').textContent='';
     document.getElementById('acct-review-error').textContent='';
     document.getElementById('modal-acct-review').classList.add('open');
-    setTimeout(()=>document.getElementById('acct-review-notes').focus(),100);
   };
  
   window.submitAcctReview=async function(decision){
@@ -838,164 +919,191 @@
     const notes=document.getElementById('acct-review-notes').value.trim();
     const now=new Date();
     try{
-      await updateDoc(doc(db,'invoices',acctReviewTarget.id),{
-        acctStatus:decision, acctNotes:notes,
-        acctReviewedBy:currentUser.name,
-        acctReviewedAt:now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})
-      });
-      document.getElementById('acct-review-success').textContent='✓ Invoice '+(decision==='approved'?'approved':'denied')+' successfully!';
-      // refresh local
+      await updateDoc(doc(db,'invoices',acctReviewTarget.id),{acctStatus:decision,acctNotes:notes,acctReviewedBy:currentUser.name,acctReviewedAt:now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
+      document.getElementById('acct-review-success').textContent='✓ '+(decision==='approved'?'Approved':'Denied')+'!';
       const idx=allInvoices.findIndex(i=>i.id===acctReviewTarget.id);
       if(idx>-1){allInvoices[idx].acctStatus=decision;allInvoices[idx].acctNotes=notes;allInvoices[idx].acctReviewedBy=currentUser.name;}
-      setSyncStatus(true);
-      setTimeout(()=>{closeModals();renderAccountant();},1200);
-    }catch(e){document.getElementById('acct-review-error').textContent='Error saving. Please try again.';setSyncStatus(false);}
+      setSyncStatus(true);setTimeout(()=>{closeModals();renderAccountant();},1000);
+    }catch(e){document.getElementById('acct-review-error').textContent='Error. Try again.';setSyncStatus(false);}
+  };
+ 
+  window.renderMonthly=async function(){
+    if(!allInvoices.length){const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));}
+    const monthMap={};
+    allInvoices.forEach(r=>{const mk=r.monthKey||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={key:mk,label:ml,invoices:[],total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].invoices.push(r);monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
+    const months=Object.values(monthMap).sort((a,b)=>b.key.localeCompare(a.key));
+    const sel=document.getElementById('month-select');const pv=sel.value;sel.innerHTML='';
+    if(!months.length){sel.innerHTML='<option>No data</option>';document.getElementById('monthly-grid').innerHTML='<div class="empty-state">No invoices yet.</div>';document.getElementById('mgr-cards').innerHTML='';document.getElementById('all-months-body').innerHTML='';return;}
+    months.forEach(m=>{const o=document.createElement('option');o.value=m.key;o.textContent=m.label;sel.appendChild(o);});
+    if(pv&&months.find(m=>m.key===pv))sel.value=pv;
+    const sm=monthMap[sel.value]||months[0];
+    const topMgr=Object.entries(sm.managers).sort((a,b)=>b[1].total-a[1].total)[0];
+    document.getElementById('monthly-grid').innerHTML=
+      `<div class="month-stat"><div class="ms-label">INVOICES</div><div class="ms-val">${sm.invoices.length}</div><div class="ms-sub">${sm.label}</div></div>
+       <div class="month-stat"><div class="ms-label">TOTAL</div><div class="ms-val" style="font-size:18px;">$${sm.total.toFixed(0)}</div></div>
+       <div class="month-stat"><div class="ms-label">AVG/INVOICE</div><div class="ms-val" style="font-size:18px;">${sm.invoices.length?'$'+(sm.total/sm.invoices.length).toFixed(0):'—'}</div></div>
+       <div class="month-stat"><div class="ms-label">TOP APPROVER</div><div class="ms-val" style="font-size:14px;margin-top:4px;">${topMgr?topMgr[0]:'—'}</div><div class="ms-sub">${topMgr?'$'+topMgr[1].total.toFixed(2):''}</div></div>`;
+    const maxT=Math.max(...Object.values(sm.managers).map(m=>m.total),1);
+    document.getElementById('mgr-cards').innerHTML=Object.entries(sm.managers).sort((a,b)=>b[1].total-a[1].total).map(([name,data])=>{const pct=Math.round((data.total/maxT)*100);return`<div class="mgr-card"><div class="mc-name">${name}</div><div class="mc-row"><span class="mc-label">Invoices</span><span class="mc-val">${data.count}</span></div><div class="mc-row"><span class="mc-label">Avg</span><span class="mc-val">$${(data.total/data.count).toFixed(2)}</span></div><div class="mc-total">$${data.total.toFixed(2)}</div><div class="month-bar"><div class="month-bar-fill" style="width:${pct}%"></div></div></div>`;}).join('')||'<div class="empty-state">No data.</div>';
+    const now=new Date();const curKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    document.getElementById('all-months-body').innerHTML=months.map(m=>{const top=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total)[0];const isCur=m.key===curKey;return`<tr${isCur?' class="active-month"':''}><td>${m.label}${isCur?' <span style="font-size:10px;background:#1A3A5C;color:#fff;padding:1px 5px;border-radius:3px;">Now</span>':''}</td><td>${m.invoices.length}</td><td class="amt-cell">$${m.total.toFixed(2)}</td><td>$${(m.total/m.invoices.length).toFixed(2)}</td><td>${top?top[0]:'—'}</td></tr>`;}).join('');
   };
  
   /* PREVIEW */
   window.openPreview=async function(id){
     const snap=await getDoc(doc(db,'invoices',id));if(!snap.exists())return;
     const r=snap.data();previewInvoice=r;
-    document.getElementById('preview-title').textContent='Invoice '+r.invNum;
+    document.getElementById('preview-title').textContent=r.invNum;
     const fuelHtml=(r.fuelRows||[]).map(row=>`<tr><td>${row.station||''}</td><td>${row.fuelType||''}</td><td style="text-align:center;">${row.gallons||''}</td><td style="text-align:center;">${row.pricePerGal?'$'+row.pricePerGal:''}</td><td style="text-align:center;">${row.total?'$'+row.total:''}</td><td>${row.receiptNum||''}</td></tr>`).join('');
     const st=r.acctStatus||'pending';
-    const stampHtml=st!=='pending'?`<div style="margin-top:16px;"><span class="acct-stamp ${st}">${st==='approved'?'✓ ACCOUNTANT APPROVED':'✗ ACCOUNTANT DENIED'}${r.acctReviewedBy?' — '+r.acctReviewedBy:''}</span>${r.acctNotes?`<div style="font-size:11px;color:#555;margin-top:8px;font-style:italic;">Note: ${r.acctNotes}</div>`:''}</div>`:'';
-    document.getElementById('preview-body').innerHTML=`
-      <div class="snap-invoice" id="snap-content">
-        <div class="inv-header"><div class="inv-title"><h1>GAS RECEIPT INVOICE</h1><div class="dealer-name">${r.dealer?.name||'Gill Auto Group'}</div><div class="dealer-addr">${r.dealer?.addr||''} &nbsp;|&nbsp; ${r.dealer?.phone||''}</div></div>
-        <div class="inv-meta"><table class="snap-meta"><tr><td>Invoice #</td><td class="val" style="font-weight:800;color:#1A3A5C;font-size:13px;">${r.invNum}</td></tr><tr><td>Date</td><td class="val">${r.date}</td></tr><tr><td>Time</td><td class="val">${r.time}</td></tr><tr><td>Approved $</td><td class="val approved-amt">${r.amount}</td></tr></table></div></div>
-        <div style="display:flex;gap:16px;margin-bottom:4px;">
-          <div style="flex:1;"><div class="snap-auth-label">STOCK #</div><div class="snap-field">${r.stock||''}</div><div class="snap-auth-label">DRIVER</div><div class="snap-field">${r.driver||''}</div></div>
-          <div style="flex:1;"><div class="snap-auth-label">VEHICLE</div><div class="snap-field">${r.vehicle||''}</div><div class="snap-auth-label">DEPARTMENT</div><div class="snap-field">${r.dept||''}</div></div>
-          <div style="flex:0.6;"><div class="snap-auth-label">LOT</div><div class="snap-field">${r.lot||''}</div><div class="snap-auth-label">MILEAGE</div><div class="snap-field">${r.mileage||''}</div></div>
-        </div>
-        <div class="snap-section">FUEL DETAILS</div>
-        <table class="snap-table"><thead><tr><th>GAS STATION</th><th>FUEL TYPE</th><th>GALLONS</th><th>PRICE/GAL</th><th>TOTAL</th><th>RECEIPT #</th></tr></thead>
-        <tbody>${fuelHtml}</tbody><tfoot><tr class="snap-total"><td colspan="4" style="text-align:right;padding-right:10px;">TOTAL AMOUNT DUE:</td><td>${r.amount}</td><td></td></tr></tfoot></table>
-        <div class="snap-section">PURPOSE / NOTES</div><div class="snap-notes">${r.notes||''}</div>
-        <div class="snap-section">AUTHORIZATION</div>
-        <div class="snap-auth"><div class="snap-auth-field"><div class="snap-auth-label">APPROVING MANAGER</div><div class="snap-auth-val">${r.manager}</div></div><div class="snap-auth-field"><div class="snap-auth-label">MANAGER SIGNATURE</div><div class="snap-auth-line"></div></div><div class="snap-auth-field" style="flex:0.6;"><div class="snap-auth-label">DATE APPROVED</div><div class="snap-auth-val">${r.date}</div></div></div>
-        <div class="snap-auth" style="padding-top:8px;"><div class="snap-auth-field"><div class="snap-auth-label">EMPLOYEE SIGNATURE</div><div class="snap-auth-line"></div></div><div class="snap-auth-field"><div class="snap-auth-label">VIN (LAST 6)</div><div class="snap-auth-val">${r.vin||''}</div></div><div class="snap-auth-field" style="flex:0.6;"><div class="snap-auth-label">COLOR</div><div class="snap-auth-val">${r.color||''}</div></div></div>
-        ${stampHtml}
-        <div class="snap-footer">Please attach original gas receipt. Retain copy for dealership records. &nbsp;|&nbsp; ${r.dealer?.name||'Gill Auto Group'} &nbsp;|&nbsp; ${r.dealer?.phone||''}</div>
-      </div>`;
+    const stampHtml=st!=='pending'?`<div style="margin-top:12px;"><span class="acct-stamp ${st}">${st==='approved'?'✓ ACCOUNTANT APPROVED':'✗ ACCOUNTANT DENIED'}${r.acctReviewedBy?' — '+r.acctReviewedBy:''}</span>${r.acctNotes?`<div style="font-size:11px;color:#555;margin-top:6px;font-style:italic;">Note: ${r.acctNotes}</div>`:''}</div>`:'';
+    document.getElementById('preview-body').innerHTML=buildSnapHTML(r,fuelHtml,stampHtml);
     document.getElementById('modal-preview').classList.add('open');
   };
+ 
+  function buildSnapHTML(r,fuelHtml,stampHtml){
+    return`<div class="snap-invoice" id="snap-content">
+      <div class="inv-header"><div class="inv-title"><h1>GAS RECEIPT INVOICE</h1><div class="dealer-name">${r.dealer?.name||'Gill Auto Group'}</div><div class="dealer-addr">${r.dealer?.addr||''} | ${r.dealer?.phone||''}</div></div>
+      <div class="inv-meta"><table class="snap-meta"><tr><td>Invoice #</td><td class="val" style="font-weight:800;color:#1A3A5C;">${r.invNum}</td></tr><tr><td>Date</td><td class="val">${r.date}</td></tr><tr><td>Time</td><td class="val">${r.time}</td></tr><tr><td>Approved $</td><td class="val approved-amt">${r.amount}</td></tr></table></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;">
+        <div><div class="snap-auth-label">STOCK #</div><div class="snap-field">${r.stock||''}</div><div class="snap-auth-label">DRIVER</div><div class="snap-field">${r.driver||''}</div></div>
+        <div><div class="snap-auth-label">VEHICLE</div><div class="snap-field">${r.vehicle||''}</div><div class="snap-auth-label">DEPARTMENT</div><div class="snap-field">${r.dept||''}</div></div>
+        <div><div class="snap-auth-label">LOT</div><div class="snap-field">${r.lot||''}</div><div class="snap-auth-label">MILEAGE</div><div class="snap-field">${r.mileage||''}</div></div>
+      </div>
+      <div class="snap-section">FUEL DETAILS</div>
+      <table class="snap-table"><thead><tr><th>GAS STATION</th><th>FUEL TYPE</th><th>GALLONS</th><th>PRICE/GAL</th><th>TOTAL</th><th>RECEIPT #</th></tr></thead>
+      <tbody>${fuelHtml}</tbody><tfoot><tr class="snap-total"><td colspan="4" style="text-align:right;padding-right:8px;">TOTAL DUE:</td><td>${r.amount}</td><td></td></tr></tfoot></table>
+      <div class="snap-section">NOTES</div><div class="snap-notes">${r.notes||''}</div>
+      <div class="snap-section">AUTHORIZATION</div>
+      <div class="snap-auth"><div class="snap-auth-field"><div class="snap-auth-label">MANAGER</div><div class="snap-auth-val">${r.manager}</div></div><div class="snap-auth-field"><div class="snap-auth-label">SIGNATURE</div><div class="snap-auth-line"></div></div><div class="snap-auth-field"><div class="snap-auth-label">DATE</div><div class="snap-auth-val">${r.date}</div></div></div>
+      <div class="snap-auth" style="padding-top:6px;"><div class="snap-auth-field"><div class="snap-auth-label">EMPLOYEE SIGNATURE</div><div class="snap-auth-line"></div></div><div class="snap-auth-field"><div class="snap-auth-label">VIN (LAST 6)</div><div class="snap-auth-val">${r.vin||''}</div></div><div class="snap-auth-field"><div class="snap-auth-label">COLOR</div><div class="snap-auth-val">${r.color||''}</div></div></div>
+      ${stampHtml}
+      <div class="snap-footer">Please attach original gas receipt. Retain copy for records. | ${r.dealer?.name||'Gill Auto Group'} | ${r.dealer?.phone||''}</div>
+    </div>`;
+  }
  
   window.printPreview=function(){
     const content=document.getElementById('snap-content').outerHTML;
     const win=window.open('','_blank');
-    win.document.write(`<!DOCTYPE html><html><head><title>${previewInvoice?.invNum||'Invoice'}</title><style>body{font-family:Arial,sans-serif;padding:20px;font-size:11px;}.snap-invoice{max-width:780px;margin:0 auto;}.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}h1{font-size:21px;font-weight:800;color:#1A3A5C;letter-spacing:0.06em;}.dealer-name{font-size:13px;font-weight:700;color:#E87722;margin-top:2px;}.dealer-addr{font-size:10px;color:#888;margin-top:1px;}.snap-meta td{padding:3px 7px;font-size:11px;}.snap-meta td:first-child{color:#666;font-weight:700;text-align:right;}.snap-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:120px;border-radius:3px;}.snap-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}.snap-field{border-bottom:1.5px solid #1A3A5C;min-height:18px;padding:2px;font-size:12px;margin-bottom:6px;}.snap-section{background:#1A3A5C;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:0.08em;padding:5px 9px;margin:14px 0 0;}.snap-table{width:100%;border-collapse:collapse;}.snap-table thead th{background:#2C5F8A;color:#fff;font-size:9.5px;font-weight:700;padding:5px 6px;text-align:center;border:1px solid #1A3A5C;}.snap-table tbody td{border:0.5px solid #ccc;padding:5px 6px;font-size:10.5px;}.snap-table tbody tr:nth-child(even) td{background:#F5F7FB;}.snap-total td{background:#1A3A5C!important;color:#fff;font-weight:700;font-size:11.5px;}.snap-notes{border:0.5px solid #ccc;min-height:44px;background:#FAFBFD;padding:6px 8px;font-size:11px;}.snap-auth{display:flex;gap:16px;padding-top:10px;}.snap-auth-field{flex:1;}.snap-auth-label{font-size:9.5px;color:#1A3A5C;font-weight:700;margin-bottom:2px;}.snap-auth-val{font-size:12px;font-weight:700;color:#1A3A5C;border-bottom:2px solid #1A3A5C;background:#EEF2F7;padding:3px 6px;min-height:24px;}.snap-auth-line{border-bottom:2px solid #1A3A5C;min-height:24px;background:#EEF2F7;}.snap-footer{font-size:9px;color:#999;text-align:center;margin-top:14px;padding-top:8px;border-top:2px solid #E87722;font-style:italic;}.acct-stamp{border:2px solid;border-radius:8px;padding:8px 14px;margin-top:14px;display:inline-block;font-weight:800;font-size:13px;letter-spacing:0.06em;transform:rotate(-2deg);}.acct-stamp.approved{border-color:#2e7d32;color:#2e7d32;background:#f0fff4;}.acct-stamp.denied{border-color:#c0392b;color:#c0392b;background:#fff5f5;}</style></head><body>${content}</body></html>`);
+    win.document.write(`<!DOCTYPE html><html><head><title>${previewInvoice?.invNum}</title><style>body{font-family:Arial,sans-serif;padding:16px;font-size:11px;}.snap-invoice{max-width:760px;margin:0 auto;}.inv-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;}h1{font-size:19px;font-weight:800;color:#1A3A5C;}.dealer-name{font-size:12px;font-weight:700;color:#E87722;}.dealer-addr{font-size:10px;color:#888;}.snap-meta td{padding:2px 5px;font-size:10px;}.snap-meta td:first-child{color:#666;font-weight:700;text-align:right;}.snap-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:110px;border-radius:2px;}.snap-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}.snap-field{border-bottom:1.5px solid #1A3A5C;min-height:16px;padding:2px;font-size:11px;margin-bottom:4px;}.snap-section{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;margin:10px 0 0;}.snap-table{width:100%;border-collapse:collapse;}.snap-table thead th{background:#2C5F8A;color:#fff;font-size:9px;font-weight:700;padding:4px 5px;text-align:center;border:1px solid #1A3A5C;}.snap-table tbody td{border:0.5px solid #ccc;padding:4px 5px;font-size:10px;}.snap-table tbody tr:nth-child(even) td{background:#F5F7FB;}.snap-total td{background:#1A3A5C!important;color:#fff;font-weight:700;}.snap-notes{border:0.5px solid #ccc;min-height:36px;background:#FAFBFD;padding:5px;font-size:10px;}.snap-auth{display:flex;gap:10px;padding-top:7px;flex-wrap:wrap;}.snap-auth-field{flex:1;min-width:100px;}.snap-auth-label{font-size:9px;color:#1A3A5C;font-weight:700;margin-bottom:2px;}.snap-auth-val{font-size:11px;font-weight:700;color:#1A3A5C;border-bottom:2px solid #1A3A5C;background:#EEF2F7;padding:3px 5px;min-height:20px;}.snap-auth-line{border-bottom:2px solid #1A3A5C;min-height:20px;background:#EEF2F7;}.snap-footer{font-size:9px;color:#999;text-align:center;margin-top:12px;padding-top:7px;border-top:2px solid #E87722;font-style:italic;}.acct-stamp{border:2px solid;border-radius:8px;padding:5px 10px;margin-top:10px;display:inline-block;font-weight:800;font-size:11px;}.acct-stamp.approved{border-color:#2e7d32;color:#2e7d32;}.acct-stamp.denied{border-color:#c0392b;color:#c0392b;}</style></head><body>${content}</body></html>`);
     win.document.close();setTimeout(()=>win.print(),400);
   };
  
-  /* MONTHLY */
-  window.renderMonthly=async function(){
-    if(!allInvoices.length){const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));}
-    const monthMap={};
-    allInvoices.forEach(r=>{const mk=r.monthKey||r.createdAt?.substring(0,7)||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={key:mk,label:ml,invoices:[],total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].invoices.push(r);monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
-    const months=Object.values(monthMap).sort((a,b)=>b.key.localeCompare(a.key));
-    const sel=document.getElementById('month-select');const prevVal=sel.value;sel.innerHTML='';
-    if(!months.length){sel.innerHTML='<option>No data yet</option>';document.getElementById('monthly-grid').innerHTML='<div class="empty-state">No invoices yet.</div>';document.getElementById('mgr-cards').innerHTML='';document.getElementById('all-months-body').innerHTML='';return;}
-    months.forEach(m=>{const o=document.createElement('option');o.value=m.key;o.textContent=m.label;sel.appendChild(o);});
-    if(prevVal&&months.find(m=>m.key===prevVal))sel.value=prevVal;
-    const selMonth=monthMap[sel.value]||months[0];
-    const topMgr=Object.entries(selMonth.managers).sort((a,b)=>b[1].total-a[1].total)[0];
-    document.getElementById('monthly-grid').innerHTML=
-      `<div class="month-stat"><div class="ms-label">INVOICES</div><div class="ms-val">${selMonth.invoices.length}</div><div class="ms-sub">${selMonth.label}</div></div>
-       <div class="month-stat"><div class="ms-label">TOTAL APPROVED</div><div class="ms-val">$${selMonth.total.toFixed(2)}</div></div>
-       <div class="month-stat"><div class="ms-label">AVG PER INVOICE</div><div class="ms-val">${selMonth.invoices.length?'$'+(selMonth.total/selMonth.invoices.length).toFixed(2):'—'}</div></div>
-       <div class="month-stat"><div class="ms-label">TOP APPROVER</div><div class="ms-val" style="font-size:16px;margin-top:4px;">${topMgr?topMgr[0]:'—'}</div><div class="ms-sub">${topMgr?'$'+topMgr[1].total.toFixed(2):''}</div></div>`;
-    const maxTotal=Math.max(...Object.values(selMonth.managers).map(m=>m.total),1);
-    let mgrHtml='';Object.entries(selMonth.managers).sort((a,b)=>b[1].total-a[1].total).forEach(([name,data])=>{const pct=Math.round((data.total/maxTotal)*100);mgrHtml+=`<div class="mgr-card"><div class="mc-name">${name}</div><div class="mc-row"><span class="mc-label">Invoices</span><span class="mc-val">${data.count}</span></div><div class="mc-row"><span class="mc-label">Avg</span><span class="mc-val">$${(data.total/data.count).toFixed(2)}</span></div><div class="mc-total">$${data.total.toFixed(2)}</div><div class="month-bar"><div class="month-bar-fill" style="width:${pct}%"></div></div></div>`;});
-    document.getElementById('mgr-cards').innerHTML=mgrHtml||'<div class="empty-state">No data.</div>';
-    const now=new Date();const curKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-    let tblHtml='';months.forEach(m=>{const top=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total)[0];const isCur=m.key===curKey;tblHtml+=`<tr${isCur?' class="active-month"':''}><td>${m.label}${isCur?' <span style="font-size:10px;background:#1A3A5C;color:#fff;padding:1px 6px;border-radius:3px;margin-left:4px;">Current</span>':''}</td><td>${m.invoices.length}</td><td class="amt-cell">$${m.total.toFixed(2)}</td><td>$${(m.total/m.invoices.length).toFixed(2)}</td><td>${top?top[0]:'—'}</td></tr>`;});
-    document.getElementById('all-months-body').innerHTML=tblHtml;
+  /* PDF EXPORTS */
+  function getPDF(){return new window.jspdf.jsPDF();}
+ 
+  window.exportSinglePDF=function(){
+    if(!previewInvoice)return;
+    const r=previewInvoice;
+    const pdf=getPDF();
+    pdf.setFontSize(18);pdf.setTextColor(26,58,92);pdf.text('GAS RECEIPT INVOICE',14,18);
+    pdf.setFontSize(11);pdf.setTextColor(232,119,34);pdf.text(r.dealer?.name||'Gill Auto Group',14,25);
+    pdf.setFontSize(9);pdf.setTextColor(100,100,100);pdf.text((r.dealer?.addr||'')+' | '+(r.dealer?.phone||''),14,30);
+    pdf.setFontSize(10);pdf.setTextColor(0,0,0);
+    pdf.text(`Invoice #: ${r.invNum}`,140,18);pdf.text(`Date: ${r.date}`,140,23);pdf.text(`Time: ${r.time}`,140,28);pdf.text(`Approved: ${r.amount}`,140,33);
+    pdf.autoTable({startY:38,head:[['STOCK #','DRIVER','VEHICLE','DEPT','LOT','MILEAGE']],body:[[r.stock||'',r.driver||'',r.vehicle||'',r.dept||'',r.lot||'',r.mileage||'']],theme:'grid',headStyles:{fillColor:[44,95,138]},styles:{fontSize:8}});
+    pdf.autoTable({startY:pdf.lastAutoTable.finalY+4,head:[['GAS STATION','FUEL TYPE','GALLONS','PRICE/GAL','TOTAL','RECEIPT #']],body:(r.fuelRows||[]).map(row=>[row.station||'',row.fuelType||'',row.gallons||'',row.pricePerGal?'$'+row.pricePerGal:'',row.total?'$'+row.total:'',row.receiptNum||'']),theme:'grid',headStyles:{fillColor:[44,95,138]},styles:{fontSize:8}});
+    pdf.setFontSize(9);pdf.text(`Notes: ${r.notes||''}`,14,pdf.lastAutoTable.finalY+6);
+    pdf.setFontSize(9);pdf.text(`Manager: ${r.manager}`,14,pdf.lastAutoTable.finalY+12);pdf.text(`Date Approved: ${r.date}`,80,pdf.lastAutoTable.finalY+12);
+    if(r.acctStatus&&r.acctStatus!=='pending'){pdf.setTextColor(r.acctStatus==='approved'?46:192,r.acctStatus==='approved'?125:57,r.acctStatus==='approved'?50:43);pdf.setFontSize(11);pdf.text((r.acctStatus==='approved'?'✓ ACCOUNTANT APPROVED':'✗ ACCOUNTANT DENIED')+(r.acctReviewedBy?' — '+r.acctReviewedBy:''),14,pdf.lastAutoTable.finalY+20);}
+    pdf.save(`${r.invNum}.pdf`);
   };
  
-  /* EXPORTS */
+  window.exportLogPDF=async function(){
+    const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
+    const rows=snap.docs.map(d=>{const r=d.data();return[r.invNum,r.date,r.manager,r.amount,r.stock||'—',r.driver||'—',r.acctStatus||'pending'];});
+    const pdf=getPDF();
+    pdf.setFontSize(14);pdf.setTextColor(26,58,92);pdf.text('Gill Auto Group — Invoice History',14,16);
+    pdf.setFontSize(9);pdf.setTextColor(100,100,100);pdf.text(`Generated: ${new Date().toLocaleDateString()}`,14,22);
+    pdf.autoTable({startY:26,head:[['Invoice #','Date','Manager','Amount','Stock #','Driver','Acct Status']],body:rows,theme:'striped',headStyles:{fillColor:[26,58,92]},styles:{fontSize:8}});
+    pdf.save('gill_auto_invoice_history.pdf');
+  };
+ 
+  window.exportAcctPDF=async function(){
+    const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
+    const rows=snap.docs.map(d=>{const r=d.data();return[r.invNum,r.date,r.manager,r.amount,r.stock||'—',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||''];});
+    const pdf=getPDF();
+    pdf.setFontSize(14);pdf.setTextColor(108,52,131);pdf.text('Gill Auto Group — Accountant Report',14,16);
+    pdf.setFontSize(9);pdf.setTextColor(100,100,100);pdf.text(`Generated: ${new Date().toLocaleDateString()}`,14,22);
+    pdf.autoTable({startY:26,head:[['Invoice #','Date','Manager','Amount','Stock #','Status','Notes','Reviewed By']],body:rows,theme:'striped',headStyles:{fillColor:[108,52,131]},styles:{fontSize:7}});
+    pdf.save('gill_auto_accountant_report.pdf');
+  };
+ 
+  window.exportMonthlyPDF=async function(){
+    const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
+    const monthMap={};snap.docs.forEach(d=>{const r=d.data();const mk=r.monthKey||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={label:ml,count:0,total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].count++;monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
+    const rows=[];Object.values(monthMap).sort((a,b)=>b.label.localeCompare(a.label)).forEach(m=>{const mgrs=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total);mgrs.forEach(([name,data],i)=>{rows.push([i===0?m.label:'',i===0?m.count:'',i===0?'$'+m.total.toFixed(2):'',i===0?'$'+(m.total/m.count).toFixed(2):'',name,data.count,'$'+data.total.toFixed(2)]);});});
+    const pdf=getPDF();
+    pdf.setFontSize(14);pdf.setTextColor(26,58,92);pdf.text('Gill Auto Group — Monthly Gas Report',14,16);
+    pdf.setFontSize(9);pdf.setTextColor(100,100,100);pdf.text(`Budget Limit: $${monthlyBudget.toLocaleString()} / month   |   Generated: ${new Date().toLocaleDateString()}`,14,22);
+    pdf.autoTable({startY:26,head:[['Month','Invoices','Total','Avg/Invoice','Manager','Mgr Invoices','Mgr Total']],body:rows,theme:'striped',headStyles:{fillColor:[26,58,92]},styles:{fontSize:8}});
+    pdf.save('gill_auto_monthly_report.pdf');
+  };
+ 
   window.exportCSV=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
-    const rows=[['Invoice #','Month','Date','Approved By','Amount','Stock #','Driver','Vehicle','Acct Status','Acct Notes','Reviewed By']];
+    const rows=[['Invoice #','Month','Date','Manager','Amount','Stock #','Driver','Vehicle','Acct Status','Acct Notes','Reviewed By']];
     snap.docs.forEach(d=>{const r=d.data();rows.push([r.invNum,r.monthLabel||'',r.date,r.manager,r.amount,r.stock||'',r.driver||'',r.vehicle||'',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||'']);});
     const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_gas_log.csv';a.click();
   };
- 
   window.exportAcctCSV=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
-    const rows=[['Invoice #','Date','Manager','Amount','Stock #','Driver','Vehicle','Acct Status','Acct Notes','Reviewed By','Review Date']];
-    snap.docs.forEach(d=>{const r=d.data();rows.push([r.invNum,r.date,r.manager,r.amount,r.stock||'',r.driver||'',r.vehicle||'',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||'',r.acctReviewedAt||'']);});
+    const rows=[['Invoice #','Date','Manager','Amount','Stock #','Driver','Status','Notes','Reviewed By','Review Date']];
+    snap.docs.forEach(d=>{const r=d.data();rows.push([r.invNum,r.date,r.manager,r.amount,r.stock||'',r.driver||'',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||'',r.acctReviewedAt||'']);});
     const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_accountant_report.csv';a.click();
   };
- 
   window.exportMonthlyCSV=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
     const monthMap={};snap.docs.forEach(d=>{const r=d.data();const mk=r.monthKey||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={label:ml,count:0,total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].count++;monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
-    const rows=[['Month','Total Invoices','Total Approved','Avg Per Invoice','Manager','Manager Invoices','Manager Total']];
-    Object.values(monthMap).sort((a,b)=>b.label.localeCompare(a.label)).forEach(m=>{const mgrs=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total);mgrs.forEach(([name,data],i)=>{rows.push([i===0?m.label:'',i===0?m.count:'',i===0?'$'+m.total.toFixed(2):'',i===0?'$'+(m.total/m.count).toFixed(2):'',name,data.count,'$'+data.total.toFixed(2)]);});});
+    const rows=[['Month','Invoices','Total','Avg','Manager','Mgr Invoices','Mgr Total']];
+    Object.values(monthMap).sort((a,b)=>b.label.localeCompare(a.label)).forEach(m=>{Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total).forEach(([name,data],i)=>{rows.push([i===0?m.label:'',i===0?m.count:'',i===0?'$'+m.total.toFixed(2):'',i===0?'$'+(m.total/m.count).toFixed(2):'',name,data.count,'$'+data.total.toFixed(2)]);});});
     const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_monthly_report.csv';a.click();
   };
  
-  /* MASTER RESETS */
-  window.resetCounter=async function(){if(!confirm('Reset invoice counter to GAS-00001?'))return;await fsSetCounter(1);invoiceCounter=1;refreshInvoice();document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Counter reset.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
-  window.clearLog=async function(){if(!confirm('DELETE ALL invoice records permanently?'))return;const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('reset-success').textContent='✓ Log cleared.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
-  window.resetBoth=async function(){if(!confirm('Reset counter AND delete all records?'))return;await fsSetCounter(1);invoiceCounter=1;refreshInvoice();const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Counter reset and log cleared.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
- 
   /* ADMIN */
   async function renderAdmin(){
-    dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();allUsers=await fsGetUsers();
+    dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();allUsers=await fsGetUsers();monthlyBudget=await fsGetBudget();
     document.getElementById('admin-dname').value=dealerInfo.name;document.getElementById('admin-daddr').value=dealerInfo.addr;document.getElementById('admin-dphone').value=dealerInfo.phone;
+    document.getElementById('admin-budget').value=monthlyBudget;
     document.getElementById('admin-counter-val').textContent=formatNum(invoiceCounter);
     renderUserList();renderPinDropdown();
-    ['dealer-success','counter-success','user-error','user-success','adminpin-error','adminpin-success','reset-success'].forEach(id=>document.getElementById(id).textContent='');
+    ['dealer-success','budget-success','counter-success','user-error','user-success','adminpin-error','adminpin-success','reset-success'].forEach(id=>document.getElementById(id).textContent='');
   }
+ 
   window.saveDealerAdmin=async function(){const d={name:document.getElementById('admin-dname').value.trim(),addr:document.getElementById('admin-daddr').value.trim(),phone:document.getElementById('admin-dphone').value.trim()};if(!d.name)return;await fsSaveDealer(d);dealerInfo=d;updateDealerDisplay();document.getElementById('dealer-success').textContent='✓ Saved!';setTimeout(()=>document.getElementById('dealer-success').textContent='',2000);};
-  window.setCounterAdmin=async function(){const v=parseInt(document.getElementById('admin-counter-input').value);if(!v||v<1)return;await fsSetCounter(v);invoiceCounter=v;refreshInvoice();document.getElementById('admin-counter-val').textContent=formatNum(v);document.getElementById('counter-success').textContent='✓ Counter set to '+formatNum(v);setTimeout(()=>document.getElementById('counter-success').textContent='',2000);};
+ 
+  window.saveBudget=async function(){const v=parseFloat(document.getElementById('admin-budget').value);if(!v||v<=0)return;await fsSetBudget(v);monthlyBudget=v;document.getElementById('budget-success').textContent='✓ Budget set to $'+v.toLocaleString();checkBudget();setTimeout(()=>document.getElementById('budget-success').textContent='',2000);};
+ 
+  window.setCounterAdmin=async function(){const v=parseInt(document.getElementById('admin-counter-input').value);if(!v||v<1)return;await fsSetCounter(v);invoiceCounter=v;document.getElementById('admin-counter-val').textContent=formatNum(v);document.getElementById('counter-success').textContent='✓ Set to '+formatNum(v);setTimeout(()=>document.getElementById('counter-success').textContent='',2000);};
+ 
+  window.resetCounter=async function(){if(!confirm('Reset counter to GAS-00001?'))return;await fsSetCounter(1);invoiceCounter=1;document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Counter reset.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
+  window.clearLog=async function(){if(!confirm('DELETE ALL invoice records?'))return;const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('reset-success').textContent='✓ Log cleared.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
+  window.resetBoth=async function(){if(!confirm('Reset counter AND delete all records?'))return;await fsSetCounter(1);invoiceCounter=1;const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Done.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
  
   function renderUserList(){
-    let html='';
-    allUsers.forEach((u,i)=>{
+    document.getElementById('user-list').innerHTML=allUsers.map((u,i)=>{
       const roleCls=u.role==='master'?'role-master':u.role==='accountant'?'role-accountant':u.role==='manager'?'role-manager':'role-standard';
       const roleLabel=u.role==='master'?'MASTER':u.role==='accountant'?'Accountant':u.role.charAt(0).toUpperCase()+u.role.slice(1);
       const isSelf=currentUser&&u.name===currentUser.name;
-      html+=`<div class="user-row">
-        <div class="user-name">${u.name}${isSelf?' <span style="font-size:10px;color:#E87722;">(you)</span>':''}</div>
-        <span class="user-role ${roleCls}">${roleLabel}</span>`;
-      if(!isSelf && u.role!=='master'){
-        html+=`
-        <select class="btn-sm" onchange="changeRole(${i}, this.value)" style="padding:4px 8px;cursor:pointer;">
-          <option value="standard"  ${u.role==='standard' ?'selected':''}>Standard</option>
-          <option value="manager"   ${u.role==='manager'  ?'selected':''}>Manager</option>
-          <option value="accountant"${u.role==='accountant'?'selected':''}>Accountant</option>
-        </select>
-        <button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>
-        <button class="btn-sm danger" onclick="removeUser(${i})">Remove</button>`;
-      } else if(!isSelf && u.role==='master'){
-        html+=`<button class="btn-sm" onclick="openEditPinModal(${i})">Change PIN</button>`;
-      }
-      html+='</div>';
-    });
-    document.getElementById('user-list').innerHTML=html;
+      let html=`<div class="user-row"><div class="user-name">${u.name}${isSelf?' <span style="font-size:10px;color:#E87722;">(you)</span>':''}</div><span class="user-role ${roleCls}">${roleLabel}</span>`;
+      if(!isSelf&&u.role!=='master'){html+=`<select class="btn-sm" onchange="changeRole(${i},this.value)" style="padding:4px 7px;cursor:pointer;"><option value="standard"${u.role==='standard'?' selected':''}>Standard</option><option value="manager"${u.role==='manager'?' selected':''}>Manager</option><option value="accountant"${u.role==='accountant'?' selected':''}>Accountant</option></select><button class="btn-sm" onclick="openEditPinModal(${i})">PIN</button><button class="btn-sm danger" onclick="removeUser(${i})">✕</button>`;}
+      else if(!isSelf){html+=`<button class="btn-sm" onclick="openEditPinModal(${i})">PIN</button>`;}
+      return html+'</div>';
+    }).join('');
   }
  
-  window.changeRole=async function(idx, newRole){
-    allUsers[idx].role=newRole;
-    await fsSaveUsers(allUsers);
-    renderUserList();
-    renderPinDropdown();
-    document.getElementById('user-success').textContent='✓ Role updated for '+allUsers[idx].name;
-    setTimeout(()=>document.getElementById('user-success').textContent='',2000);
-  };
+  window.changeRole=async function(idx,newRole){allUsers[idx].role=newRole;await fsSaveUsers(allUsers);renderUserList();renderPinDropdown();document.getElementById('user-success').textContent='✓ Role updated.';setTimeout(()=>document.getElementById('user-success').textContent='',2000);};
+ 
   function renderPinDropdown(){const sel=document.getElementById('pin-target-user');sel.innerHTML='';allUsers.forEach(u=>{if(u.name!==currentUser.name){const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o);}});}
+ 
   window.addUser=async function(){const name=document.getElementById('new-uname').value.trim(),pin=document.getElementById('new-upin').value.trim(),role=document.getElementById('new-urole').value;const errEl=document.getElementById('user-error'),okEl=document.getElementById('user-success');errEl.textContent='';okEl.textContent='';if(!name){errEl.textContent='Name required.';return;}if(!/^\d{4,6}$/.test(pin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(allUsers.find(u=>u.name.toLowerCase()===name.toLowerCase())){errEl.textContent='User already exists.';return;}allUsers.push({name,pin,role});await fsSaveUsers(allUsers);document.getElementById('new-uname').value='';document.getElementById('new-upin').value='';okEl.textContent='✓ '+name+' added!';renderUserList();renderPinDropdown();setTimeout(()=>okEl.textContent='',2000);};
   window.removeUser=async function(idx){if(!confirm('Remove '+allUsers[idx].name+'?'))return;allUsers.splice(idx,1);await fsSaveUsers(allUsers);renderUserList();renderPinDropdown();};
   window.openEditPinModal=function(idx){editPinTarget=idx;document.getElementById('editpin-username').textContent=allUsers[idx].name;document.getElementById('editpin-new').value='';document.getElementById('editpin-confirm').value='';document.getElementById('editpin-error').textContent='';document.getElementById('editpin-success').textContent='';document.getElementById('modal-editpin').classList.add('open');setTimeout(()=>document.getElementById('editpin-new').focus(),100);};
-  window.confirmEditPin=async function(){const newPin=document.getElementById('editpin-new').value.trim(),conf=document.getElementById('editpin-confirm').value.trim();const errEl=document.getElementById('editpin-error'),okEl=document.getElementById('editpin-success');errEl.textContent='';okEl.textContent='';if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(newPin!==conf){errEl.textContent='PINs do not match.';return;}allUsers[editPinTarget].pin=newPin;await fsSaveUsers(allUsers);okEl.textContent='✓ PIN updated!';setTimeout(closeModals,1400);};
-  window.adminChangePin=async function(){const targetName=document.getElementById('pin-target-user').value,newPin=document.getElementById('admin-new-pin').value.trim();const errEl=document.getElementById('adminpin-error'),okEl=document.getElementById('adminpin-success');errEl.textContent='';okEl.textContent='';if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}allUsers=allUsers.map(u=>u.name===targetName?{...u,pin:newPin}:u);await fsSaveUsers(allUsers);document.getElementById('admin-new-pin').value='';okEl.textContent='✓ PIN updated for '+targetName;setTimeout(()=>okEl.textContent='',2000);};
+  window.confirmEditPin=async function(){const newPin=document.getElementById('editpin-new').value.trim(),conf=document.getElementById('editpin-confirm').value.trim();const errEl=document.getElementById('editpin-error'),okEl=document.getElementById('editpin-success');errEl.textContent='';okEl.textContent='';if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(newPin!==conf){errEl.textContent='PINs do not match.';return;}allUsers[editPinTarget].pin=newPin;await fsSaveUsers(allUsers);okEl.textContent='✓ Updated!';setTimeout(closeModals,1400);};
+  window.adminChangePin=async function(){const targetName=document.getElementById('pin-target-user').value,newPin=document.getElementById('admin-new-pin').value.trim();const errEl=document.getElementById('adminpin-error'),okEl=document.getElementById('adminpin-success');errEl.textContent='';okEl.textContent='';if(!/^\d{4,6}$/.test(newPin)){errEl.textContent='PIN must be 4–6 digits.';return;}allUsers=allUsers.map(u=>u.name===targetName?{...u,pin:newPin}:u);await fsSaveUsers(allUsers);document.getElementById('admin-new-pin').value='';okEl.textContent='✓ Updated for '+targetName;setTimeout(()=>okEl.textContent='',2000);};
 </script>
 </body>
 </html>
