@@ -10,7 +10,7 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   html{font-size:16px;}
   body{font-family:Arial,sans-serif;background:#f0f4fa;min-height:100vh;}
- 
+
   /* LOGIN */
   #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0d2137 0%,#1A3A5C 60%,#2C5F8A 100%);padding:16px;}
   .login-box{background:#fff;border-radius:14px;padding:36px 32px;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.22);text-align:center;}
@@ -23,7 +23,7 @@
   .login-btn{width:100%;padding:13px;background:#1A3A5C;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
   .login-btn:hover{opacity:0.88;}
   .login-error{color:#c0392b;font-size:12px;margin-top:8px;min-height:18px;}
- 
+
   /* APP SHELL */
   #app{display:none;}
   .topbar{background:#1A3A5C;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
@@ -39,21 +39,21 @@
   .sync-status{font-size:10px;color:#aac4e0;white-space:nowrap;}
   .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#2e7d32;margin-right:3px;}
   .sync-dot.offline{background:#f39c12;}
- 
+
   /* BUDGET BANNER */
   .budget-banner{display:none;padding:10px 16px;font-size:13px;font-weight:700;text-align:center;}
   .budget-banner.warning{background:#fff3cd;color:#856404;display:block;}
   .budget-banner.danger{background:#f8d7da;color:#721c24;display:block;}
- 
+
   /* TABS */
   .tabs{display:flex;background:#fff;border-bottom:2px solid #dde3ee;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .tab{padding:10px 14px;font-size:12px;font-weight:600;color:#888;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
   .tab.active{color:#1A3A5C;border-bottom-color:#E87722;}
   .tab.acct-tab.active{border-bottom-color:#6c3483;color:#6c3483;}
- 
+
   .page{display:none;padding:16px 12px;}
   .page.active{display:block;}
- 
+
   /* MODALS */
   .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:flex-end;justify-content:center;}
   @media(min-width:600px){.modal-bg{align-items:center;}}
@@ -80,7 +80,7 @@
   .preview-topbar h2{color:#fff;flex:1;font-size:14px;}
   .btn-pdf{padding:8px 14px;background:#E87722;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
   .preview-body{padding:16px;overflow-y:auto;max-height:75vh;background:#f0f4fa;}
- 
+
   /* DASHBOARD */
   .dash-welcome{background:linear-gradient(135deg,#1A3A5C,#2C5F8A);color:#fff;border-radius:12px;padding:18px 20px;margin-bottom:16px;}
   .dash-welcome h2{font-size:18px;font-weight:800;}
@@ -110,7 +110,7 @@
   .today-info .ti-sub{font-size:11px;color:#888;margin-top:1px;}
   .today-amt{font-size:13px;font-weight:800;color:#2e7d32;}
   .today-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
- 
+
   /* INVOICE FORM */
   .controls{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dde3ee;border-radius:10px;padding:12px 14px;margin-bottom:14px;flex-wrap:wrap;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
   .inv-badge{display:flex;align-items:center;gap:8px;background:#f0f4fa;border:1px solid #cdd5e0;border-radius:8px;padding:6px 12px;}
@@ -120,7 +120,7 @@
   @media(min-width:600px){.hint{display:block;}}
   .btn-print{margin-left:auto;display:flex;align-items:center;gap:6px;background:#1A3A5C;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;}
   .btn-secondary{font-size:12px;color:#555;background:none;border:1px solid #cdd5e0;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:Arial,sans-serif;}
- 
+
   .invoice{background:#fff;border:1px solid #dde3ee;border-radius:10px;padding:16px;font-family:Arial,sans-serif;font-size:11px;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
   @media(min-width:600px){.invoice{padding:28px 32px;}}
   .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
@@ -158,7 +158,7 @@
   .auth-field .prefilled{font-size:13px;font-weight:700;color:#1A3A5C;padding:4px 6px;border-bottom:2px solid #1A3A5C;background:#EEF2F7;min-height:28px;}
   .auth-input{width:100%;border:none;border-bottom:2px solid #1A3A5C;background:#EEF2F7;font-size:13px;font-family:Arial,sans-serif;padding:5px 6px;outline:none;color:#111;min-height:28px;}
   .inv-footer{font-size:9px;color:#999;text-align:center;margin-top:14px;padding-top:8px;border-top:2px solid #E87722;font-style:italic;}
- 
+
   /* HISTORY */
   .page-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
   .page-header h2{font-size:16px;font-weight:800;color:#1A3A5C;flex:1;}
@@ -186,7 +186,7 @@
   .status-pending{background:#fff3cd;color:#856404;border:1px solid #ffc107;}
   .status-approved{background:#d4edda;color:#155724;border:1px solid #28a745;}
   .status-denied{background:#f8d7da;color:#721c24;border:1px solid #dc3545;}
- 
+
   /* ACCOUNTANT */
   .acct-header-banner{background:linear-gradient(135deg,#4a1468,#6c3483);color:#fff;border-radius:10px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
   .acct-header-banner .ah-icon{font-size:28px;}
@@ -206,7 +206,7 @@
   .btn-acct-approve{font-size:11px;padding:5px 10px;background:#2e7d32;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Arial,sans-serif;margin-right:4px;}
   .btn-acct-deny{font-size:11px;padding:5px 10px;background:#c0392b;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Arial,sans-serif;}
   .acct-note-preview{font-size:10px;color:#666;font-style:italic;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
- 
+
   /* MONTHLY */
   .month-filter{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
   .month-filter label{font-size:13px;font-weight:700;color:#1A3A5C;}
@@ -231,7 +231,7 @@
   table.months-tbl thead th{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;padding:8px 10px;text-align:left;}
   table.months-tbl tbody td{padding:8px 10px;font-size:12px;border-bottom:0.5px solid #eee;}
   table.months-tbl tbody tr.active-month td{background:#f0f8ff;font-weight:700;}
- 
+
   /* ADMIN */
   .admin-wrap{max-width:640px;margin:0 auto;}
   .admin-section{background:#fff;border-radius:10px;border:1px solid #dde3ee;padding:18px 18px;margin-bottom:16px;}
@@ -264,7 +264,7 @@
   .counter-form input{padding:8px 10px;border:1px solid #cdd5e0;border-radius:7px;font-size:14px;outline:none;width:110px;font-family:Arial,sans-serif;}
   .budget-setting{display:flex;gap:8px;align-items:center;margin-top:8px;}
   .budget-setting input{padding:9px 12px;border:1px solid #cdd5e0;border-radius:7px;font-size:14px;outline:none;width:140px;font-family:Arial,sans-serif;}
- 
+
   /* SNAPSHOT */
   .snap-invoice{background:#fff;padding:20px;font-family:Arial,sans-serif;font-size:11px;max-width:800px;margin:0 auto;border:1px solid #dde3ee;border-radius:8px;}
   .snap-invoice .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
@@ -292,7 +292,7 @@
   .acct-stamp{border:2px solid;border-radius:8px;padding:6px 12px;margin-top:12px;display:inline-block;font-weight:800;font-size:12px;letter-spacing:0.05em;transform:rotate(-2deg);}
   .acct-stamp.approved{border-color:#2e7d32;color:#2e7d32;background:#f0fff4;}
   .acct-stamp.denied{border-color:#c0392b;color:#c0392b;background:#fff5f5;}
- 
+
   @media print{
     body{background:white;}
     #login-screen,.topbar,.tabs,.controls,#log-page,#monthly-page,#admin-page,#accountant-page,#dashboard-page,.modal-bg,.budget-banner{display:none !important;}
@@ -303,7 +303,7 @@
 </style>
 </head>
 <body>
- 
+
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
@@ -317,7 +317,7 @@
     <div class="login-error" id="login-error"></div>
   </div>
 </div>
- 
+
 <!-- APP -->
 <div id="app">
   <div class="budget-banner" id="budget-banner"></div>
@@ -339,7 +339,7 @@
     <div class="tab acct-tab" id="tab-accountant" onclick="showTab('accountant')" style="display:none;">🧾 Review</div>
     <div class="tab" id="tab-admin" onclick="showTab('admin')" style="display:none;">⚙️ Admin</div>
   </div>
- 
+
   <!-- DASHBOARD -->
   <div class="page" id="dashboard-page">
     <div class="dash-welcome">
@@ -353,7 +353,7 @@
       <div id="today-list"></div>
     </div>
   </div>
- 
+
   <!-- INVOICE PAGE -->
   <div class="page" id="invoice-page">
     <div class="controls">
@@ -419,7 +419,7 @@
       <div class="inv-footer" id="disp-footer">Please attach original gas receipt. Retain copy for records. | Gill Auto Group | (559) 674-5661</div>
     </div>
   </div>
- 
+
   <!-- HISTORY -->
   <div class="page" id="log-page">
     <div class="page-header"><h2>Invoice History</h2><button class="btn-export" onclick="exportCSV()">⬇ CSV</button><button class="btn-export" onclick="exportLogPDF()" style="background:#c0392b;">⬇ PDF</button></div>
@@ -431,7 +431,7 @@
       </table>
     </div>
   </div>
- 
+
   <!-- MONTHLY -->
   <div class="page" id="monthly-page">
     <div class="page-header"><h2>📅 Monthly</h2><button class="btn-export" onclick="exportMonthlyCSV()">⬇ CSV</button><button class="btn-export" onclick="exportMonthlyPDF()" style="background:#c0392b;">⬇ PDF</button></div>
@@ -442,7 +442,7 @@
     <div style="font-size:14px;font-weight:800;color:#1A3A5C;margin-bottom:10px;">All Months</div>
     <div class="table-wrap"><table class="months-tbl"><thead><tr><th>Month</th><th>Invoices</th><th>Total</th><th>Avg</th><th>Top Approver</th></tr></thead><tbody id="all-months-body"></tbody></table></div>
   </div>
- 
+
   <!-- ACCOUNTANT -->
   <div class="page" id="accountant-page">
     <div class="acct-header-banner"><div class="ah-icon">🧾</div><div><h2>Accountant Review</h2><p>Review, approve, or deny gas invoices.</p></div></div>
@@ -460,7 +460,7 @@
       </table>
     </div>
   </div>
- 
+
   <!-- ADMIN -->
   <div class="page" id="admin-page">
     <div class="admin-wrap">
@@ -525,7 +525,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- MODALS -->
 <div class="modal-bg" id="modal-approval">
   <div class="modal">
@@ -540,7 +540,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="modal-bg" id="modal-pin">
   <div class="modal">
     <h2>🔑 Change Your PIN</h2>
@@ -555,7 +555,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="modal-bg" id="modal-editpin">
   <div class="modal">
     <h2>🔑 Change PIN for <span id="editpin-username"></span></h2>
@@ -569,7 +569,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="modal-bg" id="modal-acct-review">
   <div class="modal">
     <h2 id="acct-review-title">Review Invoice</h2>
@@ -585,7 +585,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="modal-bg" id="modal-edit-amount">
   <div class="modal">
     <h2>✏️ Edit Approved Amount</h2>
@@ -602,7 +602,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="modal-bg" id="modal-preview">
   <div class="modal preview-modal">
     <div class="preview-topbar">
@@ -614,11 +614,11 @@
     <div class="preview-body" id="preview-body"></div>
   </div>
 </div>
- 
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, orderBy, onSnapshot, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
- 
+
   const firebaseConfig = {
     apiKey: "AIzaSyAhDx0zL9cgQ602vyAbGOiJgv-BWKIwvoM",
     authDomain: "gill-auto-gas.firebaseapp.com",
@@ -627,10 +627,10 @@
     messagingSenderId: "688930827700",
     appId: "1:688930827700:web:3cbb8b4bca925d910696e1"
   };
- 
+
   const fbApp = initializeApp(firebaseConfig);
   const db = getFirestore(fbApp);
- 
+
   const DEFAULT_USERS = [
     { name:"Eric Loera",   pin:"1478", role:"master"     },
     { name:"Fasial Aziz",  pin:"9876", role:"manager"    },
@@ -640,13 +640,13 @@
   ];
   const DEFAULT_DEALER  = { name:"Gill Auto Group", addr:"1100 S Madera Ave, Madera, CA 93637", phone:"(559) 674-5661" };
   const DEFAULT_BUDGET  = 12000;
- 
+
   let currentUser=null, allUsers=[], dealerInfo={...DEFAULT_DEALER}, invoiceCounter=1, monthlyBudget=DEFAULT_BUDGET;
   let editPinTarget=null, previewInvoice=null, logUnsubscribe=null, allInvoices=[];
   let acctReviewTarget=null;
- 
+
   function setSyncStatus(ok){ document.getElementById('sync-dot').className='sync-dot'+(ok?'':' offline'); document.getElementById('sync-text').textContent=ok?'Synced':'Offline'; }
- 
+
   async function fsGetUsers(){try{const s=await getDoc(doc(db,'config','users'));if(s.exists()&&s.data().list)return s.data().list;}catch(e){}return JSON.parse(JSON.stringify(DEFAULT_USERS));}
   async function fsSaveUsers(u){await setDoc(doc(db,'config','users'),{list:u});}
   async function fsGetDealer(){try{const s=await getDoc(doc(db,'config','dealer'));if(s.exists())return s.data();}catch(e){}return{...DEFAULT_DEALER};}
@@ -655,13 +655,13 @@
   async function fsSetCounter(n){await setDoc(doc(db,'config','counter'),{value:n});}
   async function fsGetBudget(){try{const s=await getDoc(doc(db,'config','budget'));if(s.exists())return s.data().value||DEFAULT_BUDGET;}catch(e){}return DEFAULT_BUDGET;}
   async function fsSetBudget(n){await setDoc(doc(db,'config','budget'),{value:n});}
- 
+
   async function init(){
     try{allUsers=await fsGetUsers();dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();monthlyBudget=await fsGetBudget();setSyncStatus(true);}
     catch(e){setSyncStatus(false);allUsers=JSON.parse(JSON.stringify(DEFAULT_USERS));}
   }
   init();
- 
+
   /* AUTO-CALC */
   window.calcRow=function(i){
     const g=parseFloat(document.getElementById('gal'+i).value)||0;
@@ -675,7 +675,7 @@
     for(let i=0;i<3;i++){const v=parseFloat(document.getElementById('rt'+i).value)||0;sum+=v;}
     if(sum>0)document.getElementById('f-total').value=sum.toFixed(2);
   };
- 
+
   /* LOGIN */
   document.getElementById('login-pin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
   document.getElementById('login-name').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
@@ -707,7 +707,7 @@
     else{showTab('dashboard');}
   };
   window.doLogout=function(){currentUser=null;if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('login-name').value='';document.getElementById('login-pin').value='';document.getElementById('login-error').textContent='';document.getElementById('budget-banner').className='budget-banner';};
- 
+
   window.showTab=function(t){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -720,15 +720,15 @@
     if(t==='admin')renderAdmin();
     if(t==='invoice')refreshInvoice();
   };
- 
+
   function updateDealerDisplay(){
     document.getElementById('disp-dealer-name').textContent=dealerInfo.name;
     document.getElementById('disp-dealer-addr').textContent=dealerInfo.addr+' | '+dealerInfo.phone;
     document.getElementById('disp-footer').textContent='Please attach original gas receipt. Retain copy for records. | '+dealerInfo.name+' | '+dealerInfo.phone;
   }
- 
+
   function formatNum(n){return 'GAS-'+String(n).padStart(5,'0');}
- 
+
   function refreshInvoice(){
     document.getElementById('next-num').textContent=formatNum(invoiceCounter);
     document.getElementById('inv-num-display').textContent=formatNum(invoiceCounter);
@@ -739,11 +739,11 @@
     document.getElementById('inv-mgr-date').textContent=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     document.getElementById('inv-approved-amt').textContent='—';
   }
- 
+
   window.clearForm=function(){document.querySelectorAll('.field-input,.cell-input,.auth-input').forEach(i=>i.value='');document.querySelectorAll('.cell-select').forEach(s=>s.selectedIndex=0);document.getElementById('f-notes').value='';document.getElementById('f-total').value='';refreshInvoice();};
- 
+
   function getFuelRows(){const rows=[];document.querySelectorAll('#fuel-rows tr').forEach((tr,idx)=>{const c=tr.querySelectorAll('input');const s=tr.querySelectorAll('select');if(c.length>=5)rows.push({station:c[0].value,fuelType:s[0]?s[0].value:'',gallons:c[1].value,pricePerGal:c[2].value,total:c[3].value,receiptNum:c[4].value});});return rows;}
- 
+
   /* BUDGET BANNER */
   async function checkBudget(){
     const now=new Date();
@@ -757,7 +757,7 @@
     else{banner.className='budget-banner';}
     return{spent,pct};
   }
- 
+
   /* DASHBOARD */
   async function renderDashboard(){
     const now=new Date();
@@ -775,8 +775,8 @@
     const pending=all.filter(r=>!r.acctStatus||r.acctStatus==='pending').length;
     document.getElementById('dash-grid').innerHTML=
       `<div class="dash-card"><div class="dc-label">TODAY'S INVOICES</div><div class="dc-val">${todayInvs.length}</div><div class="dc-sub">$${todayTotal.toFixed(2)} total</div></div>
-       <div class="dash-card"><div class="dc-label">MONTH TOTAL</div><div class="dc-val">$${monthTotal.toFixed(0)}</div><div class="dc-sub">${monthInvs.length} invoices</div></div>
-       <div class="dash-card"><div class="dc-label">BUDGET REMAINING</div><div class="dc-val" style="color:${monthTotal>monthlyBudget?'#c0392b':'#2e7d32'};">$${Math.max(0,monthlyBudget-monthTotal).toFixed(0)}</div><div class="dc-sub">of $${monthlyBudget.toLocaleString()}</div></div>
+       <div class="dash-card"><div class="dc-label">MONTH TOTAL</div><div class="dc-val">$${monthTotal.toFixed(2)}</div><div class="dc-sub">${monthInvs.length} invoices</div></div>
+       <div class="dash-card"><div class="dc-label">BUDGET REMAINING</div><div class="dc-val" style="color:${monthTotal>monthlyBudget?'#c0392b':'#2e7d32'};">$${Math.max(0,monthlyBudget-monthTotal).toFixed(2)}</div><div class="dc-sub">of $${monthlyBudget.toLocaleString()}</div></div>
        <div class="dash-card"><div class="dc-label">PENDING REVIEW</div><div class="dc-val" style="color:#856404;">${pending}</div><div class="dc-sub">awaiting accountant</div></div>`;
     const pct=Math.min((monthTotal/monthlyBudget)*100,100);
     const barCls=pct>=100?'over':pct>=80?'warn':'ok';
@@ -789,9 +789,9 @@
     listEl.innerHTML=todayInvs.map(r=>`<div class="today-item"><div class="today-inv">${r.invNum}</div><div class="today-info">${r.manager}<div class="ti-sub">${r.stock||'—'} &nbsp;|&nbsp; ${r.driver||'—'}</div></div><div><div class="today-amt">${r.amount}</div><div class="today-status status-${r.acctStatus||'pending'}">${(r.acctStatus||'pending').charAt(0).toUpperCase()+(r.acctStatus||'pending').slice(1)}</div></div></div>`).join('');
     checkBudget();
   }
- 
+
   window.closeModals=function(){document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open'));};
- 
+
   window.openApprovalModal=function(){
     document.getElementById('modal-amount').value=document.getElementById('f-total').value||'';
     document.getElementById('modal-error').textContent='';
@@ -799,7 +799,7 @@
     setTimeout(()=>document.getElementById('modal-amount').focus(),100);
   };
   document.getElementById('modal-amount').addEventListener('keydown',e=>{if(e.key==='Enter')confirmApproval();});
- 
+
   window.confirmApproval=async function(){
     const raw=document.getElementById('modal-amount').value.trim();
     const amt=parseFloat(raw);
@@ -831,7 +831,7 @@
       refreshInvoice();
     },150);
   };
- 
+
   window.openPinModal=function(){['pin-current','pin-new','pin-confirm'].forEach(id=>document.getElementById(id).value='');document.getElementById('pin-error').textContent='';document.getElementById('pin-success').textContent='';document.getElementById('modal-pin').classList.add('open');setTimeout(()=>document.getElementById('pin-current').focus(),100);};
   window.confirmPinChange=async function(){
     const current=document.getElementById('pin-current').value.trim(),newPin=document.getElementById('pin-new').value.trim(),conf=document.getElementById('pin-confirm').value.trim();
@@ -843,7 +843,7 @@
     allUsers=await fsGetUsers();allUsers=allUsers.map(u=>u.name===currentUser.name?{...u,pin:newPin}:u);
     await fsSaveUsers(allUsers);currentUser.pin=newPin;okEl.textContent='✓ PIN updated!';setTimeout(closeModals,1400);
   };
- 
+
   async function renderLog(){
     if(logUnsubscribe){logUnsubscribe();logUnsubscribe=null;}
     const tbody=document.getElementById('log-body');
@@ -866,7 +866,7 @@
       setSyncStatus(true);
     }catch(e){setSyncStatus(false);tbody.innerHTML='<tr><td colspan="7" class="empty-state">Could not load.</td></tr>';}
   }
- 
+
   function renderStats(invoices){
     const total=invoices.reduce((s,r)=>s+parseFloat((r.amount||'$0').replace('$','')),0);
     const pending=invoices.filter(r=>!r.acctStatus||r.acctStatus==='pending').length;
@@ -874,12 +874,12 @@
     const denied=invoices.filter(r=>r.acctStatus==='denied').length;
     document.getElementById('log-stats').innerHTML=
       `<div class="stat-card"><div class="s-label">INVOICES</div><div class="s-val">${invoices.length}</div></div>
-       <div class="stat-card"><div class="s-label">TOTAL $</div><div class="s-val" style="font-size:18px;">$${total.toFixed(0)}</div></div>
+       <div class="stat-card"><div class="s-label">TOTAL $</div><div class="s-val" style="font-size:18px;">$${total.toFixed(2)}</div></div>
        <div class="stat-card"><div class="s-label">PENDING</div><div class="s-val" style="color:#856404;">${pending}</div></div>
        <div class="stat-card"><div class="s-label">APPROVED</div><div class="s-val" style="color:#155724;">${approved}</div></div>
        <div class="stat-card"><div class="s-label">DENIED</div><div class="s-val" style="color:#721c24;">${denied}</div></div>`;
   }
- 
+
   window.renderAccountant=async function(){
     if(!allInvoices.length){const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));}
     const filterStatus=document.getElementById('acct-filter-status').value;
@@ -903,7 +903,7 @@
     const denied=allInvoices.filter(r=>r.acctStatus==='denied').length;
     document.getElementById('acct-stats').innerHTML=
       `<div class="acct-stat"><div class="as-label">TOTAL</div><div class="as-val total">${allInvoices.length}</div></div>
-       <div class="acct-stat"><div class="as-label">AMOUNT</div><div class="as-val total" style="font-size:18px;">$${total.toFixed(0)}</div></div>
+       <div class="acct-stat"><div class="as-label">AMOUNT</div><div class="as-val total" style="font-size:18px;">$${total.toFixed(2)}</div></div>
        <div class="acct-stat"><div class="as-label">PENDING</div><div class="as-val pending">${pending}</div></div>
        <div class="acct-stat"><div class="as-label">APPROVED</div><div class="as-val approved">${approved}</div></div>
        <div class="acct-stat"><div class="as-label">DENIED</div><div class="as-val denied">${denied}</div></div>`;
@@ -923,7 +923,7 @@
       tbody.appendChild(tr);
     });
   };
- 
+
   window.openAcctReview=function(id,action){
     const inv=allInvoices.find(i=>i.id===id);if(!inv)return;
     acctReviewTarget={id,action};
@@ -933,7 +933,7 @@
     document.getElementById('acct-review-error').textContent='';
     document.getElementById('modal-acct-review').classList.add('open');
   };
- 
+
   window.submitAcctReview=async function(decision){
     if(!acctReviewTarget)return;
     const notes=document.getElementById('acct-review-notes').value.trim();
@@ -946,7 +946,7 @@
       setSyncStatus(true);setTimeout(()=>{closeModals();renderAccountant();},1000);
     }catch(e){document.getElementById('acct-review-error').textContent='Error. Try again.';setSyncStatus(false);}
   };
- 
+
   window.renderMonthly=async function(){
     if(!allInvoices.length){const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));allInvoices=snap.docs.map(d=>({id:d.id,...d.data()}));}
     const monthMap={};
@@ -960,15 +960,15 @@
     const topMgr=Object.entries(sm.managers).sort((a,b)=>b[1].total-a[1].total)[0];
     document.getElementById('monthly-grid').innerHTML=
       `<div class="month-stat"><div class="ms-label">INVOICES</div><div class="ms-val">${sm.invoices.length}</div><div class="ms-sub">${sm.label}</div></div>
-       <div class="month-stat"><div class="ms-label">TOTAL</div><div class="ms-val" style="font-size:18px;">$${sm.total.toFixed(0)}</div></div>
-       <div class="month-stat"><div class="ms-label">AVG/INVOICE</div><div class="ms-val" style="font-size:18px;">${sm.invoices.length?'$'+(sm.total/sm.invoices.length).toFixed(0):'—'}</div></div>
+       <div class="month-stat"><div class="ms-label">TOTAL</div><div class="ms-val" style="font-size:18px;">$${sm.total.toFixed(2)}</div></div>
+       <div class="month-stat"><div class="ms-label">AVG/INVOICE</div><div class="ms-val" style="font-size:18px;">${sm.invoices.length?'$'+(sm.total/sm.invoices.length).toFixed(2):'—'}</div></div>
        <div class="month-stat"><div class="ms-label">TOP APPROVER</div><div class="ms-val" style="font-size:14px;margin-top:4px;">${topMgr?topMgr[0]:'—'}</div><div class="ms-sub">${topMgr?'$'+topMgr[1].total.toFixed(2):''}</div></div>`;
     const maxT=Math.max(...Object.values(sm.managers).map(m=>m.total),1);
     document.getElementById('mgr-cards').innerHTML=Object.entries(sm.managers).sort((a,b)=>b[1].total-a[1].total).map(([name,data])=>{const pct=Math.round((data.total/maxT)*100);return`<div class="mgr-card"><div class="mc-name">${name}</div><div class="mc-row"><span class="mc-label">Invoices</span><span class="mc-val">${data.count}</span></div><div class="mc-row"><span class="mc-label">Avg</span><span class="mc-val">$${(data.total/data.count).toFixed(2)}</span></div><div class="mc-total">$${data.total.toFixed(2)}</div><div class="month-bar"><div class="month-bar-fill" style="width:${pct}%"></div></div></div>`;}).join('')||'<div class="empty-state">No data.</div>';
     const now=new Date();const curKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
     document.getElementById('all-months-body').innerHTML=months.map(m=>{const top=Object.entries(m.managers).sort((a,b)=>b[1].total-a[1].total)[0];const isCur=m.key===curKey;return`<tr${isCur?' class="active-month"':''}><td>${m.label}${isCur?' <span style="font-size:10px;background:#1A3A5C;color:#fff;padding:1px 5px;border-radius:3px;">Now</span>':''}</td><td>${m.invoices.length}</td><td class="amt-cell">$${m.total.toFixed(2)}</td><td>$${(m.total/m.invoices.length).toFixed(2)}</td><td>${top?top[0]:'—'}</td></tr>`;}).join('');
   };
- 
+
   /* PREVIEW */
   window.openEditAmount=function(id,invNum,currentAmt){
     document.getElementById('edit-amt-invnum').value=invNum;
@@ -979,7 +979,7 @@
     window._editAmtId=id;
     setTimeout(()=>document.getElementById('edit-amt-value').focus(),100);
   };
- 
+
   window.confirmEditAmount=async function(){
     const raw=document.getElementById('edit-amt-value').value.trim();
     const amt=parseFloat(raw);
@@ -996,7 +996,7 @@
       setTimeout(()=>{closeModals();},1200);
     }catch(e){errEl.textContent='Error saving. Please try again.';setSyncStatus(false);}
   };
- 
+
   window.openPreview=async function(id){
     const snap=await getDoc(doc(db,'invoices',id));if(!snap.exists())return;
     const r=snap.data();previewInvoice=r;
@@ -1007,7 +1007,7 @@
     document.getElementById('preview-body').innerHTML=buildSnapHTML(r,fuelHtml,stampHtml);
     document.getElementById('modal-preview').classList.add('open');
   };
- 
+
   function buildSnapHTML(r,fuelHtml,stampHtml){
     return`<div class="snap-invoice" id="snap-content">
       <div class="inv-header"><div class="inv-title"><h1>GAS RECEIPT INVOICE</h1><div class="dealer-name">${r.dealer?.name||'Gill Auto Group'}</div><div class="dealer-addr">${r.dealer?.addr||''} | ${r.dealer?.phone||''}</div></div>
@@ -1028,17 +1028,17 @@
       <div class="snap-footer">Please attach original gas receipt. Retain copy for records. | ${r.dealer?.name||'Gill Auto Group'} | ${r.dealer?.phone||''}</div>
     </div>`;
   }
- 
+
   window.printPreview=function(){
     const content=document.getElementById('snap-content').outerHTML;
     const win=window.open('','_blank');
     win.document.write(`<!DOCTYPE html><html><head><title>${previewInvoice?.invNum}</title><style>body{font-family:Arial,sans-serif;padding:16px;font-size:11px;}.snap-invoice{max-width:760px;margin:0 auto;}.inv-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;}h1{font-size:19px;font-weight:800;color:#1A3A5C;}.dealer-name{font-size:12px;font-weight:700;color:#E87722;}.dealer-addr{font-size:10px;color:#888;}.snap-meta td{padding:2px 5px;font-size:10px;}.snap-meta td:first-child{color:#666;font-weight:700;text-align:right;}.snap-meta td.val{background:#F0F4FA;border:1px solid #cdd5e0;min-width:110px;border-radius:2px;}.snap-meta td.approved-amt{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;font-weight:800;}.snap-field{border-bottom:1.5px solid #1A3A5C;min-height:16px;padding:2px;font-size:11px;margin-bottom:4px;}.snap-section{background:#1A3A5C;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;margin:10px 0 0;}.snap-table{width:100%;border-collapse:collapse;}.snap-table thead th{background:#2C5F8A;color:#fff;font-size:9px;font-weight:700;padding:4px 5px;text-align:center;border:1px solid #1A3A5C;}.snap-table tbody td{border:0.5px solid #ccc;padding:4px 5px;font-size:10px;}.snap-table tbody tr:nth-child(even) td{background:#F5F7FB;}.snap-total td{background:#1A3A5C!important;color:#fff;font-weight:700;}.snap-notes{border:0.5px solid #ccc;min-height:36px;background:#FAFBFD;padding:5px;font-size:10px;}.snap-auth{display:flex;gap:10px;padding-top:7px;flex-wrap:wrap;}.snap-auth-field{flex:1;min-width:100px;}.snap-auth-label{font-size:9px;color:#1A3A5C;font-weight:700;margin-bottom:2px;}.snap-auth-val{font-size:11px;font-weight:700;color:#1A3A5C;border-bottom:2px solid #1A3A5C;background:#EEF2F7;padding:3px 5px;min-height:20px;}.snap-auth-line{border-bottom:2px solid #1A3A5C;min-height:20px;background:#EEF2F7;}.snap-footer{font-size:9px;color:#999;text-align:center;margin-top:12px;padding-top:7px;border-top:2px solid #E87722;font-style:italic;}.acct-stamp{border:2px solid;border-radius:8px;padding:5px 10px;margin-top:10px;display:inline-block;font-weight:800;font-size:11px;}.acct-stamp.approved{border-color:#2e7d32;color:#2e7d32;}.acct-stamp.denied{border-color:#c0392b;color:#c0392b;}</style></head><body>${content}</body></html>`);
     win.document.close();setTimeout(()=>win.print(),400);
   };
- 
+
   /* PDF EXPORTS */
   function getPDF(){return new window.jspdf.jsPDF();}
- 
+
   window.exportSinglePDF=function(){
     if(!previewInvoice)return;
     const r=previewInvoice;
@@ -1055,7 +1055,7 @@
     if(r.acctStatus&&r.acctStatus!=='pending'){pdf.setTextColor(r.acctStatus==='approved'?46:192,r.acctStatus==='approved'?125:57,r.acctStatus==='approved'?50:43);pdf.setFontSize(11);pdf.text((r.acctStatus==='approved'?'✓ ACCOUNTANT APPROVED':'✗ ACCOUNTANT DENIED')+(r.acctReviewedBy?' — '+r.acctReviewedBy:''),14,pdf.lastAutoTable.finalY+20);}
     pdf.save(`${r.invNum}.pdf`);
   };
- 
+
   window.exportLogPDF=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
     const rows=snap.docs.map(d=>{const r=d.data();return[r.invNum,r.date,r.manager,r.amount,r.stock||'—',r.driver||'—',r.acctStatus||'pending'];});
@@ -1065,7 +1065,7 @@
     pdf.autoTable({startY:26,head:[['Invoice #','Date','Manager','Amount','Stock #','Driver','Acct Status']],body:rows,theme:'striped',headStyles:{fillColor:[26,58,92]},styles:{fontSize:8}});
     pdf.save('gill_auto_invoice_history.pdf');
   };
- 
+
   window.exportAcctPDF=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
     const rows=snap.docs.map(d=>{const r=d.data();return[r.invNum,r.date,r.manager,r.amount,r.stock||'—',r.acctStatus||'pending',r.acctNotes||'',r.acctReviewedBy||''];});
@@ -1075,7 +1075,7 @@
     pdf.autoTable({startY:26,head:[['Invoice #','Date','Manager','Amount','Stock #','Status','Notes','Reviewed By']],body:rows,theme:'striped',headStyles:{fillColor:[108,52,131]},styles:{fontSize:7}});
     pdf.save('gill_auto_accountant_report.pdf');
   };
- 
+
   window.exportMonthlyPDF=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
     const monthMap={};snap.docs.forEach(d=>{const r=d.data();const mk=r.monthKey||'unknown';const ml=r.monthLabel||mk;if(!monthMap[mk])monthMap[mk]={label:ml,count:0,total:0,managers:{}};const amt=parseFloat((r.amount||'$0').replace('$',''));monthMap[mk].count++;monthMap[mk].total+=amt;if(!monthMap[mk].managers[r.manager])monthMap[mk].managers[r.manager]={count:0,total:0};monthMap[mk].managers[r.manager].count++;monthMap[mk].managers[r.manager].total+=amt;});
@@ -1086,7 +1086,7 @@
     pdf.autoTable({startY:26,head:[['Month','Invoices','Total','Avg/Invoice','Manager','Mgr Invoices','Mgr Total']],body:rows,theme:'striped',headStyles:{fillColor:[26,58,92]},styles:{fontSize:8}});
     pdf.save('gill_auto_monthly_report.pdf');
   };
- 
+
   window.exportCSV=async function(){
     const snap=await getDocs(query(collection(db,'invoices'),orderBy('createdAt','desc')));
     const rows=[['Invoice #','Month','Date','Manager','Amount','Stock #','Driver','Vehicle','Acct Status','Acct Notes','Reviewed By']];
@@ -1109,7 +1109,7 @@
     const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
     const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='gill_auto_monthly_report.csv';a.click();
   };
- 
+
   /* ADMIN */
   async function renderAdmin(){
     dealerInfo=await fsGetDealer();invoiceCounter=await fsGetCounter();allUsers=await fsGetUsers();monthlyBudget=await fsGetBudget();
@@ -1119,17 +1119,17 @@
     renderUserList();renderPinDropdown();
     ['dealer-success','budget-success','counter-success','user-error','user-success','adminpin-error','adminpin-success','reset-success'].forEach(id=>document.getElementById(id).textContent='');
   }
- 
+
   window.saveDealerAdmin=async function(){const d={name:document.getElementById('admin-dname').value.trim(),addr:document.getElementById('admin-daddr').value.trim(),phone:document.getElementById('admin-dphone').value.trim()};if(!d.name)return;await fsSaveDealer(d);dealerInfo=d;updateDealerDisplay();document.getElementById('dealer-success').textContent='✓ Saved!';setTimeout(()=>document.getElementById('dealer-success').textContent='',2000);};
- 
+
   window.saveBudget=async function(){const v=parseFloat(document.getElementById('admin-budget').value);if(!v||v<=0)return;await fsSetBudget(v);monthlyBudget=v;document.getElementById('budget-success').textContent='✓ Budget set to $'+v.toLocaleString();checkBudget();setTimeout(()=>document.getElementById('budget-success').textContent='',2000);};
- 
+
   window.setCounterAdmin=async function(){const v=parseInt(document.getElementById('admin-counter-input').value);if(!v||v<1)return;await fsSetCounter(v);invoiceCounter=v;document.getElementById('admin-counter-val').textContent=formatNum(v);document.getElementById('counter-success').textContent='✓ Set to '+formatNum(v);setTimeout(()=>document.getElementById('counter-success').textContent='',2000);};
- 
+
   window.resetCounter=async function(){if(!confirm('Reset counter to GAS-00001?'))return;await fsSetCounter(1);invoiceCounter=1;document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Counter reset.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
   window.clearLog=async function(){if(!confirm('DELETE ALL invoice records?'))return;const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('reset-success').textContent='✓ Log cleared.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
   window.resetBoth=async function(){if(!confirm('Reset counter AND delete all records?'))return;await fsSetCounter(1);invoiceCounter=1;const snap=await getDocs(collection(db,'invoices'));const batch=writeBatch(db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();allInvoices=[];document.getElementById('admin-counter-val').textContent=formatNum(1);document.getElementById('reset-success').textContent='✓ Done.';setTimeout(()=>document.getElementById('reset-success').textContent='',2500);};
- 
+
   function renderUserList(){
     document.getElementById('user-list').innerHTML=allUsers.map((u,i)=>{
       const roleCls=u.role==='master'?'role-master':u.role==='accountant'?'role-accountant':u.role==='manager'?'role-manager':'role-standard';
@@ -1141,11 +1141,11 @@
       return html+'</div>';
     }).join('');
   }
- 
+
   window.changeRole=async function(idx,newRole){allUsers[idx].role=newRole;await fsSaveUsers(allUsers);renderUserList();renderPinDropdown();document.getElementById('user-success').textContent='✓ Role updated.';setTimeout(()=>document.getElementById('user-success').textContent='',2000);};
- 
+
   function renderPinDropdown(){const sel=document.getElementById('pin-target-user');sel.innerHTML='';allUsers.forEach(u=>{if(u.name!==currentUser.name){const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o);}});}
- 
+
   window.addUser=async function(){const name=document.getElementById('new-uname').value.trim(),pin=document.getElementById('new-upin').value.trim(),role=document.getElementById('new-urole').value;const errEl=document.getElementById('user-error'),okEl=document.getElementById('user-success');errEl.textContent='';okEl.textContent='';if(!name){errEl.textContent='Name required.';return;}if(!/^\d{4,6}$/.test(pin)){errEl.textContent='PIN must be 4–6 digits.';return;}if(allUsers.find(u=>u.name.toLowerCase()===name.toLowerCase())){errEl.textContent='User already exists.';return;}allUsers.push({name,pin,role});await fsSaveUsers(allUsers);document.getElementById('new-uname').value='';document.getElementById('new-upin').value='';okEl.textContent='✓ '+name+' added!';renderUserList();renderPinDropdown();setTimeout(()=>okEl.textContent='',2000);};
   window.removeUser=async function(idx){if(!confirm('Remove '+allUsers[idx].name+'?'))return;allUsers.splice(idx,1);await fsSaveUsers(allUsers);renderUserList();renderPinDropdown();};
   window.openEditPinModal=function(idx){editPinTarget=idx;document.getElementById('editpin-username').textContent=allUsers[idx].name;document.getElementById('editpin-new').value='';document.getElementById('editpin-confirm').value='';document.getElementById('editpin-error').textContent='';document.getElementById('editpin-success').textContent='';document.getElementById('modal-editpin').classList.add('open');setTimeout(()=>document.getElementById('editpin-new').focus(),100);};
