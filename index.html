@@ -180,6 +180,8 @@
   .amt-cell{font-weight:700;color:#2e7d32;}
   .empty-state{text-align:center;color:#aaa;font-size:13px;padding:30px 0;}
   .btn-view{font-size:11px;padding:4px 9px;background:#1A3A5C;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Arial,sans-serif;}
+  .btn-edit-amt{font-size:11px;padding:2px 6px;background:none;border:none;cursor:pointer;opacity:0.6;}
+  .btn-edit-amt:hover{opacity:1;}
   .status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
   .status-pending{background:#fff3cd;color:#856404;border:1px solid #ffc107;}
   .status-approved{background:#d4edda;color:#155724;border:1px solid #28a745;}
@@ -584,6 +586,23 @@
   </div>
 </div>
  
+<div class="modal-bg" id="modal-edit-amount">
+  <div class="modal">
+    <h2>✏️ Edit Approved Amount</h2>
+    <p>Update the approved dollar amount for this invoice. All totals on History, Monthly, and Accountant pages will recalculate automatically.</p>
+    <label>INVOICE #</label>
+    <input type="text" id="edit-amt-invnum" readonly style="background:#f0f4fa;color:#1A3A5C;font-weight:700;"/>
+    <label>NEW APPROVED AMOUNT ($)</label>
+    <input type="number" id="edit-amt-value" placeholder="e.g. 85.00" min="0.01" step="0.01" inputmode="decimal"/>
+    <div class="modal-error" id="edit-amt-error"></div>
+    <div class="modal-success" id="edit-amt-success"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModals()">Cancel</button>
+      <button class="btn-approve" onclick="confirmEditAmount()">✓ Save Amount</button>
+    </div>
+  </div>
+</div>
+ 
 <div class="modal-bg" id="modal-preview">
   <div class="modal preview-modal">
     <div class="preview-topbar">
@@ -838,7 +857,8 @@
         allInvoices.forEach(r=>{
           const st=r.acctStatus||'pending';
           const tr=document.createElement('tr');
-          tr.innerHTML=`<td><strong>${r.invNum}</strong></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td><span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span></td><td><button class="btn-view" onclick="openPreview('${r.id}')">👁</button></td>`;
+          const canEdit=currentUser&&(currentUser.role==='master'||currentUser.role==='accountant');
+          tr.innerHTML=`<td><strong>${r.invNum}</strong></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}${canEdit?` <button class="btn-edit-amt" onclick="openEditAmount('${r.id}','${r.invNum}','${r.amount}')">✏️</button>`:''}</td><td>${r.stock||'—'}</td><td><span class="status-badge status-${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</span></td><td><button class="btn-view" onclick="openPreview('${r.id}')">👁</button></td>`;
           tbody.appendChild(tr);
         });
         renderStats(allInvoices);
@@ -897,8 +917,9 @@
       let actions=st==='pending'
         ?`<button class="btn-acct-approve" onclick="openAcctReview('${r.id}','approve')">✓</button><button class="btn-acct-deny" onclick="openAcctReview('${r.id}','deny')">✗</button>`
         :`<button class="btn-view" onclick="openAcctReview('${r.id}','${st==='approved'?'deny':'approve'}')">↩</button>`;
+      const canEdit=currentUser&&(currentUser.role==='master'||currentUser.role==='accountant');
       const tr=document.createElement('tr');
-      tr.innerHTML=`<td><strong>${r.invNum}</strong><br><button class="btn-view" style="margin-top:3px;" onclick="openPreview('${r.id}')">👁</button></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}</td><td>${r.stock||'—'}</td><td>${stBadge}${reviewedBy}</td><td>${notePreview}</td><td>${actions}</td>`;
+      tr.innerHTML=`<td><strong>${r.invNum}</strong><br><button class="btn-view" style="margin-top:3px;" onclick="openPreview('${r.id}')">👁</button></td><td>${r.date}</td><td>${r.manager}</td><td class="amt-cell">${r.amount}${canEdit?` <button class="btn-edit-amt" onclick="openEditAmount('${r.id}','${r.invNum}','${r.amount}')">✏️</button>`:''}</td><td>${r.stock||'—'}</td><td>${stBadge}${reviewedBy}</td><td>${notePreview}</td><td>${actions}</td>`;
       tbody.appendChild(tr);
     });
   };
@@ -949,6 +970,33 @@
   };
  
   /* PREVIEW */
+  window.openEditAmount=function(id,invNum,currentAmt){
+    document.getElementById('edit-amt-invnum').value=invNum;
+    document.getElementById('edit-amt-value').value=parseFloat(currentAmt.replace('$',''))||'';
+    document.getElementById('edit-amt-error').textContent='';
+    document.getElementById('edit-amt-success').textContent='';
+    document.getElementById('modal-edit-amount').classList.add('open');
+    window._editAmtId=id;
+    setTimeout(()=>document.getElementById('edit-amt-value').focus(),100);
+  };
+ 
+  window.confirmEditAmount=async function(){
+    const raw=document.getElementById('edit-amt-value').value.trim();
+    const amt=parseFloat(raw);
+    const errEl=document.getElementById('edit-amt-error'),okEl=document.getElementById('edit-amt-success');
+    errEl.textContent='';okEl.textContent='';
+    if(!raw||isNaN(amt)||amt<=0){errEl.textContent='Please enter a valid amount.';return;}
+    const fmtAmt='$'+amt.toFixed(2);
+    try{
+      await updateDoc(doc(db,'invoices',window._editAmtId),{amount:fmtAmt,amtEditedBy:currentUser.name,amtEditedAt:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
+      const idx=allInvoices.findIndex(i=>i.id===window._editAmtId);
+      if(idx>-1){allInvoices[idx].amount=fmtAmt;allInvoices[idx].amtEditedBy=currentUser.name;}
+      okEl.textContent='✓ Amount updated to '+fmtAmt;
+      setSyncStatus(true);
+      setTimeout(()=>{closeModals();},1200);
+    }catch(e){errEl.textContent='Error saving. Please try again.';setSyncStatus(false);}
+  };
+ 
   window.openPreview=async function(id){
     const snap=await getDoc(doc(db,'invoices',id));if(!snap.exists())return;
     const r=snap.data();previewInvoice=r;
