@@ -586,12 +586,7 @@ table.months-tbl tbody tr.active-month td{background:#f0f8ff;font-weight:700;}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, orderBy, onSnapshot, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// DOMAIN LOCK
-const ALLOWED = ['gill-gas-logs.netlify.app','localhost','127.0.0.1'];
-if (!ALLOWED.includes(window.location.hostname)) {
-  document.body.innerHTML = `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d2137;font-family:Arial,sans-serif;"><div style="background:#fff;border-radius:14px;padding:40px;max-width:400px;text-align:center;"><div style="font-size:48px;margin-bottom:16px;">🔒</div><div style="font-size:20px;font-weight:800;color:#c0392b;margin-bottom:10px;">Access Denied</div><div style="font-size:13px;color:#555;">This app is only authorized to run on the official Gill Auto Group domain.</div><div style="font-size:11px;color:#999;margin-top:12px;">Domain: ${window.location.hostname}</div></div></div>`;
-  throw new Error('Unauthorized domain');
-}
+// Domain lock disabled for testing
 
 const firebaseConfig = {
   apiKey: "AIzaSyAhDx0zL9cgQ602vyAbGOiJgv-BWKIwvoM",
